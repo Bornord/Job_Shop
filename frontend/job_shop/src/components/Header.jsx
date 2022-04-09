@@ -38,7 +38,7 @@ function Header() {
 								Trouver un stage
 							</Link>
 						</div>
-						<Link className={nom} to="/" + parsing + "/recruiters">
+						<Link className={nom} to="/*/recruiters">
 							Espace recruteur
 						</Link>
 					</div>
