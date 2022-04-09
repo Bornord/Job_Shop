@@ -16,7 +16,7 @@ root.render(
 		<BrowserRouter>
 			{/* <ThemeProvider> */}
 			<Routes>
-				<Route path="/*" element={<Index />} />
+				<Route path="/:type/*" element={<Index />} />
 				<Route path="*" element={<Error />} />
 			</Routes>
 			{/* </ThemeProvider> */}

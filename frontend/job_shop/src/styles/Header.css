@@ -1,0 +1,25 @@
+.header_wrapper {
+	display: grid;
+	grid-template-columns: 1fr 1fr 600px;
+	grid-template-rows: 1fr;
+	align-items: center;
+	padding: 20px;
+}
+
+.nav_container {
+	grid-column: 3 / 4;
+}
+
+.nav_wrapper {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	grid-template-rows: 1fr;
+}
+
+.green {
+	color: green;
+}
+
+.black {
+	color: black;
+}

@@ -32,3 +32,5 @@ Pour le frontend
     > yarn add axios
 -   ajouter le package de persistance de données :
     > yarn add reactjs-localstorage
+-   ajouter la package pour customizer le css :
+    > yarn add classnames

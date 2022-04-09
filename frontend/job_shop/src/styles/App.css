@@ -1,5 +1,26 @@
 @import url('./index.css');
+@import url('./Header.css');
 
 .App {
 	text-align: center;
+}
+
+.padding {
+	padding: 20px;
+}
+
+.gauche {
+	text-align: left;
+}
+
+.droite {
+	text-align: right;
+}
+
+.default_wrapper {
+	padding: 20px;
+}
+
+.hyperlink {
+	color: red;
 }
