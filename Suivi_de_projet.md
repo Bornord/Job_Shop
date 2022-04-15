@@ -41,8 +41,8 @@ Lors de cette première semaine, nous avons commencé à configurer le projet. C
     -   Séparer le travail en fonction des personnes.
     -   Établir le contenu des premières itérations pour déployer le site au plus vite.
 
-
 ## Échéance 2 : précision du cahier des charges
+
 Nous travaillons sur le projet JobShop.
 Cette semaine, nous avons définit plus précisément le cahier des charges de l'application, les services proposés pour les étudiants à la recherche d'un stage / job, et les services proposés pour les recruteurs. Ainsi, un étudiant est complètement passif après qu'il ait passé les étapes de création de compte, réponse aux questions et ajout de CV et le recruteur reçoit le moyen de contacter un étudiant qui "match" le plus avec une des offres qu'il a publié.
 En pièce jointe le diagramme UML des classes que nous avons commencé à implémenter en Java.

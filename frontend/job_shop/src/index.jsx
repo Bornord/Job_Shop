@@ -6,21 +6,32 @@ import './styles/index.css';
 
 import Index from './pages/App';
 import Error from './components/Error.jsx';
-// import { ThemeProvider } from './logic/Context/Context';
 import reportWebVitals from './config/reportWebVitals';
+import { configureStore } from '@reduxjs/toolkit';
+import { Provider } from 'react-redux';
+import userReducer from './logic/features/user';
+import themeReducer from './logic/features/theme';
 
+const store = configureStore({
+	reducer: {
+		user: userReducer,
+		theme: themeReducer,
+	},
+});
 const container = document.getElementById('root');
 const root = ReactDOMClient.createRoot(container);
 root.render(
 	<div className="App">
-		<BrowserRouter>
-			{/* <ThemeProvider> */}
-			<Routes>
-				<Route path="/:type/*" element={<Index />} />
-				<Route path="*" element={<Error />} />
-			</Routes>
-			{/* </ThemeProvider> */}
-		</BrowserRouter>
+		<Provider store={store}>
+			<BrowserRouter>
+				{/* <ThemeProvider> */}
+				<Routes>
+					<Route path="/:type/*" element={<Index />} />
+					<Route path="*" element={<Error />} />
+				</Routes>
+				{/* </ThemeProvider> */}
+			</BrowserRouter>
+		</Provider>
 	</div>
 );
 

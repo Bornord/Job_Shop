@@ -34,3 +34,5 @@ Pour le frontend
     > yarn add reactjs-localstorage
 -   ajouter la package pour customizer le css :
     > yarn add classnames
+-   ajotuer le package redux :
+    > yarn add redux react-redux @reduxjs/toolkit
