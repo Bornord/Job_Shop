@@ -1,4 +1,4 @@
-import '../../styles/App.css';
+import '../../styles/App.scss';
 
 function Survey() {
 	return <h1>Voici les questionnaires</h1>;

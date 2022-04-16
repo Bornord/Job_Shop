@@ -1,4 +1,4 @@
-import '../../styles/App.css';
+import '../../styles/App.scss';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { login, logout } from '../../logic/features/user';

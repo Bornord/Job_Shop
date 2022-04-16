@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import '../styles/App.css';
+import '../styles/App.scss';
 import { useParams } from 'react-router-dom';
 
 const classNames = require('classnames');
@@ -9,7 +9,7 @@ const classNames = require('classnames');
 function Header() {
 	const bool = true;
 	const nom = classNames({ green: bool, black: !bool });
-	const parsing = useParams().type;
+	const parsing = useParams().student;
 	return (
 		<div>
 			<nav className="header_wrapper">
@@ -24,16 +24,16 @@ function Header() {
 				</div>
 				<div className="nav_container">
 					<div className="nav_wrapper">
-						<Link className="hyperlink" to="/parsing/">
+						<Link className="hyperlink" to={`/${parsing}/`}>
 							Accueil
 						</Link>
-						<Link className="hyperlink" to="/parsing/offers">
+						<Link className="hyperlink" to={`/${parsing}/offers`}>
 							Offres
 						</Link>
 						<div>
 							<Link
 								className="header_button"
-								to="/parsing/survey/1"
+								to={`/${parsing}/survey/1`}
 							>
 								Trouver un stage
 							</Link>

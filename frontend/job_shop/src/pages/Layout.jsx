@@ -1,4 +1,5 @@
 import React from 'react';
+import { Outlet } from 'react-router-dom';
 
 import '../styles/index.scss';
 
@@ -8,14 +9,12 @@ import MainContainer from '../components/MainContainer';
 
 import '../styles/App.scss';
 
-function App() {
+function Layout() {
 	return (
 		<div>
-			<Header />
-			<MainContainer />
-			<Footer />
+			<Outlet />
 		</div>
 	);
 }
 
-export default App;
+export default Layout;

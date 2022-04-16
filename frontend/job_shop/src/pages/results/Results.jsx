@@ -1,4 +1,4 @@
-import '../../styles/App.css';
+import '../../styles/App.scss';
 
 function Results() {
 	return <h1>Voici les résutlats</h1>;

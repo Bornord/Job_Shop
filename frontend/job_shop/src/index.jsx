@@ -2,10 +2,11 @@ import React from 'react';
 import * as ReactDOMClient from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import './styles/index.css';
+import './styles/index.scss';
 
-import Index from './pages/App';
-import Error from './components/Error.jsx';
+import WelcomePage from './pages/WelcomePage';
+import App from './pages/App';
+
 import reportWebVitals from './config/reportWebVitals';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
@@ -24,12 +25,12 @@ root.render(
 	<div className="App">
 		<Provider store={store}>
 			<BrowserRouter>
-				{/* <ThemeProvider> */}
 				<Routes>
-					<Route path="/:type/*" element={<Index />} />
-					<Route path="*" element={<Error />} />
+					<Route path="*" element={<WelcomePage />} />
+
+					<Route path="/:student/*" element={<App />} />
+					<Route path="/:recruiter/*" element={<App />} />
 				</Routes>
-				{/* </ThemeProvider> */}
 			</BrowserRouter>
 		</Provider>
 	</div>
