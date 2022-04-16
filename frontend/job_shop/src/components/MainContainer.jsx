@@ -11,7 +11,7 @@ import Error from './Error';
 
 import Layout from '../pages/Layout';
 
-import RequireAuth from './RequireAuth';
+import RequireAuth from '../logic/Auth/RequireAuth';
 
 function MainContainer() {
 	//console.log(useLocation().pathname);

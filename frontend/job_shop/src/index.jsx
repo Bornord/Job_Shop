@@ -6,6 +6,8 @@ import './styles/index.scss';
 
 import WelcomePage from './pages/WelcomePage';
 import App from './pages/App';
+import Signup from './components/Signup.jsx';
+import Login from './components/Login';
 
 import reportWebVitals from './config/reportWebVitals';
 import { configureStore } from '@reduxjs/toolkit';
@@ -27,9 +29,10 @@ root.render(
 			<BrowserRouter>
 				<Routes>
 					<Route path="*" element={<WelcomePage />} />
-
 					<Route path="/:student/*" element={<App />} />
 					<Route path="/:recruiter/*" element={<App />} />
+					<Route path="/signup" element={<Signup />} />
+					<Route path="/login" element={<Login />} />
 				</Routes>
 			</BrowserRouter>
 		</Provider>

@@ -1,0 +1,15 @@
+.welcomePageWrapper {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-auto-rows: 200px 550px;
+	grid-gap: 1em;
+	padding: 20px;
+	align-items: center;
+}
+
+.box {
+	grid-row: 2 / 3;
+	border: 1px solid;
+	padding: 20px;
+	border-radius: 20px;
+}
