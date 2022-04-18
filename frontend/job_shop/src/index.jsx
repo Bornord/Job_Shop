@@ -6,7 +6,7 @@ import './styles/index.scss';
 
 import WelcomePage from './pages/WelcomePage';
 import App from './pages/App';
-import Signup from './components/Signup.jsx';
+import Signup from './components/Signup';
 import Login from './components/Login';
 
 import reportWebVitals from './config/reportWebVitals';
@@ -29,10 +29,11 @@ root.render(
 			<BrowserRouter>
 				<Routes>
 					<Route path="*" element={<WelcomePage />} />
+					<Route path="/:student/signup" element={<Signup />} />
+					<Route path="/:recruiter/signup" element={<Signup />} />
+					<Route path="/login" element={<Login />} />
 					<Route path="/:student/*" element={<App />} />
 					<Route path="/:recruiter/*" element={<App />} />
-					<Route path="/signup" element={<Signup />} />
-					<Route path="/login" element={<Login />} />
 				</Routes>
 			</BrowserRouter>
 		</Provider>

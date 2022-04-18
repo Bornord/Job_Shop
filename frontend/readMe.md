@@ -8,6 +8,10 @@ Lancer le serveur frontend:
 
 > yarn start
 
+OU
+
+> npm run start
+
 ## Préparer
 
 Pour le frontend
@@ -36,3 +40,5 @@ Pour le frontend
     > yarn add classnames
 -   ajotuer le package redux :
     > yarn add redux react-redux @reduxjs/toolkit
+-   ajouter le package Sass :
+    > yarn add sass

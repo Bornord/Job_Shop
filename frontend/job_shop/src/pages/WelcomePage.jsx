@@ -22,7 +22,7 @@ function WelcomePage() {
 				<div
 					className="box"
 					onClick={() => {
-						navigate('/:student/');
+						navigate('/:student/signup');
 					}}
 				>
 					Je cherche un stage
@@ -30,7 +30,7 @@ function WelcomePage() {
 				<div
 					className="box"
 					onClick={() => {
-						navigate('/:recruiter/');
+						navigate('/:recruiter/signup');
 					}}
 				>
 					Je cherche un stagiaire
