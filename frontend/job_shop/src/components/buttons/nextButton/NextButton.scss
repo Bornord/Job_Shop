@@ -1,0 +1,41 @@
+@import url('../Button.scss');
+
+.button--greip {
+	overflow: hidden;
+	color: #fff;
+	font-family: input-mono-narrow, monospace;
+	font-weight: 500;
+	padding: 1rem 2rem;
+}
+
+.button--greip span {
+	display: block;
+	position: relative;
+}
+
+.button--greip > span {
+	overflow: hidden;
+	mix-blend-mode: difference;
+}
+
+.button--greip:hover > span > span {
+	animation: MoveUpInitial 0.2s forwards, MoveUpEnd 0.2s forwards 0.2s;
+}
+
+.button--greip::before {
+	content: '';
+	background: #000;
+	width: 100%;
+	height: 100%;
+	transform-origin: 50% 100%;
+	-webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+	clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+	transition: clip-path 0.2s, -webkit-clip-path 0.2s;
+	transition-timing-function: cubic-bezier(0.7, 0, 0.2, 1);
+}
+
+.button--greip:hover::before {
+	transition-duration: 0.3s;
+	-webkit-clip-path: polygon(0 0, 100% 0, 0 0, 0% 100%);
+	clip-path: polygon(0 0, 100% 0, 0 0, 0% 100%);
+}

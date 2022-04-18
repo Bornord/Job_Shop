@@ -1,0 +1,49 @@
+@import url('../Button.scss');
+
+.button--fenrir {
+	background: none;
+	padding: 0;
+	-webkit-clip-path: circle(50% at 50% 50%);
+	clip-path: circle(50% at 50% 50%);
+	width: 120px;
+	height: 120px;
+	font-family: aktiv-grotesk-extended, sans-serif;
+	font-weight: 700;
+	text-transform: uppercase;
+	font-size: 0.85rem;
+}
+
+.progress {
+	position: absolute;
+	width: 80px;
+	height: 80px;
+	top: calc(50% - 40px);
+	left: calc(50% - 40px);
+	transition: transform 0.4s cubic-bezier(0.7, 0, 0.3, 1);
+}
+
+.button--fenrir:hover .progress {
+	transform: scale3d(1.2, 1.2, 1);
+}
+
+.progress__circle,
+.progress__path {
+	fill: none;
+	stroke: #f0f0f0;
+	stroke-width: 1px;
+}
+
+.button--fenrir:focus-visible .progress__circle {
+	fill: rgba(252,196,63,0.4);
+}
+
+.progress__path {
+	stroke: #a6a6a6;
+	stroke-dasharray: 1;
+	stroke-dashoffset: 1;
+	transition: stroke-dashoffset 0.4s cubic-bezier(0.7, 0, 0.3, 1);
+}
+
+.button--fenrir:hover .progress__path {
+	stroke-dashoffset: 0;
+}
