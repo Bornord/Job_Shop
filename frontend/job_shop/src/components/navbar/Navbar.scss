@@ -15,7 +15,10 @@
     align-self: flex-start;
     text-align: start;
 }
-.title > h1 {
+.title > a {
+    text-decoration: none;
+}
+.title > a > h1 {
     background: -webkit-linear-gradient(var(--light-color), var(--white-color));
     background-clip: inherit;
     -webkit-background-clip: text;

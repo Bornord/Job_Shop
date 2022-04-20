@@ -2,37 +2,143 @@ import "./Navbar.scss";
 import { Link, useLocation, useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import {goto} from "../../logic/features/navigation";
 import LineText from "../lineText/LineText";
+
+
+const studentLinks = [
+  {
+    title : "Blog",
+    to : "/Blog",
+    visible : true,
+    active : false,
+    id : 5
+  },
+  {
+    title : "Trouver un stage",
+    to :"/undifiened/survey",
+    visible : false,
+    active : false,
+    id : 3
+  },
+]
+
+const recruiterLinks = [
+  {
+    title : "Blog",
+    to : "/Blog",
+    visible : true,
+    active : false,
+    id : 5
+  },
+  {
+    title : "Espace recruteur",
+    to : "/undifiened/recruiters",
+    visible : false,
+    active : false,
+    id : 4
+  },
+  {
+    title : "Offres",
+    to : "/undifiened/offers",
+    visible : false,
+    active : false,
+    id : 2
+  },
+]
+
+const adminLinks = [
+  {
+    title : "Dashboard",
+    to : "/dashboard",
+    active : true,
+    id : 1
+  },
+  {
+    title : "Suivie",
+    to : "/followUp",
+    active : false,
+    id : 2
+  }
+]
+
+const unregisteredUserLinks = [
+  {
+    title : "J'ai déja un compte",
+    to : "/login",
+    active : true,
+    id : 1
+  },
+  {
+    title : "About Us",
+    to : "/AboutUs",
+    active : false,
+    id : 2
+  },
+  {
+    title : "Blog",
+    to : "/Blog",
+    active : false,
+    id : 3
+  }
+]
+
+const initLinks = (status)=>{
+  switch (status) {
+    case 1999:
+      return unregisteredUserLinks
+    case 2000:
+      return studentLinks
+    case 2001:
+      return recruiterLinks
+    case 2002:
+      return adminLinks
+    default:
+      return unregisteredUserLinks
+  }
+}
 
 
 const Navbar = () => {
   const user = useSelector((state) => state.user.value)
 
-  const links = useSelector((state) => state.navigation.value)
-  const dispatch = useDispatch()
+  //console.log(user);
+
+  const [links,setLinks] = useState(initLinks(user.status))
+  //console.log(links);
+  useEffect(()=>{
+    setLinks(initLinks(user.status))
+  },[user])
 
   return (
     <nav className="navbar">
         <div className="title">
-          <h1>JobShop</h1>
+          <Link to="/" ><h1>JobShop</h1></Link>
         </div>
         <ul className="navigation-list">
-          {links.filter(
-            link=>link.visible
-          ).map((link) => {
+          {links.sort((link1,link2)=> link1.id<link2.id).map((link) => {
             let active = link.active ? "active" : ""
             return (
-              <li>
+              <li key={link.id} >
                 <Link 
                   key={link.id} 
                   className={`separator ${active}`} 
                   to={link.to}
                   onClick={
                     ()=>{
-                      dispatch(goto({id:link.id,arg:user.name}))
+                      setLinks((state)=>{
+                        return state.map((l)=>{
+                          let {title,to,active,id} = l
+                          return {
+                            title : title,
+                            to : to,
+                            active : link.id == id ? true : false,
+                            id:id
+                          }
+                        })
+                      })
                     }
-                }>
+                  }
+                >
                   <LineText>{link.title}</LineText>
                 </Link>
               </li>

@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import {login} from "../../logic/features/user";
 import { useDispatch, useSelector } from "react-redux";
-import {goto} from "../../logic/features/navigation";
 import SelectButton2 from '../../components/buttons/selectButton2/SelectButton2'
 import './Login.scss'
 
@@ -21,7 +20,6 @@ function Login() {
 			id: '0',
 			token: 'defaultToken',
 		}))
-		dispatch(goto({id:1,arg:"test"}))
 		navigate('/test/');
 	}
 	return (
@@ -36,12 +34,12 @@ function Login() {
 					<div className="input-container ic1">
 						<input id="email" className={"login-input"}type="email" value={email} onChange={e =>setEmail(e.target.value)} placeholder=" " />
 						<div className="cut cut-short"></div>
-						<label for="email"className="placeholder">Email :</label>
+						<label htmlFor="email"className="placeholder">Email :</label>
 					</div>
 					<div className="input-container ic2">
 						<input id = "password" className={"login-input"} type="password" value={password} onChange={e =>setPassword(e.target.value)} placeholder=" "/>
 						<div className="cut"></div>
-						<label for="password" className="placeholder">Password :</label>
+						<label htmlFor="password" className="placeholder">Password :</label>
 					</div>
 					<SelectButton2
 						className={"submit_button"}

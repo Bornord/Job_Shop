@@ -13,13 +13,11 @@ import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import userReducer from './logic/features/user';
 import themeReducer from './logic/features/theme';
-import navigationReducer from './logic/features/navigation';
 
 const store = configureStore({
 	reducer: {
 		user: userReducer,
 		theme: themeReducer,
-		navigation:navigationReducer,
 	},
 });
 const container = document.getElementById('root');
