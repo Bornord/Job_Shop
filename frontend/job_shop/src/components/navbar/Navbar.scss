@@ -5,7 +5,8 @@
     display: flex;
     justify-content: space-between;
     padding-left: var(--horizontal-padding);
-    padding-right: var(--horizontal-padding);
+    //padding-right: var(--horizontal-padding);
+    padding-right: 3vw;
     align-items: center;
 }
 .title{
@@ -68,3 +69,14 @@
     border-radius: var(--small-corner);
     color: var(--dark-color);
 }*/
+
+.user{
+    background: var(--white-color);
+    border-radius: var(--small-corner);
+
+}
+.user > a {
+    text-decoration: none;
+    white-space: nowrap;
+    display: flex;
+}

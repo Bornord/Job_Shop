@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import SelectButton from '../../components/buttons/selectButton/SelectButton'
+import Survey from '../../components/surveyComponents/survey/Survey';
 import './Welcome.scss';
 
 export default function Welcome() {
@@ -29,6 +30,10 @@ export default function Welcome() {
 			>
 					Je cherche un stagiaire
 			</SelectButton>
+
+
+			<Survey/>
+
 		</div>
 	);
 }

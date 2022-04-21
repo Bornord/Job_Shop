@@ -3,7 +3,7 @@ import { Link, useLocation, useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import LineText from "../lineText/LineText";
-
+import { FaUserCircle} from "react-icons/fa";
 
 const studentLinks = [
   {
@@ -145,6 +145,13 @@ const Navbar = () => {
           )
           })}
         </ul>
+        {
+          user.status != 1999 && 
+          <div className="user separator">
+            <Link to="/" ><p>{user.name != "" ? user.name : "User"}</p><FaUserCircle className="icon"/></Link>
+          </div>
+        }
+
     </nav>
   );
 };
