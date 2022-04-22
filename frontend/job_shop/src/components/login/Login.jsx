@@ -16,7 +16,7 @@ function Login() {
 	const handleSubmit = () => {
 		dispatch(login({
 			name: 'test',
-			status: 2002,
+			status: 2000,
 			id: '0',
 			token: 'defaultToken',
 		}))
@@ -54,10 +54,3 @@ function Login() {
 }
 
 export default Login;
-/*		<input
-				type="button"
-				value="J'ai déjà un comtpe"
-				onClick={() => {
-					navigate('/');
-				}}
-			/>*/

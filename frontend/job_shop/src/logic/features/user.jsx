@@ -16,13 +16,20 @@ export const userSlice = createSlice({
 			console.log(action.payload);
 			state.value = action.payload;
 		},
-
+		signupAsStudent: (state, action) => {
+			console.log(action.payload);
+			//state.value = action.payload;
+		},
+		signupAsRecruiter: (state, action) => {
+			console.log(action.payload);
+			//state.value = action.payload;
+		},
 		logout: (state) => {
 			state.value = initialValue;
 		},
 	},
 });
 
-export const { login, logout } = userSlice.actions;
+export const { login, logout, signupAsStudent, signupAsRecruiter } = userSlice.actions;
 
 export default userSlice.reducer;

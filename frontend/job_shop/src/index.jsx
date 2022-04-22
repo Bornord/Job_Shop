@@ -4,7 +4,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './styles/index.scss';
 import Welcome from './pages/welcome/Welcome';
 import App from './pages/App';
-import Signup from './components/signup/Signup';
+import SignupAsStudent from './pages/signup/signupAsStudent/SignupAsStudent';
+import SignupAsRecruiter from './pages/signup/signupAsRecruiter/SignupAsRecruiter';
 import Login from './components/login/Login';
 import Header from './components/header/Header';
 import Footer from './components/footer/Footer';
@@ -29,8 +30,8 @@ root.render(
 				<Header />
 				<Routes>
 					<Route path="*" element={<Welcome />} />
-					<Route path="/:student/signup" element={<Signup />} />
-					<Route path="/:recruiter/signup" element={<Signup />} />
+					<Route path="/SignUpAsRecruiter" element={<SignupAsRecruiter />} />
+					<Route path="/SignUpAsStudent" element={<SignupAsStudent />} />
 					<Route path="/login" element={<Login />} />
 					<Route path="/:student/*" element={<App />} />
 					<Route path="/:recruiter/*" element={<App />} />

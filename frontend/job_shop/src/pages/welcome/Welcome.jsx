@@ -17,7 +17,7 @@ export default function Welcome() {
 			<SelectButton
 				className={"welcome_button"}
 				onClick={() => {
-					navigate('/:student/signup');
+					navigate('/SignUpAsStudent');
 				}}
 			>
 					Je cherche un stage
@@ -25,14 +25,14 @@ export default function Welcome() {
 			<SelectButton
 				className={"welcome_button"}
 				onClick={() => {
-					navigate('/:recruiter/signup');
+					navigate('/SignUpAsRecruiter');
 				}}
 			>
 					Je cherche un stagiaire
 			</SelectButton>
 
 
-			<Survey/>
+			
 
 		</div>
 	);

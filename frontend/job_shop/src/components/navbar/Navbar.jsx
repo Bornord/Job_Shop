@@ -11,14 +11,14 @@ const studentLinks = [
     to : "/Blog",
     visible : true,
     active : false,
-    id : 5
+    id : 2
   },
   {
     title : "Trouver un stage",
     to :"/undifiened/survey",
     visible : false,
     active : false,
-    id : 3
+    id : 1
   },
 ]
 
@@ -115,7 +115,7 @@ const Navbar = () => {
           <Link to="/" ><h1>JobShop</h1></Link>
         </div>
         <ul className="navigation-list">
-          {links.sort((link1,link2)=> link1.id<link2.id).map((link) => {
+          {links.sort((link1,link2)=> link1.id-link2.id).map((link) => {
             let active = link.active ? "active" : ""
             return (
               <li key={link.id} >
@@ -147,8 +147,9 @@ const Navbar = () => {
         </ul>
         {
           user.status != 1999 && 
-          <div className="user separator">
-            <Link to="/" ><p>{user.name != "" ? user.name : "User"}</p><FaUserCircle className="icon"/></Link>
+          <div className="user">
+            <Link to="/" ><p>{user.name != "" ? user.name : "User"}</p></Link>
+            <FaUserCircle className="icon"/>
           </div>
         }
 
