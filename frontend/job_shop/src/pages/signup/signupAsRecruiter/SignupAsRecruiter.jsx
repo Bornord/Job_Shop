@@ -6,6 +6,11 @@ import Signup from '../../../components/signup/Signup';
 function SignupAsRecruiter() {
 	const inputs = [
 		{
+			id : "company-name",
+			type : "text",
+			label : "Entreprise :",
+		},
+		{
 			id : "firstname",
 			type : "text",
 			label : "Prénom :",
