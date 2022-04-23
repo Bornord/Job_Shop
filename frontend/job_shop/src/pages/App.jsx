@@ -1,10 +1,25 @@
 import React from 'react';
-import MainContainer from '../components/MainContainer';
+import { Routes, Route,Navigate } from 'react-router-dom';
 import '../styles/App.scss';
+import Home from './home/Home';
+import Survey from './survey/Survey';
+import Offers from './offers/Offers';
+import Results from './results/Results';
+import Error from './error/Error';
 
+import RequireAuth from '../logic/Auth/RequireAuth';
 function App() {
 	return (
-		<MainContainer />
+		<Routes>
+			<Route path="/" element={<RequireAuth />}>
+				<Route path="/Home" element={<Home />}></Route>
+				<Route path="/Survey" element={<Survey />}/>
+				<Route path="/Offers" element={<Offers />}></Route>
+				<Route path="/Results" element={<Results />}></Route>
+				<Route path="/" element={<Navigate to={`/Home`} replace />}></Route>
+				<Route path="/*" element={<Error />}></Route>
+			</Route>
+		</Routes>
 	);
 }
 

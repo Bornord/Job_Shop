@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Question from '../question/Question';
-import "./Survey.scss";
+import "./SurveySection.scss";
 
 
-const Survey = ()=>{
+const SurveySection = ()=>{
 
     const handleNext = ()=>{
         console.log("next");
@@ -14,4 +14,4 @@ const Survey = ()=>{
     </>
 }
 
-export default Survey;
+export default SurveySection;

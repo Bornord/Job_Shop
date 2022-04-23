@@ -30,6 +30,10 @@ export const userSlice = createSlice({
 	},
 });
 
+export const isAuthentifated = (user) => {
+	return [2000,2001,2002].includes(user.status)
+}
+
 export const { login, logout, signupAsStudent, signupAsRecruiter } = userSlice.actions;
 
 export default userSlice.reducer;

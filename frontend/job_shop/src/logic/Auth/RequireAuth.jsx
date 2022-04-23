@@ -1,15 +1,16 @@
 import { useLocation, Navigate, Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import {isAuthentifated} from '../features/user'
 
 function RequireAuth() {
 	const user = useSelector((state) => state.user.value);
 	const location = useLocation();
-	console.log(location);
-	return !(user.status in [2000,2001,2002]) ? (
+
+	return isAuthentifated(user) ? 
 		<Outlet />
-	) : (
-		<Navigate to={`/`} state={{ from: location }} replace />
-	);
+	: 
+		<Navigate to={`/Welcome`} state={{ from: location }} replace />
+	
 }
-//test
+
 export default RequireAuth;

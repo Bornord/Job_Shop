@@ -14,13 +14,15 @@ function Login() {
 	const user = useSelector((state) => state.user.value)
 
 	const handleSubmit = () => {
-		dispatch(login({
-			name: 'test',
-			status: 2000,
-			id: '0',
-			token: 'defaultToken',
-		}))
-		navigate('/test/');
+		//if(email != "" && password != "") {
+			dispatch(login({
+				name: 'test',
+				status: 2000,
+				id: '0',
+				token: 'defaultToken',
+			}))
+			navigate('/Home');
+		//}
 	}
 	return (
 		<div className='login'>

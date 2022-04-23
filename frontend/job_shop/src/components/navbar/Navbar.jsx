@@ -15,7 +15,7 @@ const studentLinks = [
   },
   {
     title : "Trouver un stage",
-    to :"/undifiened/survey",
+    to :"/Survey",
     visible : false,
     active : false,
     id : 1
@@ -32,14 +32,14 @@ const recruiterLinks = [
   },
   {
     title : "Espace recruteur",
-    to : "/undifiened/recruiters",
+    to : "/Recruiters",
     visible : false,
     active : false,
     id : 4
   },
   {
     title : "Offres",
-    to : "/undifiened/offers",
+    to : "/Offers",
     visible : false,
     active : false,
     id : 2
@@ -49,13 +49,13 @@ const recruiterLinks = [
 const adminLinks = [
   {
     title : "Dashboard",
-    to : "/dashboard",
+    to : "/Dashboard",
     active : true,
     id : 1
   },
   {
     title : "Suivie",
-    to : "/followUp",
+    to : "/FollowUp",
     active : false,
     id : 2
   }

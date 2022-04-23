@@ -2,7 +2,6 @@ import React from 'react';
 import * as ReactDOMClient from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './styles/index.scss';
-import Welcome from './pages/welcome/Welcome';
 import App from './pages/App';
 import SignupAsStudent from './pages/signup/signupAsStudent/SignupAsStudent';
 import SignupAsRecruiter from './pages/signup/signupAsRecruiter/SignupAsRecruiter';
@@ -14,6 +13,8 @@ import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import userReducer from './logic/features/user';
 import themeReducer from './logic/features/theme';
+import Welcome from "./pages/welcome/Welcome"
+
 
 const store = configureStore({
 	reducer: {
@@ -29,12 +30,11 @@ root.render(
 			<BrowserRouter>
 				<Header />
 				<Routes>
-					<Route path="*" element={<Welcome />} />
 					<Route path="/SignUpAsRecruiter" element={<SignupAsRecruiter />} />
 					<Route path="/SignUpAsStudent" element={<SignupAsStudent />} />
-					<Route path="/login" element={<Login />} />
-					<Route path="/:student/*" element={<App />} />
-					<Route path="/:recruiter/*" element={<App />} />
+					<Route path="/Login" element={<Login />} />
+					<Route path="/Welcome" element={<Welcome />} />
+					<Route path="/*" element={<App />} />
 				</Routes>
 			</BrowserRouter>
 			<Footer />
