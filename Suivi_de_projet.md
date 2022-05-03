@@ -47,3 +47,14 @@ Nous travaillons sur le projet JobShop.
 Cette semaine, nous avons définit plus précisément le cahier des charges de l'application, les services proposés pour les étudiants à la recherche d'un stage / job, et les services proposés pour les recruteurs. Ainsi, un étudiant est complètement passif après qu'il ait passé les étapes de création de compte, réponse aux questions et ajout de CV et le recruteur reçoit le moyen de contacter un étudiant qui "match" le plus avec une des offres qu'il a publié.
 En pièce jointe le diagramme UML des classes que nous avons commencé à implémenter en Java.
 Nous avons également répartit les tâches entre nous. Ainsi 2 d'entre nous travaillent plutôt sur le FrontEnd et 2 autres sur le BackEnd. Le 5ème membre fait le lien entre les 2 sous groupes afin d'assurer la cohérence des travaux fournis.
+
+## Échéance 3 : Mise en place des classes pour préparer le remplissage du code.
+
+Nous avons commencé le code afin de modéliser les comportements et les classes JS & Java
+
+-   CSS global, mise en place des classes.
+-   Mise en place de la barre de navigation, de l'espace de login et de signup.
+-   On a fait un début de index.html (qu'on changera comme il faut plus tard) pour rentrer des données (genre données propres à un étudiant ) puis les afficher en format JSON pour la communication avec le frontend en vue des class proxy de modélisation des échanges front / back.
+-   Mise en place des Reducers et du data store
+
+Pb : déployer de façon continue le backend JBOSS afin de faire des appels H24.

@@ -42,3 +42,5 @@ Pour le frontend
     > yarn add redux react-redux @reduxjs/toolkit
 -   ajouter le package Sass :
     > yarn add sass
+-   ajouter le package fa-icone
+    > yarn add react-icons
