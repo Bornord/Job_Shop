@@ -58,3 +58,10 @@ Nous avons commencé le code afin de modéliser les comportements et les classes
 -   Mise en place des Reducers et du data store
 
 Pb : déployer de façon continue le backend JBOSS afin de faire des appels H24.
+
+
+## Échéance 4 : Code du backend et data management 
+- Mise en place de l'authentification sécurisée avec identifiant et mot de passe crypté en utilisant la bibliothèque bcrypt (utilisation de l'algortihme sha256) et gestion des tokens lors de l'authentification.
+- code de conversion d'objet java en chaîne de caractères JSON pour la communication avec le frontend. 
+- travail sur le data management au sein du frontend.
+- début des tests sur serveur(communication entre front et back) avec l'ajout de l'entity manager et des dépendances.
