@@ -4,14 +4,18 @@ package jobShop_WebProject.utils;
 import java.util.Date;
 import java.util.Map;
 
+import com.auth0.jwt.*;
+import com.auth0.jwt.algorithms.Algorithm;
+
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import jobShop_WebProject.*;
 
 public class Security {
 	
-	public static User login(String json,DataBase database) {
+	public static User login(String json, DataBase database) {
 		User u = null;
+
 		JsonConverter jc = new JsonConverter();
 		Map<String, Object> map = jc.toObject(json);
 		Map<String, Object> pwd = (Map<String, Object>)map.get("password") ;
@@ -25,6 +29,11 @@ public class Security {
 		return null;
 	}
 	
+	public static String getLoginToken(String json) {
+		JsonConverter jc = new JsonConverter();
+		Algorithm algo = Algorithm.HMAC256(BCrypt.gensalt());
+		return JWT.create().withPayload(jc.toObject(json)).sign(algo);
+	}
 	public static Request logout(String json) {
 		return new Request(json, 200);
 	}
@@ -58,6 +67,7 @@ public class Security {
 		return null;
 	}
 
+	
 	public static Request signOut(String json, DataBase database) {
 		User u = null;
 		JsonConverter jc = new JsonConverter();

@@ -1,19 +1,25 @@
 package jobShop_WebProject;
 
 import java.util.Date;
+
+import javax.persistence.*;
 /**
  * classe Student représentant l'utilisateur Student
  * @author arenard2
  *
  */
-
+@Entity
 public class Student extends User{
 	/*CV;
 	 * 
 	 * ecole;
 	 */
+	@OneToOne
 	private Profile profile;
 
+	public Student() {
+		super();
+	}
 	public Student(String name, String surname, String login, String password, int id, 
 			Date creationDate) {
 		super(name, surname, login, password, id, LabelRole.STUDENT, creationDate);

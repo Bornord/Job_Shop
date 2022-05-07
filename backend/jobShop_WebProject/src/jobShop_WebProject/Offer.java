@@ -25,8 +25,10 @@ public class Offer {
 	
 	private Date dateStart;
 
+	@OneToOne
 	private Profile idealProfile;
 	
+	@OneToMany(mappedBy="offer")
 	private List<Status> status;
 	
 	@ManyToOne

@@ -1,14 +1,27 @@
 package jobShop_WebProject;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
 /**
  * classe Status qui fait le lien entre un étudiant potentiellement candidat à une offre et une offre
  * @author arenard2
  *
  */
-public class Status {
 
+@Entity
+public class Status {
+		@Id
+		@GeneratedValue(strategy=GenerationType.IDENTITY)
+		private int id;
+		
 		private int idStudent;
 		
-		private int idOffer;
+		@ManyToOne
+		private Offer offer;
 		
 		private LabelStep step;
 
@@ -20,12 +33,12 @@ public class Status {
 			this.idStudent = idStudent;
 		}
 
-		public int getIdOffer() {
-			return idOffer;
+		public Offer getOffer() {
+			return offer;
 		}
 
-		public void setIdOffer(int idOffer) {
-			this.idOffer = idOffer;
+		public void setOffer(Offer offer) {
+			this.offer = offer;
 		}
 
 		public LabelStep getStep() {

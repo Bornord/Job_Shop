@@ -1,3 +1,4 @@
+<%@page import="jobShop_WebProject.utils.JsonConverter"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ page import="java.util.*"%>
@@ -15,8 +16,7 @@
 	Collection<Student> l = (Collection<Student>) request.getAttribute("l");
 	for(Student s: l) {
 %>
-<%= ("\"s" + s.getId() + "\" = { \"name\" : \"" + s.getName() +"\", \"surname\" : \""+ s.getSurname()
-+"\",\"login\" : \""+s.getLogin()+"\",\"password\" : \""+s.getPassword()+"\"}\n\n")%> <br/>
+<%= JsonConverter.toJson(s)%> <br/>
 
 
 

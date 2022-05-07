@@ -7,11 +7,8 @@ import java.util.Date;
 import java.util.List;
 
 
-import javax.ejb.Singleton;
-
-import javax.persistence.NamedQuery;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.ejb.*;
+import javax.persistence.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,17 +21,23 @@ import java.util.Date;
  * @author arenard2
  *
  */
-@NamedQuery(
-	name = "findUserByLogin",
+@NamedQueries({
+	@NamedQuery(name = "DataBase.findUserByLogin",
 			query = "SELECT u FROM User u WHERE u.login LIKE :login"
-)
+	),
+	@NamedQuery(
+		name = "DataBase.findUserByRole",
+				query = "SELECT u FROM User u WHERE u.role LIKE :role"
+	)
+})
+
+
 
 @Singleton
-public class DataBase implements IMainLocal, IMainRemote{
+public class DataBase{
 	@PersistenceContext
 	private EntityManager em;
 	
-	private List<Student> students;	//provisoire
 	public DataBase() {
 		//students = new ArrayList<>();
 	}
@@ -52,13 +55,19 @@ public class DataBase implements IMainLocal, IMainRemote{
 		return em.find(User.class, id);
 	}
 	
+	
+	
 	public Collection<Student> getStudents() {
-		return students;
+		/*List list = em.createNamedQuery("DataBase.findUserByRole").setParameter("role",LabelRole.STUDENT).
+				getResultList();
+		return list;*/
+		return em.createQuery("SELECT u FROM User u WHERE u.role LIKE :role").setParameter("role",LabelRole.STUDENT)
+				.getResultList();
 	}
 	
 	public User findWithLogin(String l) {
 		System.out.println(em.isOpen());
-		List list = em.createNamedQuery("findUserByLogin").setParameter("login",l).setMaxResults(1).
+		List list = em.createNamedQuery("DataBase.findUserByLogin").setParameter("login",l).setMaxResults(1).
 				getResultList();
 		if(list.size() != 0) {
 			return (User) list.get(0);

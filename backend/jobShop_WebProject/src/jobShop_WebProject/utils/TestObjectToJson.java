@@ -3,6 +3,7 @@ package jobShop_WebProject.utils;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 
+import jdk.nashorn.api.scripting.JSObject;
 import jobShop_WebProject.*;
 import jobShop_WebProject.Profile;
 
@@ -19,10 +20,9 @@ public class TestObjectToJson {
 		Profile p = new ProfileComputerScientist(new Date(), new Date(), null, 3, 2);
 		s.setProfile(p);
 		
-		JsonConverter a = new JsonConverter(main);
-		//System.out.println(a.toJson());
-		System.out.println(a.toObject("\"test\""));
-		System.out.println(a.toObject("{\"akina\":4,\"willem\":27,\"list\":[1,2]}"));
+		System.out.println("Object Student to Json : " + JsonConverter.toJson(s2));
+		System.out.println("Json to Object : " + JsonConverter.toObject("\"test\""));
+		System.out.println("Json to Object Student : " + JsonConverter.toObject("{\"akina\":4,\"willem\":27,\"list\":[1,2]}"));
 		
 	}
 }

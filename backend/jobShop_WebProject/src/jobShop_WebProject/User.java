@@ -25,6 +25,7 @@ public abstract class User {
 	private LabelRole role;
 	private Date creationDate;
 	
+	public User() {}
 	public User(String name, String surname, String login, String password, int id, LabelRole role, Date creationDate) {
 		super();
 		this.name = name;

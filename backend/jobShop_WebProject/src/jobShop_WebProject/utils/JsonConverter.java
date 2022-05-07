@@ -12,30 +12,30 @@ import java.util.Map;
 
 
 public class JsonConverter {
-	private Object object;
+	//private Object object;
 	
-	public JsonConverter(Object o) {
+	/*public JsonConverter(Object o) {
 		this.object = o;
-	}
+	}*/
 
 	public JsonConverter() {
 
 	}
 	
-	public String withoutAccolade() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public static String withoutAccolade(Object object) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		String res = "";
-		Class classO = this.object.getClass();
+		Class classO = object.getClass();
 		Field[] fields = classO.getDeclaredFields();
 		Class superclass = classO.getSuperclass();
 		if(superclass != Object.class) {
 			Field[] fieldsSuper = superclass.getDeclaredFields();
-			res += getReturn(fieldsSuper, this.object, superclass);
+			res += getReturn(fieldsSuper, object, superclass);
 			
 			if(fields.length != 0 && !res.equals(""))
 				res+=", ";
 		}
 			
-		res += getReturn(fields, this.object, classO);
+		res += getReturn(fields, object, classO);
 		return res;
 	}
 	
@@ -58,7 +58,7 @@ public class JsonConverter {
 				} else if (value instanceof List) { 
 					ret = getList(f, value);
 				} else {
-					ret = new JsonConverter(value).toJson();
+					ret = JsonConverter.toJson(value);
 				}
 				res += "\"" + f.getName() + "\":" + ret ;
 				if (j != fields.length - 1)
@@ -88,7 +88,7 @@ public class JsonConverter {
 				}
 			} else {
 				for (Object obj : list) {
-					ret += new JsonConverter(obj).toJson() + ",";
+					ret += JsonConverter.toJson(obj) + ",";
 				}
 			}
 		}
@@ -98,10 +98,10 @@ public class JsonConverter {
 	}
 	
 	
-	public String toJson() {
+	public static String toJson(Object o) {
 		String res = "{";
 		try {
-			res+= withoutAccolade();
+			res+= withoutAccolade(o);
 		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException e) {
 			e.printStackTrace();
@@ -113,7 +113,7 @@ public class JsonConverter {
 
 
 	
-	public Map<String, Object> toObject(String json) {
+	public static Map<String, Object> toObject(String json) {
 		json = json.trim();
 		if(json.startsWith("\"")) {
 			Map<String, Object> map = new HashMap<>();
@@ -161,18 +161,18 @@ public class JsonConverter {
 		return map;
 	}
 
-	private List<Object> toList(String value) {
+	private static List<Object> toList(String value) {
 		List<Object> list = new ArrayList<Object>();
 		String tmp = value.substring(1, value.length() - 1);
 		List<String> values = splitInList(tmp);
-		System.out.println(values);
+		//System.out.println(values);
 		for (String string : values) {
 			list.add(toObject(string));
 		}
 		return list;
 	}
 	
-	private List<String> splitInObject(String object) {
+	private static List<String> splitInObject(String object) {
 		List<String> list = new ArrayList<String>();
 		String word = "";
 		boolean inArray = false;
@@ -190,10 +190,10 @@ public class JsonConverter {
 		if(list.get(list.size()-1).equals(" ")) {
 			list.remove(list.size()-1);
 		}
-		System.out.println(list);
+		//System.out.println(list);
 		return list;
 	}
-	private List<String> splitInList(String object) {
+	private static List<String> splitInList(String object) {
 		List<String> list = new ArrayList<String>();
 		String word = "";
 		boolean inArray = false;

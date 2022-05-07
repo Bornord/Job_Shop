@@ -2,18 +2,27 @@ package jobShop_WebProject;
 
 import java.util.Date;
 
+import javax.persistence.*;
+import javax.persistence.GenerationType;
+
 /**
  * classe Profile composée des informations d'un étudiant utilisateur 
  * ou des informations correspondant à une offre. 
  * @author arenard2
  *
  */
+
+@Entity
 public abstract class Profile {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	protected int id;
 	protected Date startDate ;
 	protected Date endDate;
-	protected Domain domain;
+	protected String domain;
 	protected int term;
-	protected int id;
+
 	
 	public Date getStartDate() {
 		return startDate;
@@ -27,10 +36,10 @@ public abstract class Profile {
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
-	public Domain getDomain() {
+	public String getDomain() {
 		return domain;
 	}
-	public void setDomain(Domain domain) {
+	public void setDomain(String domain) {
 		this.domain = domain;
 	}
 	public int getTerm() {

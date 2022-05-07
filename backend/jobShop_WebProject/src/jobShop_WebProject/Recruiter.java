@@ -10,6 +10,7 @@ import javax.persistence.*;
  * @author arenard2
  *
  */
+@Entity
 public class Recruiter extends User{
 	@OneToMany(mappedBy="recruiter", fetch = FetchType.EAGER)
 	private List<Offer> offers;

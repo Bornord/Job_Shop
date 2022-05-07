@@ -23,7 +23,7 @@ public class Server extends HttpServlet{
 	
 	public Server() {
 		super();
-		main = new DataBase();
+		//main = new DataBase();
 	}
 	
 	@Override
@@ -43,12 +43,6 @@ public class Server extends HttpServlet{
 			Student student = new Student(nom, prenom, login, pwd, 0, new Date());
 			main.addUser(student);
 			
-			
-			//test ***
-			String json = "student = { name : \""+nom+"\",surname : \""+prenom+
-					"\",login : \""+login+"\",password : \""+pwd+"\"};";
-			//response.getWriter().println(json);
-			//***
 			
 			//response.sendRedirect("index.html");
 			request.getRequestDispatcher("index.html").forward(request, response);
