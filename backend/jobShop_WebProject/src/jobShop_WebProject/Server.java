@@ -47,6 +47,15 @@ public class Server extends HttpServlet{
 			//response.sendRedirect("index.html");
 			request.getRequestDispatcher("index.html").forward(request, response);
 			break;
+		case "addRecruiter" :
+			String nomr = request.getParameter("nom");
+			String prenomr = request.getParameter("prenom");
+			String loginr = request.getParameter("login");
+			String pwdr = request.getParameter("pwd");
+			//changer id
+			Recruiter recruiter = new Recruiter(nomr, prenomr, loginr, pwdr, 0, new Date());
+			main.addUser(recruiter);
+			
 		case "view" :
 			Collection<Student> l = main.getStudents();
 			
