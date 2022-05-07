@@ -1,6 +1,7 @@
 package jobShop_WebProject.utils;
 
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
@@ -15,33 +16,53 @@ public class Security {
 	
 	public static User login(String json, DataBase database) {
 		User u = null;
-
-		JsonConverter jc = new JsonConverter();
-		Map<String, Object> map = jc.toObject(json);
+		//System.out.println("*****debug******* " + json);
+		Map<String, Object> map = JsonConverter.toObject(json);
 		Map<String, Object> pwd = (Map<String, Object>)map.get("password") ;
 		Map<String, Object> mail = (Map<String, Object>)map.get("login") ;
 		if(pwd != null && mail != null) {
 			u = database.findWithLogin((String)mail.get("String"));
 			if(BCrypt.checkpw((String) pwd.get("String"), u.getPassword())) {
+				u.setAccessToken(createAccessToken(u));
+				u.setRefreshToken(createRefreshToken(u));
 				return u;
 			}
 		}
 		return null;
 	}
 	
-	public static String getLoginToken(String json) {
-		JsonConverter jc = new JsonConverter();
-		Algorithm algo = Algorithm.HMAC256(BCrypt.gensalt());
-		return JWT.create().withPayload(jc.toObject(json)).sign(algo);
+	public static String createAccessToken(User user) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());
+		c.add(Calendar.HOUR_OF_DAY, 1);
+		Date exp = c.getTime();
+		return createToken(user, exp);
 	}
+	
+	public static String createRefreshToken(User user) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());
+		c.add(Calendar.DATE, 1);
+		Date exp = c.getTime();
+		return createToken(user, exp);
+	}
+	
+	private static String createToken(User user, Date exp) {
+		Algorithm algo = Algorithm.HMAC256(BCrypt.gensalt());
+		String token = JWT.create().withClaim("id", user.getId())
+				.withClaim("role", user.getRole().toString())
+				.withExpiresAt(exp)
+				.sign(algo);
+		return token;
+	}
+	
 	public static Request logout(String json) {
 		return new Request(json, 200);
 	}
 	
 	public static User signIn(String json, DataBase database) {
 		User user = null;
-		JsonConverter jc = new JsonConverter();
-		Map<String, Object> map = jc.toObject(json);
+		Map<String, Object> map = JsonConverter.toObject(json);
 		String mail = (String)((Map<String, Object>)map.get("login")).get("String") ;
 		if(database.findWithLogin(mail) == null) {
 			String name = (String)((Map<String, Object>)map.get("name")).get("String") ;
@@ -61,6 +82,9 @@ public class Security {
 				return null;
 				//user = new User(name,surname, mail, pwd, 0, LabelRole.UNLOGGED, date);
 			}
+
+			user.setAccessToken(createAccessToken(user));
+			user.setRefreshToken(createRefreshToken(user));
 			database.addUser(user);
 			return user;	
 		}	

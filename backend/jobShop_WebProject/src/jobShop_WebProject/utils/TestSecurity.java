@@ -30,18 +30,13 @@ public class TestSecurity {
 	}
 	
 	public static void testToken(String json) {
-		//creer un token :
-		/*Algorithm algo = Algorithm.HMAC256(BCrypt.gensalt());
-		String token = JWT.create().withClaim("name", s.getName())
-				.withClaim("surname", s.getSurname())
-				.withClaim("login", s.getLogin())
-				.sign(algo);
+		
+		String tokenAccess = Security.createAccessToken(s);
+		String tokenRefresh = Security.createRefreshToken(s);
+		System.out.println("Token d'accès : " + tokenAccess);
+		System.out.println("date d'expiration token d'accès : " + JWT.decode(tokenAccess).getExpiresAt());
 
-		DecodedJWT dec = JWT.decode(token);*/
-		//exemple:
-		/*DecodedJWT s = JWT.decode("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
-		System.out.println(s.getClaim("name"));*/
-		System.out.println("Token : " + Security.getLoginToken(json));
+		System.out.println("date d'expiration token de refresh : " + JWT.decode(tokenRefresh).getExpiresAt());
 	}
 	
 	public static void main(String args[]) {

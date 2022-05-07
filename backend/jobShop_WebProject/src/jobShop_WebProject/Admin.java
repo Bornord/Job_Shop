@@ -12,7 +12,9 @@ import javax.persistence.Entity;
  */
 @Entity
 public class Admin extends User {
-
+	public Admin() {
+		super();
+	}
 	public Admin(String name, String surname, String login, String password, int id, Date creationDate) {
 		super(name, surname, login, password, id, LabelRole.ADMIN, creationDate);
 	}

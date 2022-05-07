@@ -15,6 +15,9 @@ public class Recruiter extends User{
 	@OneToMany(mappedBy="recruiter", fetch = FetchType.EAGER)
 	private List<Offer> offers;
 	
+	public Recruiter() {
+		super();
+	}
 	public Recruiter(String name, String surname, String login, String password, int id,
 			Date creationDate) {
 		super(name, surname, login, password, id, LabelRole.RECRUITER, creationDate);
