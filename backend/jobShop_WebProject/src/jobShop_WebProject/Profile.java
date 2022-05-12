@@ -3,7 +3,6 @@ package jobShop_WebProject;
 import java.util.Date;
 
 import javax.persistence.*;
-import javax.persistence.GenerationType;
 
 /**
  * classe Profile composée des informations d'un étudiant utilisateur 
@@ -22,7 +21,6 @@ public abstract class Profile {
 	protected Date endDate;
 	protected String domain;
 	protected int term;
-
 	
 	public Date getStartDate() {
 		return startDate;
@@ -54,6 +52,7 @@ public abstract class Profile {
 	public void setId(int id) {
 		this.id = id;
 	}
+	
 	
 	
 }

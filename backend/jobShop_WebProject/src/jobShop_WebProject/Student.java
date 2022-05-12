@@ -14,7 +14,7 @@ public class Student extends User{
 	 * 
 	 * ecole;
 	 */
-	@OneToOne
+	@OneToOne(fetch=FetchType.EAGER)
 	private Profile profile;
 
 	public Student() {

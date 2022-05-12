@@ -25,13 +25,13 @@ public class Offer {
 	
 	private Date dateStart;
 
-	@OneToOne
+	@OneToOne(fetch=FetchType.EAGER)
 	private Profile idealProfile;
 	
-	@OneToMany(mappedBy="offer")
+	@OneToMany(mappedBy="offer", fetch=FetchType.EAGER)
 	private List<Status> status;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
 	private Recruiter recruiter;
 	
 	public Offer(int id, String title, String subTitle, String description, int salary, String contract,

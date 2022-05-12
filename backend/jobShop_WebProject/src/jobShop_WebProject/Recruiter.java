@@ -15,13 +15,16 @@ public class Recruiter extends User{
 	@OneToMany(mappedBy="recruiter", fetch = FetchType.EAGER)
 	private List<Offer> offers;
 	
+	private String entreprise;
+	
 	public Recruiter() {
 		super();
 	}
 	public Recruiter(String name, String surname, String login, String password, int id,
-			Date creationDate) {
+			Date creationDate, String e) {
 		super(name, surname, login, password, id, LabelRole.RECRUITER, creationDate);
 		offers = new ArrayList<>();
+		entreprise = e;
 	}
 	
 	public Offer getOffer(int id) {
@@ -39,6 +42,14 @@ public class Recruiter extends User{
 	
 	public List<Offer> getOffers(){
 		return this.offers;
+	}
+	
+	public String getEntreprise() {
+		return entreprise;
+	}
+	
+	public void setEntreprise(String entreprise) {
+		this.entreprise = entreprise;
 	}
 	
 	public void deleteOffer(int id) {

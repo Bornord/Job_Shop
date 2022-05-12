@@ -42,7 +42,7 @@ public class Security {
 	public static String createRefreshToken(User user) {
 		Calendar c = Calendar.getInstance();
 		c.setTime(new Date());
-		c.add(Calendar.DATE, 1);
+		c.add(Calendar.DATE, 7);
 		Date exp = c.getTime();
 		return createToken(user, exp);
 	}
@@ -75,7 +75,7 @@ public class Security {
 			if(role.get("Integer").equals(2002)) {
 				user = new Admin(name,surname, mail, hashed_pwd, 0, date);
 			} else if(role.get("Integer").equals(2001)) {
-				user = new Recruiter(name,surname, mail, hashed_pwd, 0, date);
+				user = new Recruiter(name,surname, mail, hashed_pwd, 0, date, "capgemini");
 			} else if(role.get("Integer").equals(2000)) {
 				user = new Student(name,surname, mail, hashed_pwd, 0, date);
 			} else /*1999*/{

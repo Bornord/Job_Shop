@@ -1,10 +1,6 @@
 package jobShop_WebProject;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 /**
  * classe Status qui fait le lien entre un étudiant potentiellement candidat à une offre et une offre
@@ -20,7 +16,7 @@ public class Status {
 		
 		private int idStudent;
 		
-		@ManyToOne
+		@ManyToOne (fetch=FetchType.EAGER)
 		private Offer offer;
 		
 		private LabelStep step;

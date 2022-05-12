@@ -1,8 +1,10 @@
 package jobShop_WebProject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import jobShop_WebProject.Student;
+import jobShop_WebProject.utils.JsonConverter;
 import jobShop_WebProject.utils.Security;
 
 
@@ -48,7 +51,8 @@ public class Server extends HttpServlet{
 			String prenomr = request.getParameter("prenom");
 			String loginr = request.getParameter("login");
 			String pwdr = request.getParameter("pwd");
-			Recruiter recruiter = new Recruiter(nomr, prenomr, loginr, pwdr, 0, new Date());
+			String entreprise = request.getParameter("entreprise");
+			Recruiter recruiter = new Recruiter(nomr, prenomr, loginr, pwdr, 0, new Date(), entreprise);
 			main.addUser(recruiter);
 			request.getRequestDispatcher("index.html").forward(request, response);
 			break;
@@ -85,7 +89,22 @@ public class Server extends HttpServlet{
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		String op = request.getParameter("op");
+		switch(op) {
+		case "addQuestionToEnd" :
+			StringBuffer jb = new StringBuffer();
+			String line = null;
+			try {
+				BufferedReader reader = request.getReader();
+			    while ((line = reader.readLine()) != null)
+			      jb.append(line);
+			  } catch (Exception e) { /*report an error*/ }
+	
+			  Map<String, Object> questionO =  JsonConverter.toObject(jb.toString()); 	
+			  
+			  main.addQuestion(questionO);
+			  break;
+		}
 		doGet(request, response);
 	}
 }
