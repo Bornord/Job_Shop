@@ -1,16 +1,102 @@
 import React, { useState, useEffect } from 'react';
 import Question from '../question/Question';
 import "./SurveySection.scss";
+import api from '../../../logic/api/api';
 
+const testSurvey = {
+    title:"question 1",
+    multiple : true,
+    responses:[{
+        placeholder :"R1",
+        user_response:"",
+        isSelected:false,
+        nextQuestion:{
+            title:"question2 après R1",
+            multiple : false,
+            responses:[{
+                placeholder:"",
+                user_response:"",
+                isSelected:false
+            }]
+        }
+    },
+    {
+        placeholder :"R2",
+        user_response:"",
+        isSelected:false,
+        nextQuestion:{
+            title:"question2 après R2",
+            multiple : false,
+            responses:[{
+                placeholder:"",
+                user_response:"",
+                isSelected:false
+            }]
+        }
+    },
+    {
+        placeholder :"R3",
+        user_response:"",
+        isSelected:false,
+        nextQuestion:{
+            title:"question2 après R3",
+            multiple : true,
+            responses:[{
+                placeholder:"R4",
+                user_response:"",
+                isSelected:false
+            },{
+                placeholder:"R5",
+                user_response:"",
+                isSelected:false
+            },
+            ]
+        }
+    }]
+}
 
-const SurveySection = ()=>{
+const SurveySection = ({onSubmit})=>{
 
-    const handleNext = ()=>{
-        console.log("next");
+    const [survey,setSurvey] = useState(testSurvey);
+    const [currentQuestion,setCurrentQuestion] = useState(survey)
+    const [previousQuestion,setPreviousQuestion] = useState([])
+
+    useEffect(()=>{
+        const fecthQuestion = async ()=>{
+            try{
+                const res = await api.get("/getSurvey")
+                setSurvey(res.data)
+            }catch(e){
+                
+            }
+        }
+        //fecthQuestion()
+        //setCurrentQuestion(survey)
+    },[])
+
+    const handleNext = (response)=>{
+        setPreviousQuestion((prev)=> {
+            prev.push(currentQuestion)
+            return prev
+        })
+        setCurrentQuestion(response.nextQuestion)
+    }
+    const handlePrevious = ()=>{
+        if(previousQuestion.length > 0) {
+            setPreviousQuestion((prev)=>{
+                prev.pop()
+                return prev
+            }
+            )
+            setCurrentQuestion(previousQuestion[previousQuestion.length-1])
+        }
+    }
+    const handleSubmit = ()=>{
+        onSubmit()
     }
 
     return <>
-        <Question question={"bla bla bla bla ?"} answer={""} callback={handleNext}/>
+        <Question question={currentQuestion.title} multiple={currentQuestion.multiple} answers={currentQuestion.responses} previous={handlePrevious} next={handleNext} submit={handleSubmit}/>
     </>
 }
 

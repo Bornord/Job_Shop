@@ -17,7 +17,7 @@ function Login() {
 		dispatch(
 			login({
 				name: 'test',
-				status: 2000,
+				status: 2002,
 				id: '0',
 				token: 'defaultToken',
 			})

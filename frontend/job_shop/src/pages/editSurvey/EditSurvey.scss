@@ -1,0 +1,124 @@
+.add-to-end{
+
+}
+
+.add-to-end > form {
+    background-color: var(--main-color);
+    border-radius: var(--small-corner);
+    box-sizing: border-box;
+    padding: 20px;
+    text-align: center;
+}
+
+.input-container {
+    height: 50px;
+    position: relative;
+    width: 100%;
+    }
+.ic1 {
+    margin-top: 40px;
+}
+.question-input {
+    background-color: var(--dark-color);
+    border-radius: 12px;
+    border: 0;
+    box-sizing: border-box;
+    color: var(--light-color);
+    font-size: 18px;
+    height: 100%;
+    outline: 0;
+    padding: 4px 20px 0;
+    width: 100%;
+}
+.cut-question {
+    background-color: var(--main-color);
+    border-radius: 10px;
+    height: 20px;
+    left: 20px;
+    position: absolute;
+    top: -20px;
+    transform: translateY(0);
+    transition: transform 200ms;
+    width: 150px;
+}
+
+.question-input:focus ~ .cut-question,
+.question-input:not(:placeholder-shown) ~ .cut-question {
+    transform: translateY(8px);
+}
+
+.placeholder {
+    color: var(--main-color);
+    font-family: sans-serif;
+    left: 20px;
+    line-height: 14px;
+    pointer-events: none;
+    position: absolute;
+    transform-origin: 0 50%;
+    transition: transform 200ms, color 200ms;
+    top: 20px;
+}
+
+.question-input:focus ~ .placeholder,
+.question-input:not(:placeholder-shown) ~ .placeholder {
+    transform: translateY(-30px) translateX(10px) scale(0.75);
+}
+
+.question-input:not(:placeholder-shown) ~ .placeholder {
+    color: var(--main-color);
+}
+.question-input:focus ~ .placeholder {
+    color: var(--white-color);
+}
+
+.response{
+    background-color: var(--light-color);
+    width: fit-content;
+    padding: 2px;
+    border-radius: 5px;
+    margin: 5px;
+    color: var(--dark-color);
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    cursor: pointer;
+    padding: 1vh 1vw;
+}
+.active-response{
+    background-color: var(--highlight-color);
+}
+.linetext{
+    width: fit-content;
+    color: var(--highlight-color);
+}
+.choice-switch{
+    display: inline-flex;
+    align-items: center;
+    padding: 2px;
+    background-color: rgb(#222A68, 0.5);
+    border-radius: 7px;
+}
+.choice-switch-item{
+    display: contents;
+}
+.choice-switch-item input{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+}
+.choice-switch label {
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 5px;
+}
+.choice-switch-item input:checked + label {
+    background-color: var(--main-color);
+    height: 100%;
+}
+.choice-switch-item input:not(:checked) + label {
+    --bg-opacity: 0;
+    box-shadow: none;
+}

@@ -1,6 +1,6 @@
 .question{
     background-color: var(--main-color);
-    width: fit-content;
+    position: relative;
     padding: 2vw;
     border-radius: 1rem;
 
@@ -17,4 +17,39 @@
     padding: 10px 20px 5px;
     width: 100%;
     margin-bottom: 2vh;
+}
+
+.answer{
+    background-color: var(--light-color);
+    width: fit-content;
+    padding: 2px;
+    border-radius: 5px;
+    margin: 5px;
+    color: var(--dark-color);
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    cursor: pointer;
+    padding: 1vh 1vw;
+}
+.active-answer{
+    background-color: var(--highlight-color);
+}
+.linetext{
+    width: fit-content;
+    color: var(--highlight-color);
+}
+
+.icon-back{
+    cursor: pointer;
+    margin: 1vw;
+    position: absolute;
+    top: 0;
+    width: 3vw;
+    height: 4vh;
+    left: 0;
+}
+.icon-back:hover{
+    color: var(--highlight-color);
 }
