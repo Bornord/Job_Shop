@@ -77,7 +77,6 @@ public class JsonConverter {
 		String ret = "[";
 		List list = (List)value;
 		if (!list.isEmpty()){
-			
 			if(f.getType().isPrimitive()) {
 				ret+= list.get(0).toString();
 			}else if ((list.get(0) instanceof String || list.get(0) instanceof Boolean
@@ -86,7 +85,11 @@ public class JsonConverter {
 					ret += "\"" + obj.toString() + "\",";
 					
 				}
-			} else {
+			} else if(list.get(0) instanceof Integer){
+				for(Integer i :(List<Integer>)list) {
+					ret+= i + ",";
+				}
+			}else {
 				for (Object obj : list) {
 					ret += JsonConverter.toJson(obj) + ",";
 				}
@@ -147,11 +150,19 @@ public class JsonConverter {
 			List<String> fieldVal = splitInObject(json);
 			List<String[]> l = new ArrayList<String[]>();
 			for (String s : fieldVal) {
-				l.add(s.split(":"));
+				l.add(s.split(":", 2));
 			}
+			for (String[] strings : l) {
+				for (String string : strings) {
+					//System.out.println(string);
+					
+				}
+			}
+			
 			for (String[] strings : l) {
 				String field = strings[0].trim().substring(1, strings[0].length() - 1);
 				String value = strings[1].trim();
+				//System.out.println("****** " + value);
 				//System.out.println(field + " : " + toObject(value) + " on : " + value);
 				map.put(field, toObject(value));
 			}

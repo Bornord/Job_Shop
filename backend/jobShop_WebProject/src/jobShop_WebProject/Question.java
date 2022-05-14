@@ -1,5 +1,6 @@
 package jobShop_WebProject;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,17 +16,20 @@ public class Question {
 	@OneToMany(mappedBy="id", fetch=FetchType.EAGER)
 	private List<Response> responses;
 	
-	public Question() {}
+	public Question() {
+		responses = new ArrayList<Response>();
+	}
 	public Question(String title, Response... responses) {
 		super();
 		this.title = title;
 		this.responses = Arrays.asList(responses);
 	}
-	public void appendToResponse( Question question, Response... responses) {
+	
+	public void appendToResponse(Question question, Response... responses ) {
 		List<Response> addedResponses = Arrays.asList(responses);
 		for (Response r : responses) {
 			if(addedResponses.contains(r)) {
-				r.setNextQuetsion(question);
+				r.setNextQuestion(question);
 			}
 		}
 	}

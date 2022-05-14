@@ -14,6 +14,15 @@ public class Response {
 	@ManyToOne(fetch=FetchType.EAGER)
 	private Question nextQuestion;
 	
+	public Response(String placeholder) {
+		this.placeholder = placeholder;
+	}
+	
+	public Response(String placeholder,Question nextQuestion) {
+		this.placeholder = placeholder;
+		this.nextQuestion= nextQuestion;
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -38,11 +47,11 @@ public class Response {
 		this.user_response = user_response;
 	}
 
-	public boolean isSelelected() {
+	public boolean getIsSelelected() {
 		return isSelelected;
 	}
 
-	public void setSelelected(boolean isSelelected) {
+	public void setIsSelelected(boolean isSelelected) {
 		this.isSelelected = isSelelected;
 	}
 
@@ -54,17 +63,6 @@ public class Response {
 		this.nextQuestion = nextQuestion;
 	}
 
-	public Response(String placeholder) {
-		this.placeholder = placeholder;
-	}
-	
-	public Response(String placeholder,Question nextQuestion) {
-		this.placeholder = placeholder;
-		this.nextQuestion= nextQuestion;
-	}
-	public void setNextQuetsion(Question question) {
-		this.nextQuestion = question;
-	}
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof Response) {

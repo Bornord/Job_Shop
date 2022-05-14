@@ -1,4 +1,4 @@
-package jobShop_WebProject.utils;
+package jobShop_WebProject.test;
 
 import java.util.Date;
 
@@ -11,6 +11,8 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import jobShop_WebProject.DataBase;
 import jobShop_WebProject.Student;
 import jobShop_WebProject.User;
+import jobShop_WebProject.utils.JsonConverter;
+import jobShop_WebProject.utils.Security;
 
 import com.auth0.jwt.*;
 

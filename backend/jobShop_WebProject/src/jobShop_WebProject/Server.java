@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.ejb.EJB;
@@ -37,6 +38,11 @@ public class Server extends HttpServlet{
 		String op = request.getParameter("op");
 		//response.getWriter().println("<html><body>Helloooooo</body></html>");
 		switch(op) {
+		case "getAllQuestion" :
+			Collection<Question> list = main.getQuestions();
+			String listQuestion = JsonConverter.toJson(list);
+			response.getWriter().println("<html><body>" + listQuestion.toString() + "</body></html>");
+	 		break;
 		case "addStudent" :
 			String nom = request.getParameter("nom");
 			String prenom = request.getParameter("prenom");
@@ -90,8 +96,9 @@ public class Server extends HttpServlet{
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String op = request.getParameter("op");
+		String questionJson;
 		switch(op) {
-		case "addQuestionToEnd" :
+		case "test":
 			StringBuffer jb = new StringBuffer();
 			String line = null;
 			try {
@@ -99,12 +106,35 @@ public class Server extends HttpServlet{
 			    while ((line = reader.readLine()) != null)
 			      jb.append(line);
 			  } catch (Exception e) { /*report an error*/ }
-	
-			  Map<String, Object> questionO =  JsonConverter.toObject(jb.toString()); 	
-			  
-			  main.addQuestion(questionO);
+			response.setContentType("text/html");
+			response.getWriter().println("<html><body>" + jb.toString() + "</body></html>");
+			break;
+		case "addQuestionToEnd" :
+			
+			  questionJson = readJson(request); 
+			  Map<String, Object> questionO =  JsonConverter.toObject(questionJson); 
+			  main.addQuestionToEnd(questionO);
 			  break;
+		 	
+		 	case "addQuestionToQuestion":
+
+				  questionJson = readJson(request); 
+				  Question previous;//...
+				  Map<String, Object> question =  JsonConverter.toObject(questionJson); 
+				//  main.addQuestionToQuestion(question, previous);
+		 		break;
 		}
 		doGet(request, response);
+	}
+	
+	public static String readJson(HttpServletRequest request) {
+		StringBuffer jb = new StringBuffer();
+		String line = null;
+		try {
+			BufferedReader reader = request.getReader();
+		    while ((line = reader.readLine()) != null)
+		      jb.append(line);
+		  } catch (Exception e) {}
+		return jb.toString();
 	}
 }
