@@ -13,8 +13,8 @@ import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import userReducer from './logic/features/user';
 import themeReducer from './logic/features/theme';
-import Welcome from "./pages/welcome/Welcome"
-
+import Welcome from './pages/welcome/Welcome';
+import Call from './logic/call/Call';
 
 const store = configureStore({
 	reducer: {
@@ -29,9 +29,16 @@ root.render(
 		<Provider store={store}>
 			<BrowserRouter>
 				<Header />
+				<Call />
 				<Routes>
-					<Route path="/SignUpAsRecruiter" element={<SignupAsRecruiter />} />
-					<Route path="/SignUpAsStudent" element={<SignupAsStudent />} />
+					<Route
+						path="/SignUpAsRecruiter"
+						element={<SignupAsRecruiter />}
+					/>
+					<Route
+						path="/SignUpAsStudent"
+						element={<SignupAsStudent />}
+					/>
 					<Route path="/Login" element={<Login />} />
 					<Route path="/Welcome" element={<Welcome />} />
 					<Route path="/*" element={<App />} />
