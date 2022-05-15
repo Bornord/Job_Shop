@@ -2,7 +2,10 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialValue = {
 	name: '',
-	status: 1999,//1999 -> non identifié ,2000 -> student , 2001 -> recruteur , 2002 -> admin
+	first_name: '',
+	mdp: '',
+	pseudo: '',
+	status: 1999, //1999 -> non identifié ,2000 -> student , 2001 -> recruteur , 2002 -> admin
 	id: '0',
 	token: 'defaultToken',
 };
@@ -31,9 +34,10 @@ export const userSlice = createSlice({
 });
 
 export const isAuthentifated = (user) => {
-	return [2000,2001,2002].includes(user.status)
-}
+	return [2000, 2001, 2002].includes(user.status);
+};
 
-export const { login, logout, signupAsStudent, signupAsRecruiter } = userSlice.actions;
+export const { login, logout, signupAsStudent, signupAsRecruiter } =
+	userSlice.actions;
 
 export default userSlice.reducer;
