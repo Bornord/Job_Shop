@@ -57,6 +57,10 @@ public class Security {
 	}
 	
 	public static Request logout(String json) {
+		//detruire l'accestoken et refreshtoken
+		Map<String, Object> map = JsonConverter.toObject(json);
+		/*if(((Map<String, Object>)map.containsKey("role")).get("String").equals("))
+		User u =*/ 
 		return new Request(json, 200);
 	}
 	
@@ -78,7 +82,7 @@ public class Security {
 				user = new Recruiter(name,surname, mail, hashed_pwd, 0, date, "capgemini");
 			} else if(role.get("Integer").equals(2000)) {
 				user = new Student(name,surname, mail, hashed_pwd, 0, date);
-			} else /*1999*/{
+			} else {//1999
 				return null;
 				//user = new User(name,surname, mail, pwd, 0, LabelRole.UNLOGGED, date);
 			}
@@ -92,7 +96,7 @@ public class Security {
 	}
 
 	
-	public static Request signOut(String json, DataBase database) {
+	public static String signOut(String json, DataBase database) {
 		User u = null;
 		JsonConverter jc = new JsonConverter();
 		Map<String, Object> map = jc.toObject(json);
@@ -100,9 +104,11 @@ public class Security {
 		if(mail != null) {
 			u = database.findWithLogin((String)mail.get("String"));
 			database.deleteUser(u);
-			return new Request(json, 200);
+			//return new Request(json, 200);
+			return json;
 		}
-		return new Request(json, 404);
+		//return new Request(json, 404);
+		return json;
 	}
 	
 }

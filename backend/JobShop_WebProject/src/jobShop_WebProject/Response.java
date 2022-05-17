@@ -70,6 +70,9 @@ public class Response {
 		}
 		return super.equals(obj);
 	}
-	
+	@Override
+	public String toString() {
+		return "placeholder : "+placeholder +" , next question : " + nextQuestion  ;
+	}
 	
 }

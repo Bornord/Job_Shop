@@ -125,6 +125,7 @@ public class JsonConverter {
 			return map;
 		}
 		if(json.startsWith("[") && json.endsWith("]")) {
+			json = json.substring(1, json.length() - 1);
 			Map<String, Object> map = new HashMap<>();
 			map.put("List",toList(json));
 			return map;
@@ -148,30 +149,19 @@ public class JsonConverter {
 		}
 		if(json.startsWith("{") && json.endsWith("}")) {
 			json = json.substring(1, json.length() - 1);
-			List<String> fieldVal = splitInObject(json);
+			List<String> fieldVal = split(json);
 			List<String[]> l = new ArrayList<String[]>();
 			for (String s : fieldVal) {
 				l.add(s.split(":", 2));
 			}
 			for (String[] strings : l) {
-				for (String string : strings) {
-					//System.out.println(string);
-					
-				}
-			}
-			
-			for (String[] strings : l) {
-				//System.out.println("****" + strings[0]);
 				String field ;
 				if(strings[0].startsWith("{")) {
 					field = strings[0].trim().substring(2, strings[0].length() - 1);
 				}else {
 					field = strings[0].trim().substring(1, strings[0].length() - 1);
 				}
-				//System.out.println(strings[0] + "******->"+field);
 				String value = strings[1].trim();
-				//System.out.println("****** " + value);
-				//System.out.println(field + " : " + toObject(value) + " on : " + value);
 				map.put(field, toObject(value));
 			}
 		}else {
@@ -180,25 +170,43 @@ public class JsonConverter {
 		return map;
 	}
 
-	private static List<Object> toList(String value) {
-		List<Object> list = new ArrayList<Object>();
-		String tmp = value.substring(1, value.length() - 1);
-		List<String> values = splitInList(tmp);
-		//System.out.println(values);
+	private static List<Map<String, Object>> toList(String value) {
+		//System.out.println("To list :: "+value);
+		List<Map<String, Object>> list = new ArrayList<>();
+		List<String> values = split(value);
 		for (String string : values) {
 			list.add(toObject(string));
 		}
 		return list;
 	}
 	
-	private static List<String> splitInObject(String object) {
+	private static List<String> split(String object) {
 		List<String> list = new ArrayList<String>();
 		String word = "";
 		boolean inArray = false;
+		boolean inObject = false;
+		int countArray = 0;
+		int countObject = 0;
 		for(char c : object.toCharArray()) {
-			if(c == '[') inArray = true;
-			if(c == ']') inArray = false;
-			if(c == ',' && !inArray) {
+			if(c == '[') {
+				countArray++;
+				inArray = true;
+			} else if(c == ']') {
+				countArray--;
+				if(countArray == 0) {
+					inArray = false;
+				}
+			}
+			if(c == '{') {
+				countObject++;
+				inObject = true;
+			} else if(c == '}') {
+				countObject--;
+				if(countObject == 0) {
+					inObject = false;
+				}
+			}
+			if(c == ',' && !inArray &&!inObject) {
 				list.add(word);
 				word = "";
 			}else {				
@@ -209,24 +217,6 @@ public class JsonConverter {
 		if(list.get(list.size()-1).equals(" ")) {
 			list.remove(list.size()-1);
 		}
-		//System.out.println(list);
-		return list;
-	}
-	private static List<String> splitInList(String object) {
-		List<String> list = new ArrayList<String>();
-		String word = "";
-		boolean inArray = false;
-		for(char c : object.toCharArray()) {
-			if(c == '{') inArray = true;
-			if(c == '}') inArray = false;
-			if(c == ',' && !inArray) {
-				list.add(word);
-				word = "";
-			}else {				
-				word += c;
-			}
-		}
-		if(!word.isEmpty()) list.add(word);
 		return list;
 	}
 }

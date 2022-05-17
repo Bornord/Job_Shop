@@ -45,10 +45,11 @@ public class TestSecurity {
 		s = new Student("Willem", "Nicolas", "wnicolas", "azezaeze", 1, new Date());
 		s2 = new Student("name", "urname", "login", "password", 0, new Date());
 		main = new DataBase();
-
+		User u = Security.signIn("{\"id\":0,\"name\":\"Willem\",\"surname\":\"Nicolas\",\"login\":\"wnicolas\",\"password\":\"azezaeze\","
+				+ "\"role\":\"STUDENT\",\"creationDate\":\"Tue May 17 17:43:09 CEST 2022\", }", main);
 		//testPwd();
-		String json = JsonConverter.toJson(s);
+		/*String json = JsonConverter.toJson(s);
 		System.out.println("Json : " + json);
-		testToken(json);
+		testToken(json);*/
 	}
 }

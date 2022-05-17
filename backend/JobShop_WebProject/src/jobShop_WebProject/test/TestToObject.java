@@ -29,14 +29,14 @@ public class TestToObject {
 		p.setIsRecruiter(true);
 		p.setTerm(3);
 		List<SurveyAnswer> l = new ArrayList<SurveyAnswer>();
-		l.add(new SurveyAnswer(1,2,3, "current"));
+		l.add(new SurveyAnswer(1,2,3, "blabla"));
 		p.setSurveyAnswer(l);
 		
 		String toJson = JsonConverter.toJson(p);
 		System.out.println("to Json : "+ toJson);
 		Map<String, Object> map = JsonConverter.toObject(toJson);
 		System.out.println("to map : " + map);
-		System.out.println("to Profile : " +ObjectConverter.toProfile(map).toString() );
+		//System.out.println("to Profile : " +ObjectConverter.toProfile(map).toString() );
 	}
 	
 	private static void testStudent() {

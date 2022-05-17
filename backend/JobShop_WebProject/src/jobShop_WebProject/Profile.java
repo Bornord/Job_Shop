@@ -19,7 +19,7 @@ public class Profile {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	private LocalDate startDate ;
+	private LocalDate startDate ;	//aaa-mm-dd
 	private LocalDate endDate;
 	private int term;
 	private int idUser;
@@ -34,7 +34,7 @@ public class Profile {
 		super();
 		this.startDate = startDate;
 		this.endDate = endDate;
-		this.term = term;
+		this.term = term;	//nombre de mois
 		this.idUser = idUser;
 		this.isRecruiter = isRecruiter;
 		this.surveyAnswer = surveyAnswer;

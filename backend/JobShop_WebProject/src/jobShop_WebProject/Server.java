@@ -88,7 +88,9 @@ public class Server extends HttpServlet{
 		case "getCurrentSurvey":
 			ServerGetCases.getCurrentSurvey(request,response,main);
 			break;
-		
+		case "getBlogs":
+			ServerGetCases.getBlogs(request,response,main);
+			break;
 		}
 	}
 	
@@ -101,19 +103,12 @@ public class Server extends HttpServlet{
 		case "test":
 			ServerPostCases.test(request, response, main);
 			break;
-		case "addStudent":
-			ServerPostCases.addStudent(request, response, main);
-			break;
-		case "addRecruiter":
-			ServerPostCases.addRecruiter(request, response, main);
-			break;
-		case "addAdmin":
-			ServerPostCases.addAdmin(request, response, main);
+		case "signIn":
+			ServerPostCases.signIn(request, response, main);
 			break;
 		case "addQuestionToEnd" :
 			ServerPostCases.addQuestionToEnd(request, response, main);
 			break;
-		 	
 		case "addQuestionToQuestion":
 	 		ServerPostCases.addQuestionToQuestion(request, response, main);
 	 		break;
@@ -122,13 +117,20 @@ public class Server extends HttpServlet{
 	 		break;
 	 	case "setCurrentSurvey":
 	 		ServerPostCases.setCurrentSurvey(request, response, main);
-	 		//first question -> current change update les surveys
 	 		break;
 	 	case "addProfileStudent" :
 	 		//faire le match
+	 		ServerPostCases.addProfileStudent(request, response, main);
 	 		break;
 	 	case "addProfileRecruiter":
 	 		//faire le match
+	 		ServerPostCases.addProfileRecruiter(request, response, main);
+	 		break;
+	 	case "login":
+	 		ServerPostCases.login(request, response, main);
+	 		break;
+	 	case "logout":
+	 		ServerPostCases.logout(request, response, main);
 	 		break;
 		 	
 		}

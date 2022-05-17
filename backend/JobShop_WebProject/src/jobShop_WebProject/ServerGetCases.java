@@ -29,9 +29,19 @@ public class ServerGetCases {
 	
 	public static void getCurrentSurvey(HttpServletRequest request, HttpServletResponse response, DataBase main) {
 
-		SurveyAnswer current = main.getCurrentSurvey();
+		FirstQuestion current = main.getCurrentSurvey();
 		// TODO print response
 		
+	}
+
+	public static void getBlogs(HttpServletRequest request, HttpServletResponse response, DataBase main) throws IOException {
+		Collection<Blog> blogs = main.getBlogs();
+		printResp(response, JsonConverter.toJson(blogs));
+	}
+
+	private static void printResp(HttpServletResponse response, String toPrint) throws IOException {
+		response.setContentType("text/html");
+		response.getWriter().println("<html><body>" + toPrint + "</body></html>");
 	}
 
 }

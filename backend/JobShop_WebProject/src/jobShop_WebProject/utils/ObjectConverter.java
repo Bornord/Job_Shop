@@ -40,19 +40,20 @@ public class ObjectConverter {
 	}
 	
 	private static Response toResponse(Map<String, Object> mapR) {
+		//System.out.println(mapR);
 		String placeholder = (String) ((Map<String, Object>)(mapR.get("placeholder"))).get("String");
 		
 		boolean isSelected = (boolean) ((Map<String, Object>)(mapR.get("isSelected"))).get("Boolean");
 		
 		Map<String, Object> nextQuestion = (Map<String, Object>)(mapR.get("nextQuestion"));
-		if(nextQuestion != null){
+		if(nextQuestion != null && !nextQuestion.containsKey("Error")){
 			return new Response(placeholder, toQuestion(nextQuestion));
 		} else {
 			return new Response(placeholder);
 		}
 	}
 	
-	public static Profile toProfile(Map<String, Object> profile) {
+	public static Profile toProfile(Map<String, Object> profile, boolean isRecruiter) {
 		int idUser =(int)((Map<String, Object>) profile.get("idUser")).get("Integer");
 		int term =(int)((Map<String, Object>) profile.get("term")).get("Integer");
 		boolean recruiter = (boolean)((Map<String, Object>) profile.get("isRecruiter")).get("Boolean");

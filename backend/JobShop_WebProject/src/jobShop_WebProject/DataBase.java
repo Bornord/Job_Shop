@@ -201,10 +201,10 @@ public class DataBase{
 	/**
 	 * method match
 	 */
-	public Profile matchToOffer(Profile profile) {
-		List<Profile> profiles = em.createQuery("select p from Profile p where p.isRecruiter=false")
+	public Profile matchToOffer(Profile profileCandidate) {
+		List<Profile> profiles = em.createQuery("select p from Profile p where p.isRecruiter=true")
 		.getResultList();
-		return match(profile, profiles);
+		return match(profileCandidate, profiles);
 		
 	}
 	
@@ -213,9 +213,9 @@ public class DataBase{
 		for (Profile p : profiles) {
 			list.put(match(p,profile), p);
 		}
-		List<Double> listKeySet = (List<Double>)list.keySet();
+		List<Double> listKeySet = new ArrayList<Double>(list.keySet());
 		Collections.sort(listKeySet);
-		return list.get(listKeySet.get(0));
+		return list.get(listKeySet.get(listKeySet.size()-1));
 	}
 	
 	public static double match(Profile recruiter, Profile student) {
@@ -224,10 +224,20 @@ public class DataBase{
 			for (SurveyAnswer saStudent : student.getSurveyAnswer()){
 				if(saStudent.getIdQuestion() == saRecruiter.getIdQuestion()){
 					if(saStudent.getIdResponse() == saRecruiter.getIdResponse())
-						score++;
+						score+=1;
 				}
 			}
 			
+		}
+		//dates et durée d'emploi en mois
+		//System.out.println("date fin :" + recruiter.getStartDate().plusMonths(recruiter.getTerm()));
+		if(student.getTerm() >= recruiter.getTerm()) {
+			if (student.getStartDate().isBefore(recruiter.getStartDate()) 
+					&& recruiter.getStartDate().plusMonths(recruiter.getTerm()).isBefore(student.getEndDate())) {
+				score+=1.0;
+			} else if(student.getStartDate().plusMonths(recruiter.getTerm()).isBefore(recruiter.getEndDate())) {
+				score+=1.0;
+			}
 		}
 		return score;
 	}
@@ -236,7 +246,7 @@ public class DataBase{
 	 * method match with candidate
 	 */
 	public Profile matchToCandidate(Profile profile) {
-		List<Profile> profiles = em.createQuery("select p from Profile p where p.isRecruiter=true")
+		List<Profile> profiles = em.createQuery("select p from Profile p where p.isRecruiter=false")
 				.getResultList();
 		return match(profile, profiles);
 	}
@@ -247,22 +257,22 @@ public class DataBase{
 		
 	}
 
-	public SurveyAnswer getCurrentSurvey() {
-		List list= em.createQuery("select c from SurveyAnswer c where c.extra like:current")
+	public FirstQuestion getCurrentSurvey() {
+		List list= em.createQuery("select c from FirstQuestion c where c.nameSurvey like:current")
 				.setParameter("current", "current")
 				.setMaxResults(1)
 				.getResultList();	
 		if(list.size() != 0) {
-			return (SurveyAnswer) list.get(0);
+			return (FirstQuestion) list.get(0);
 		} else {
 			return null;
 		}
 	}
 
-	public SurveyAnswer updateCurrentSurvey(int id) {
-		getCurrentSurvey().setExtra("");//TODO changer? etat surveyAnswer différent de current
-		em.find(SurveyAnswer.class, id).setExtra("current");
-		return em.find(SurveyAnswer.class, id);
+	public FirstQuestion updateCurrentSurvey(int id) {
+		getCurrentSurvey().setNameSurvey("old" + new Date());
+		em.find(FirstQuestion.class, id).setNameSurvey("current");
+		return em.find(FirstQuestion.class, id);
 	}
 
 	public void addProfile(Profile profile) {
@@ -280,5 +290,9 @@ public class DataBase{
 	public void addStudent(Student s) {
 		em.persist(s);
 		
+	}
+
+	public Collection<Blog> getBlogs() {
+		return em.createQuery("from Blog", Blog.class).getResultList();
 	}
 }

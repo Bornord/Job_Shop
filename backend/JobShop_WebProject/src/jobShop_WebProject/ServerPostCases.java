@@ -9,14 +9,19 @@ import javax.servlet.http.HttpServletResponse;
 
 import jobShop_WebProject.utils.JsonConverter;
 import jobShop_WebProject.utils.ObjectConverter;
+import jobShop_WebProject.utils.Request;
+import jobShop_WebProject.utils.Security;
 
 public class ServerPostCases {
 
 	public static void addQuestionToQuestion(HttpServletRequest request,HttpServletResponse response, DataBase main) {
+		
 		String questionJson = readJson(request); 
+		//String questionJson = "{\"id\":0\"question\":{\"id\":0,\"title\":\"Votre domain ?\",\"responses\":[{\"id\":0,\"placeholder\":\"IT\",\"isSelected\":false,\"nextQuestion\":{\"id\":0,\"title\":\"Les languages ?\",\"responses\":[{\"id\":0,\"placeholder\":\"C\",\"isSelected\":false,},{\"id\":0,\"placeholder\":\"Python\",\"isSelected\":false,},]}},{\"id\":0,\"placeholder\":\"Prof\",\"isSelected\":false,},{\"id\":0,\"placeholder\":\"artist\",\"isSelected\":false,},]}}";
 		int previous = 0;//-> récupérer l'id
 		//TODO separer les 2 élements dans le json
 		Map<String, Object> question =  JsonConverter.toObject(questionJson); 
+		
 		main.addQuestionToQuestion(ObjectConverter.toQuestion(question), previous);
 		
 	}
@@ -47,7 +52,8 @@ public class ServerPostCases {
 	}
 
 	public static void addQuestionToEnd(HttpServletRequest request, HttpServletResponse response, DataBase main) {
-		String questionJson = readJson(request); 
+		//String questionJson = readJson(request); 
+		String questionJson = "{\"id\":0,\"title\":\"Votre domain ?\",\"responses\":[{\"id\":0,\"placeholder\":\"IT\",\"isSelected\":false,\"nextQuestion\":{\"id\":0,\"title\":\"Les languages ?\",\"responses\":[{\"id\":0,\"placeholder\":\"C\",\"isSelected\":false,},{\"id\":0,\"placeholder\":\"Python\",\"isSelected\":false,},]}},{\"id\":0,\"placeholder\":\"Prof\",\"isSelected\":false,},{\"id\":0,\"placeholder\":\"artist\",\"isSelected\":false,},]}";
 		Map<String, Object> questionO =  JsonConverter.toObject(questionJson); 
 		main.addQuestionToEnd(questionO);
 	}
@@ -65,21 +71,25 @@ public class ServerPostCases {
 		printResp(response, j);
 	}
 
-	public static void addProfileStudent(HttpServletRequest request, HttpServletResponse response, DataBase main) {
+	public static void addProfileStudent(HttpServletRequest request, HttpServletResponse response, DataBase main) throws IOException {
 		// TODO réception json de Profile?
 		String j = readJson(request);
-		
+		Map<String, Object> map = JsonConverter.toObject(j);
+		Profile profile = ObjectConverter.toProfile(map, false);
+		main.addProfile(profile);
 		//faire le match
+		main.matchToOffer(profile);
+		printResp(response, JsonConverter.toJson(profile));
 	}
 
 	public static void addProfileRecruiter(HttpServletRequest request, HttpServletResponse response, DataBase main) throws IOException {
 		// TODO toProfile
 		String j = readJson(request);
 		Map<String, Object> map = JsonConverter.toObject(j);
-		Profile profile = ObjectConverter.toProfile(map);
+		Profile profile = ObjectConverter.toProfile(map, true);
 		main.addProfile(profile);
 		//faire le match
-		main.matchToCandidate(null);
+		main.matchToCandidate(profile);
 		printResp(response, JsonConverter.toJson(profile));
 		
 	}
@@ -89,22 +99,22 @@ public class ServerPostCases {
 		response.getWriter().println("<html><body>" + toPrint + "</body></html>");
 	}
 
-	public static void addStudent(HttpServletRequest request, HttpServletResponse response, DataBase main) {
+	public static void login(HttpServletRequest request, HttpServletResponse response, DataBase main) throws IOException {
 		String j = readJson(request);
-		Student s = ObjectConverter.toStudent(JsonConverter.toObject(j));
-		main.addStudent(s);
-	}
-
-	public static void addRecruiter(HttpServletRequest request, HttpServletResponse response, DataBase main) {
-		String j = readJson(request);
-		Recruiter r = ObjectConverter.toRecruiter(JsonConverter.toObject(j));
-		main.addRecruiter(r);
+		User u = Security.login(j, main);
+		printResp(response, JsonConverter.toJson(u));
 	}
 	
-	public static void addAdmin(HttpServletRequest request, HttpServletResponse response, DataBase main) {
+	public static void signIn(HttpServletRequest request, HttpServletResponse response, DataBase main) throws IOException {
 		String j = readJson(request);
-		Admin r = ObjectConverter.toAdmin(JsonConverter.toObject(j));
-		main.addAdmin(r);
+		User u = Security.signIn(j, main);
+		printResp(response, JsonConverter.toJson(u));
+	}
+
+	public static void logout(HttpServletRequest request, HttpServletResponse response, DataBase main) throws IOException {
+		String j = readJson(request);
+		Request u = Security.logout(j);
+		printResp(response, JsonConverter.toJson(u));
 	}
 
 }
