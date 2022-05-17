@@ -60,6 +60,8 @@ const SurveySection = ({onSubmit})=>{
     const [survey,setSurvey] = useState(testSurvey);
     const [currentQuestion,setCurrentQuestion] = useState(survey)
     const [previousQuestion,setPreviousQuestion] = useState([])
+    const [profile,setProfile] = useState([])
+    const user = useSelector((state) => state.user.value);
 
     useEffect(()=>{
         const fecthQuestion = async ()=>{
@@ -78,6 +80,14 @@ const SurveySection = ({onSubmit})=>{
         setPreviousQuestion((prev)=> {
             prev.push(currentQuestion)
             return prev
+        })
+        setProfile((prev)=>{
+            prev.push({
+                idUser:user.id,
+                idQuestion:currentQuestion.id,
+                idResponse:response.id,
+                extra:response.user_response
+            })
         })
         setCurrentQuestion(response.nextQuestion)
     }
