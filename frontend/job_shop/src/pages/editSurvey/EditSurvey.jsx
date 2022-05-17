@@ -3,7 +3,7 @@ import './EditSurvey.scss';
 import SelectButton2 from '../../components/buttons/selectButton2/SelectButton2';
 import { TiTimes } from 'react-icons/ti';
 import LineText from '../../components/lineText/LineText';
-import api from '../../logic/api/api';
+import {api,get,post} from '../../logic/api/api';
 
 const testQuestion = {
 	title: 'test question ?',
@@ -64,13 +64,7 @@ export default function EditSurvey() {
 	};
 
 	useEffect(() => {
-		const fecthQuestion = async () => {
-			try {
-				const res = await api.get('/getAllQuestion');
-				setAllQuestion(res.data);
-			} catch (e) {}
-		};
-		fecthQuestion();
+		get("getAllQuestion",(res)=>setAllQuestion(res.data),(e)=>console.log(e))
 	}, []);
 
 	const validate = () => {
@@ -78,36 +72,32 @@ export default function EditSurvey() {
 	};
 
 	const handleAddToEnd = () => {
-		const postQuestion = async () => {
-			try {
-				const res = await api.post('/addQuestionToEnd', {
-					title: question,
-					responses: isAText ? '' : responses,
-				});
-			} catch (e) {}
-		};
-		if (validate()) postQuestion();
+		if (validate())
+			post("addQuestionToEnd",{
+				title: question,
+				responses: isAText ? '' : responses,
+			})
 	};
 	const handleAddToQuestion = () => {
-		const postQuestion = async () => {
-			try {
-				const res = await api.post('/addQuestionToQuestion', {
-					addedToQuestion: foundQuestion.question?.title,
+		const data = {
+			addedToQuestion: foundQuestion.question?.title,
 
-					addedToResponses:
-						foundQuestion.question?.responses != ''
-							? foundQuestion.question?.responses.filter(
-									(response) => response.isSelected
-							  )
-							: '',
+			addedToResponses:
+				foundQuestion.question?.responses != ''
+					? foundQuestion.question?.responses.filter(
+							(response) => response.isSelected
+					  )
+					: '',
 
-					title: question,
-					responses: isAText ? '' : responses,
-				});
-			} catch (e) {}
-		};
-		if (validate()) postQuestion();
+			title: question,
+			responses: isAText ? '' : responses,
+		}
+
+		if (validate())
+			post("addQuestionToQuestion",data)
 	};
+
+	
 	return (
 		<div className="edit-survey">
 			<div className="add-to-end">
