@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import SelectButton from '../../components/buttons/selectButton/SelectButton';
 import './Welcome.scss';
@@ -15,10 +16,13 @@ export default function Welcome() {
 			(e) => console.log(e)
 		);
 	});
+	const user = useSelector((state) => state.user.value);
 	return (
 		<div className="welcome">
 			<h1>Binvenue sur JobShop !</h1>
-			<p>Test d'appel serveur : </p> {rep}
+			{console.log('test')}
+			{console.log(user.name)}
+			<p>Nom post-log : {user.name} </p>
 			<h2>
 				Lorem ipsum dolor sit amet consectetur adipisicing elit.
 				Architecto dicta expedita natus placeat et? Atque ea a ratione

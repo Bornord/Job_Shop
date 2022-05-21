@@ -6,6 +6,7 @@ const initialValue = {
 	first_name: '',
 	mdp: '',
 	pseudo: '',
+	mail: '',
 	status: 1999, //1999 -> non identifié ,2000 -> student , 2001 -> recruteur , 2002 -> admin
 	id: '0',
 	token: 'defaultToken',
@@ -29,7 +30,9 @@ export const userSlice = createSlice({
 				},
 				(e) => console.log(e)
 			);
-			state.value = action.payload;
+			state.value.first_name = action.payload[0].value;
+			state.value.name = action.payload[0].value;
+			state.value.status = 2000;
 		},
 		signupAsRecruiter: (state, action) => {
 			console.log(action.payload);
