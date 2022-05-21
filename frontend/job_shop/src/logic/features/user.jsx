@@ -21,7 +21,6 @@ export const userSlice = createSlice({
 			state.value = action.payload;
 		},
 		signupAsStudent: (state, action) => {
-			console.log(action.payload);
 			post(
 				'signupAsStudent',
 				action.payload,

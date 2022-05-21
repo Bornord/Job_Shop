@@ -82,7 +82,9 @@ app.route('/Proxy')
 
 app.use('/', (req, res, next) => {
 	console.log('Bien reçu, bien reçu.');
-	res.status(201).json({ msg: 'hello world back' });
+	console.log('le paquet vaut :');
+	console.log(req.body);
+	res.status(201).json(req.body);
 });
 
 module.exports = app;

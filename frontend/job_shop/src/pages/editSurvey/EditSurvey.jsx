@@ -3,7 +3,7 @@ import './EditSurvey.scss';
 import SelectButton2 from '../../components/buttons/selectButton2/SelectButton2';
 import { TiTimes } from 'react-icons/ti';
 import LineText from '../../components/lineText/LineText';
-import {api,get,post} from '../../logic/api/api';
+import { api, get, post } from '../../logic/api/api';
 
 const testQuestion = {
 	title: 'test question ?',
@@ -64,7 +64,11 @@ export default function EditSurvey() {
 	};
 
 	useEffect(() => {
-		get("getAllQuestion",(res)=>setAllQuestion(res.data),(e)=>console.log(e))
+		get(
+			'getAllQuestion',
+			(res) => setAllQuestion(res.data),
+			(e) => console.log(e)
+		);
 	}, []);
 
 	const validate = () => {
@@ -73,10 +77,10 @@ export default function EditSurvey() {
 
 	const handleAddToEnd = () => {
 		if (validate())
-			post("addQuestionToEnd",{
+			post('addQuestionToEnd', {
 				title: question,
 				responses: isAText ? '' : responses,
-			})
+			});
 	};
 	const handleAddToQuestion = () => {
 		const data = {
@@ -91,13 +95,11 @@ export default function EditSurvey() {
 
 			title: question,
 			responses: isAText ? '' : responses,
-		}
+		};
 
-		if (validate())
-			post("addQuestionToQuestion",data)
+		if (validate()) post('addQuestionToQuestion', data);
 	};
 
-	
 	return (
 		<div className="edit-survey">
 			<div className="add-to-end">
