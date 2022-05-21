@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect  } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Question from '../question/Question';
 import "./SurveySection.scss";
-import api from '../../../logic/api/api';
+import {api,get,post} from '../../../logic/api/api';
 
 const testSurvey = {
     title:"question 1",
@@ -56,7 +57,6 @@ const testSurvey = {
 }
 
 const SurveySection = ({onSubmit})=>{
-
     const [survey,setSurvey] = useState(testSurvey);
     const [currentQuestion,setCurrentQuestion] = useState(survey)
     const [previousQuestion,setPreviousQuestion] = useState([])
@@ -64,14 +64,15 @@ const SurveySection = ({onSubmit})=>{
     const user = useSelector((state) => state.user.value);
 
     useEffect(()=>{
-        const fecthQuestion = async ()=>{
+        /*const fecthQuestion = async ()=>{
             try{
                 const res = await api.get("/getSurvey")
                 setSurvey(res.data)
             }catch(e){
                 
             }
-        }
+        }*/
+        get("/getSurvey",(res)=>setSurvey(res.data))
         //fecthQuestion()
         //setCurrentQuestion(survey)
     },[])

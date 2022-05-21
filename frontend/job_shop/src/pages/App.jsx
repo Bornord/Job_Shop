@@ -9,7 +9,8 @@ import Error from './error/Error';
 import DashBoard from './dashboard/DashBoard';
 import EditSurvey from './editSurvey/EditSurvey';
 
-import RequireAuth from '../logic/auth/RequireAuth';
+import RequireAuth from '../logic/Auth/RequireAuth';
+
 function App() {
 	return (
 		<Routes>
