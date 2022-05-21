@@ -1,9 +1,64 @@
 import './Survey.scss';
 import SurveySection from '../../components/surveyComponents/SurveySection/SurveySection';
+import { useDispatch, useSelector } from 'react-redux';
+import React, { useState, useEffect  } from 'react';
 import { get } from '../../logic/api/api';
+
+const testSurvey = {
+    title:"question 1",
+    multiple : true,
+    responses:[{
+        placeholder :"R1",
+        user_response:"",
+        isSelected:false,
+        nextQuestion:{
+            title:"question2 après R1",
+            multiple : false,
+            responses:[{
+                placeholder:"",
+                user_response:"",
+                isSelected:false
+            }]
+        }
+    },
+    {
+        placeholder :"R2",
+        user_response:"",
+        isSelected:false,
+        nextQuestion:{
+            title:"question2 après R2",
+            multiple : false,
+            responses:[{
+                placeholder:"",
+                user_response:"",
+                isSelected:false
+            }]
+        }
+    },
+    {
+        placeholder :"R3",
+        user_response:"",
+        isSelected:false,
+        nextQuestion:{
+            title:"question2 après R3",
+            multiple : true,
+            responses:[{
+                placeholder:"R4",
+                user_response:"",
+                isSelected:false
+            },{
+                placeholder:"R5",
+                user_response:"",
+                isSelected:false
+            },
+            ]
+        }
+    }]
+}
 
 function Survey() {
 	const user = useSelector((state) => state.user.value);
+	const [survey,setSurvey] = useState(testSurvey);
 	const isRecruiter = user.status == 2001
 	const handleSubmit = (profile)=>{
 		const path = isRecruiter ? "addProfileRecruiter" : "addProfileStudent"

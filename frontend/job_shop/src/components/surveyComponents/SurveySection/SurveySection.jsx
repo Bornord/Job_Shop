@@ -1,63 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect  } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Question from '../question/Question';
 import "./SurveySection.scss";
-import api from '../../../logic/api/api';
+import {api} from '../../../logic/api/api';
 
-const testSurvey = {
-    title:"question 1",
-    multiple : true,
-    responses:[{
-        placeholder :"R1",
-        user_response:"",
-        isSelected:false,
-        nextQuestion:{
-            title:"question2 après R1",
-            multiple : false,
-            responses:[{
-                placeholder:"",
-                user_response:"",
-                isSelected:false
-            }]
-        }
-    },
-    {
-        placeholder :"R2",
-        user_response:"",
-        isSelected:false,
-        nextQuestion:{
-            title:"question2 après R2",
-            multiple : false,
-            responses:[{
-                placeholder:"",
-                user_response:"",
-                isSelected:false
-            }]
-        }
-    },
-    {
-        placeholder :"R3",
-        user_response:"",
-        isSelected:false,
-        nextQuestion:{
-            title:"question2 après R3",
-            multiple : true,
-            responses:[{
-                placeholder:"R4",
-                user_response:"",
-                isSelected:false
-            },{
-                placeholder:"R5",
-                user_response:"",
-                isSelected:false
-            },
-            ]
-        }
-    }]
-}
 
-const SurveySection = ({onSubmit})=>{
 
-    const [survey,setSurvey] = useState(testSurvey);
+const SurveySection = ({survey,setSurvey,onSubmit})=>{
     const [currentQuestion,setCurrentQuestion] = useState(survey)
     const [previousQuestion,setPreviousQuestion] = useState([])
     const [profile,setProfile] = useState([])
