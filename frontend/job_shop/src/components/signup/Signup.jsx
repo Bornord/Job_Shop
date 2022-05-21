@@ -46,6 +46,7 @@ function Signup({ status, inputs, title, subtitle, isValid }) {
 		});
 	};
 	const handleSubmit = () => {
+		console.log('test');
 		if (isValid(state)) {
 			const f = status == 2000 ? signupAsStudent : signupAsRecruiter;
 			dispatch(f(state));

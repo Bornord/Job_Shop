@@ -23,11 +23,14 @@ export const userSlice = createSlice({
 		signupAsStudent: (state, action) => {
 			console.log(action.payload);
 			post(
-				'',
+				'signupAsStudent',
 				action.payload,
-				(res) => (state.value = action.payload),
+				(res) => {
+					console.log(res);
+				},
 				(e) => console.log(e)
 			);
+			state.value = action.payload;
 		},
 		signupAsRecruiter: (state, action) => {
 			console.log(action.payload);
