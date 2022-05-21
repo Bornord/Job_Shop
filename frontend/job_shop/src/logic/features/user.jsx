@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { post } from './../api/api';
 
 const initialValue = {
 	name: '',
@@ -21,7 +22,12 @@ export const userSlice = createSlice({
 		},
 		signupAsStudent: (state, action) => {
 			console.log(action.payload);
-			//state.value = action.payload;
+			post(
+				'',
+				action.payload,
+				(res) => (state.value = action.payload),
+				(e) => console.log(e)
+			);
 		},
 		signupAsRecruiter: (state, action) => {
 			console.log(action.payload);
