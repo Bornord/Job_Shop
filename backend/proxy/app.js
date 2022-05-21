@@ -46,37 +46,37 @@ Fonction principale qui conditionne les appels et leur traitement dans l'environ
 app.route('/Proxy')
 	.get((req, res, next) => {
 		console.log(req.query);
-		if (req.query.op != null) {
-			console.log(req.query.op);
-			Get(
-				req.query.op,
-				(data) => {
-					res.status(201).json(data);
-				},
-				() => {
-					res.status(404).json({ msg: 'error on server' });
-				}
-			);
-		} else {
-			res.status(404).json({ msg: 'error on proxy' });
-		}
+		// if (req.query.op != null) {
+		// 	console.log(req.query.op);
+		// 	Get(
+		// 		req.query.op,
+		// 		(data) => {
+		// 			res.status(201).json(data);
+		// 		},
+		// 		() => {
+		// 			res.status(404).json({ msg: 'error on server' });
+		// 		}
+		// 	);
+		// } else {
+		// 	res.status(404).json({ msg: 'error on proxy' });
+		// }
 		next();
 	})
 	.post((req, res, next) => {
 		console.log(req.query);
-		if (req.query.op != null) {
-			Post(
-				req.query.op,
-				(data) => {
-					res.status(201).json(data);
-				},
-				() => {
-					res.status(404).json({ msg: 'error' });
-				}
-			);
-		} else {
-			res.status(404).json({ msg: 'error' });
-		}
+		// if (req.query.op != null) {
+		// 	Post(
+		// 		req.query.op,
+		// 		(data) => {
+		// 			res.status(201).json(data);
+		// 		},
+		// 		() => {
+		// 			res.status(404).json({ msg: 'error' });
+		// 		}
+		// 	);
+		// } else {
+		// 	res.status(404).json({ msg: 'error' });
+		// }
 		next();
 	});
 
