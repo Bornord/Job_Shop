@@ -2,7 +2,7 @@ import './Survey.scss';
 import SurveySection from '../../components/surveyComponents/SurveySection/SurveySection';
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useState, useEffect  } from 'react';
-import { get } from '../../logic/api/api';
+import { get, post } from '../../logic/api/api';
 
 
 
@@ -12,7 +12,7 @@ function Survey() {
 	const isRecruiter = user.status == 2001
 	const handleSubmit = (profile)=>{
 		const path = isRecruiter ? "addProfileRecruiter" : "addProfileStudent"
-		
+		post(path,profile,(data)=>{})
 	}
 
 	return <div className='survey'>
