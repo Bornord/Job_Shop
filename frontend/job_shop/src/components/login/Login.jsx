@@ -20,8 +20,18 @@ function Login() {
 		setError(reason);
 	};
 	const handleSubmit = () => {
-		dispatch(login(state));
-		navigate('/');
+		const mail = state.find((input) => input.id == 'mail');
+		const password2 = state.find((input) => input.id == 'password');
+		// recopie (email & password) dans la variable state.
+		// La recopie vaut "" si les champs ne sont pas remplis
+		mail.value = email;
+		password2.value = password;
+		if (mail.value != '' && password2.value != '') {
+			dispatch(login(state));
+			navigate('/');
+		} else {
+			state.erreurFonction('Vous devez remplir les champs.');
+		}
 	};
 	return (
 		<div className="login">
@@ -34,7 +44,7 @@ function Login() {
 				<div className="form">
 					<h1 className="title">Bienvenue</h1>
 					<h2 className="subtitle">bla bla bla</h2>
-					<p>{error}</p>
+					<p className="errorStack">{error}</p>
 					<div className="input-container ic1">
 						<input
 							id="email"
@@ -55,7 +65,9 @@ function Login() {
 							className={'login-input'}
 							type="password"
 							value={password}
-							onChange={(e) => setPassword(e.target.value)}
+							onChange={(e) => {
+								setPassword(e.target.value);
+							}}
 							placeholder=" "
 						/>
 						<div className="cut"></div>

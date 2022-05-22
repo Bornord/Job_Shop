@@ -19,7 +19,7 @@ export const userSlice = createSlice({
 	},
 	reducers: {
 		login: (state, action) => {
-			console.log(typeof action.payload.erreurFonction);
+			console.log(action.payload);
 			post(
 				'login',
 				action.payload,
@@ -28,13 +28,11 @@ export const userSlice = createSlice({
 				},
 				(e) => console.log(e)
 			);
-			action.payload.erreurFonction('Le login est faux');
-			//state.value.status = 2002;
+			state.value.status = 2002;
 			// GESTION DES ERREURS
 			// GESTION DES MAJ de champs
 		},
 		signupAsStudent: (state, action) => {
-			console.log(state);
 			post(
 				'signupAsStudent',
 				action.payload,
