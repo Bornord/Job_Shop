@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { post } from './../api/api';
+import { useDispatch, useSelector } from 'react-redux';
 
 const initialValue = {
 	name: '',
@@ -10,8 +11,8 @@ const initialValue = {
 	company: '',
 	status: 1999, //1999 -> non identifié ,2000 -> student , 2001 -> recruteur , 2002 -> admin
 	id: '0',
-	token: 'defaultToken',
 };
+
 export const userSlice = createSlice({
 	name: 'user',
 	initialState: {
@@ -24,28 +25,22 @@ export const userSlice = createSlice({
 				'login',
 				action.payload,
 				(res) => {
-					console.log(res);
+					state.value.status = 2002;
 				},
-				(e) => console.log(e)
+				(e) => action.payload.erreurFonction(e)
 			);
-			state.value.status = 2002;
-			// GESTION DES ERREURS
-			// GESTION DES MAJ de champs
 		},
 		signupAsStudent: (state, action) => {
 			post(
 				'signupAsStudent',
 				action.payload,
 				(res) => {
-					console.log(res);
+					state.value.first_name = action.payload[0].value;
+					state.value.name = action.payload[0].value;
+					state.value.status = 2000;
 				},
-				(e) => console.log(e)
+				(e) => action.payload.erreurFonction(e)
 			);
-			state.value.first_name = action.payload[0].value;
-			state.value.name = action.payload[0].value;
-			state.value.status = 2000;
-			// GESTION DES ERREURS
-			// GESTION DES MAJ de champs
 		},
 		signupAsRecruiter: (state, action) => {
 			post(
@@ -53,14 +48,12 @@ export const userSlice = createSlice({
 				action.payload,
 				(res) => {
 					console.log(res);
+					state.value.first_name = action.payload[0].value;
+					state.value.name = action.payload[0].value;
+					state.value.status = 2001;
 				},
-				(e) => console.log(e)
+				(e) => action.payload.erreurFonction(e)
 			);
-			state.value.first_name = action.payload[0].value;
-			state.value.name = action.payload[0].value;
-			state.value.status = 2001;
-			// GESTION DES ERREURS
-			// GESTION DES MAJ de champs
 		},
 		logout: (state) => {
 			state.value = initialValue;
