@@ -20,9 +20,6 @@ export default function Welcome() {
 	return (
 		<div className="welcome">
 			<h1>Binvenue sur JobShop !</h1>
-			{console.log('test')}
-			{console.log(user.name)}
-			<p>Nom post-log : {user.name} </p>
 			<h2>
 				Lorem ipsum dolor sit amet consectetur adipisicing elit.
 				Architecto dicta expedita natus placeat et? Atque ea a ratione

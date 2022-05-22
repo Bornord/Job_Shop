@@ -11,19 +11,17 @@ function Login() {
 	const [password, setPassword] = useState('');
 	const dispatch = useDispatch();
 	const user = useSelector((state) => state.user.value);
-
+	const [state, setState] = useState([
+		{ id: 'mail', value: '' },
+		{ id: 'password', value: '' },
+	]);
+	const [error, setError] = useState('');
+	state.erreurFonction = (reason) => {
+		setError(reason);
+	};
 	const handleSubmit = () => {
-		//if(email != "" && password != "") {
-		dispatch(
-			login({
-				name: 'test',
-				status: 2002,
-				id: '0',
-				token: 'defaultToken',
-			})
-		);
-		navigate('/Home');
-		//}
+		dispatch(login(state));
+		navigate('/');
 	};
 	return (
 		<div className="login">
@@ -36,6 +34,7 @@ function Login() {
 				<div className="form">
 					<h1 className="title">Bienvenue</h1>
 					<h2 className="subtitle">bla bla bla</h2>
+					<p>{error}</p>
 					<div className="input-container ic1">
 						<input
 							id="email"
