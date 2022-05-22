@@ -36,15 +36,40 @@ function SignupAsRecruiter() {
 			label: 'Confirmer le mot de passe :',
 		},
 	];
+
 	const isValid = (state) => {
 		const password = state.find((input) => input.id == 'password');
 		const confirmedPassword = state.find(
 			(input) => input.id == 'confirmed-password'
 		);
+		const name = state.find((input) => input.id == 'name');
+		const firstname = state.find((input) => input.id == 'firstname');
+		const email = state.find((input) => input.id == 'email');
+		const company = state.find((input) => input.id == 'company-name');
+		const emptyFieldName = name.value == '' && firstname.value == '';
+		const emptyFieldMail = email.value == '';
+		const emptyFieldCompany = company.value == '';
+		const emptyFieldMDP =
+			password.value == '' && confirmedPassword.value == '';
 		if (password.value != confirmedPassword.value) {
-			return 'password';
+			state.erreurFonction('Les mots de passe ne correspondent pas');
+			return false;
+		} else if (emptyFieldName) {
+			state.erreurFonction(
+				'Vous devez remplir les champs Nom et Prénom.'
+			);
+			return false;
+		} else if (emptyFieldMail) {
+			state.erreurFonction('Vous devez remplir le champ Email.');
+			return false;
+		} else if (emptyFieldCompany) {
+			state.erreurFonction('Vous devez remplir le champ Entreprise.');
+			return false;
+		} else if (emptyFieldMDP) {
+			state.erreurFonction('Vous devez remplir les champs Mot de passe.');
+			return false;
 		} else {
-			return 'ok';
+			return true;
 		}
 	};
 

@@ -35,8 +35,17 @@ export const userSlice = createSlice({
 			state.value.status = 2000;
 		},
 		signupAsRecruiter: (state, action) => {
-			console.log(action.payload);
-			//state.value = action.payload;
+			post(
+				'signupAsRecruiter',
+				action.payload,
+				(res) => {
+					console.log(res);
+				},
+				(e) => console.log(e)
+			);
+			state.value.first_name = action.payload[0].value;
+			state.value.name = action.payload[0].value;
+			state.value.status = 2001;
 		},
 		logout: (state) => {
 			state.value = initialValue;

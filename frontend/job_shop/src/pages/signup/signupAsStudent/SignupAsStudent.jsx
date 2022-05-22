@@ -43,8 +43,7 @@ function SignupAsStudent() {
 		const emptyFieldName = name.value == '' && firstname.value == '';
 		const emptyFieldMail = email.value == '';
 		const emptyFieldMDP =
-			email.value == '' && confirmedPassword.value == '';
-		console.log(emptyFieldMDP);
+			password.value == '' && confirmedPassword.value == '';
 		if (password.value != confirmedPassword.value) {
 			state.erreurFonction('Les mots de passe ne correspondent pas');
 			return false;
@@ -57,9 +56,7 @@ function SignupAsStudent() {
 			state.erreurFonction('Vous devez remplir le champ Email.');
 			return false;
 		} else if (emptyFieldMDP) {
-			state.erreurFonction(
-				'Vous devez remplir les champs relatif à votre mot de passe.'
-			);
+			state.erreurFonction('Vous devez remplir les champs Mot de passe.');
 			return false;
 		} else {
 			return true;
