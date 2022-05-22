@@ -1,92 +1,96 @@
 .signup {
-    background-color: var(--main-color);
-    border-radius: var(--small-corner);
-    box-sizing: border-box;
-    text-align: start;
-    width: 70%;
-    height: 90%;
-    padding: 4%;
-    display:inline-block;
-    position: relative;
+	background-color: var(--main-color);
+	border-radius: var(--small-corner);
+	box-sizing: border-box;
+	text-align: start;
+	width: 70%;
+	height: 90%;
+	padding: 4%;
+	display: inline-block;
+	position: relative;
 }
-.title{
+.title {
 }
-.subtitle{
-    color:var(--light-color) ;
+.subtitle {
+	color: var(--light-color);
 }
 .input-container {
-    height: 50px;
-    position: relative;
-    width: 100%;
+	height: 50px;
+	position: relative;
+	width: 100%;
 }
 .signup-input {
-    background-color: var(--dark-color);
-    border-radius: var(--small-corner);
-    border: 0;
-    box-sizing: border-box;
-    color: var(--light-color);
-    font-size: 18px;
-    height: 100%;
-    outline: 0;
-    padding: 4px 20px 0;
-    width: 100%;
+	background-color: var(--dark-color);
+	border-radius: var(--small-corner);
+	border: 0;
+	box-sizing: border-box;
+	color: var(--light-color);
+	font-size: 18px;
+	height: 100%;
+	outline: 0;
+	padding: 4px 20px 0;
+	width: 100%;
 }
 .signup-cut {
-    background-color: var(--main-color);
-    border-radius: 10px;
-    height: 20px;
-    left: 20px;
-    position: absolute;
-    top: -20px;
-    transform: translateY(0);
-    transition: transform 200ms;
-    width: 170px;
+	background-color: var(--main-color);
+	border-radius: 10px;
+	height: 20px;
+	left: 20px;
+	position: absolute;
+	top: -20px;
+	transform: translateY(0);
+	transition: transform 200ms;
+	width: 170px;
 }
 
 .signup-input:focus ~ .signup-cut,
 .signup-input:not(:placeholder-shown) ~ .signup-cut {
-transform: translateY(8px);
+	transform: translateY(8px);
 }
 
 .placeholder {
-color: var(--main-color);
-font-family: sans-serif;
-left: 20px;
-line-height: 14px;
-pointer-events: none;
-position: absolute;
-transform-origin: 0 50%;
-transition: transform 200ms, color 200ms;
-top: 20px;
+	color: var(--main-color);
+	font-family: sans-serif;
+	left: 20px;
+	line-height: 14px;
+	pointer-events: none;
+	position: absolute;
+	transform-origin: 0 50%;
+	transition: transform 200ms, color 200ms;
+	top: 20px;
 }
 
 .signup-input:focus ~ .placeholder,
 .signup-input:not(:placeholder-shown) ~ .placeholder {
-transform: translateY(-30px) translateX(10px) scale(0.75);
+	transform: translateY(-30px) translateX(10px) scale(0.75);
 }
 
 .signup-input:not(:placeholder-shown) ~ .placeholder {
-    color: var(--main-color);
+	color: var(--main-color);
 }
 
 .signup-input:focus ~ .placeholder {
-color: var(--white-color);
+	color: var(--white-color);
 }
-.pages{
-    text-align: center;
-    margin-top: 2vh;
+.pages {
+	text-align: center;
+	margin-top: 2vh;
 }
-.page{
-    color: var(--extra-color);
-    margin-right: 1vw;
-    display: inline;
-    cursor: pointer;
+.page {
+	color: var(--extra-color);
+	margin-right: 1vw;
+	display: inline;
+	cursor: pointer;
 }
 
-.submit-button{
-    position: absolute;
-    bottom: 0;
-    width: 200px;
-    left: calc(50% - 100px);
-    transform: translateY(28px);
+.submit-button {
+	position: absolute;
+	bottom: 0;
+	width: 200px;
+	left: calc(50% - 100px);
+	transform: translateY(28px);
+}
+
+.errorStack {
+	color: #81e0ca;
 }

@@ -37,10 +37,32 @@ function SignupAsStudent() {
 		const confirmedPassword = state.find(
 			(input) => input.id == 'confirmed-password'
 		);
+		const name = state.find((input) => input.id == 'name');
+		const firstname = state.find((input) => input.id == 'firstname');
+		const email = state.find((input) => input.id == 'email');
+		const emptyFieldName = name.value == '' && firstname.value == '';
+		const emptyFieldMail = email.value == '';
+		const emptyFieldMDP =
+			email.value == '' && confirmedPassword.value == '';
+		console.log(emptyFieldMDP);
 		if (password.value != confirmedPassword.value) {
-			return 'password';
+			state.erreurFonction('Les mots de passe ne correspondent pas');
+			return false;
+		} else if (emptyFieldName) {
+			state.erreurFonction(
+				'Vous devez remplir les champs Nom et Prénom.'
+			);
+			return false;
+		} else if (emptyFieldMail) {
+			state.erreurFonction('Vous devez remplir le champ Email.');
+			return false;
+		} else if (emptyFieldMDP) {
+			state.erreurFonction(
+				'Vous devez remplir les champs relatif à votre mot de passe.'
+			);
+			return false;
 		} else {
-			return 'ok';
+			return true;
 		}
 	};
 

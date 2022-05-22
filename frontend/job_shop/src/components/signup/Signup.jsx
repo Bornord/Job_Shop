@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { signupAsRecruiter, signupAsStudent } from '../../logic/features/user';
 import './Signup.scss';
 
-function Signup({ status, inputs, error2, title, subtitle, isValid }) {
+function Signup({ status, inputs, errorStack, title, subtitle, isValid }) {
 	const numberOfInputPerPage = 5;
 	let _pages = [{ start: 0, end: numberOfInputPerPage, isCurrent: true }];
 	for (let i = 1; i < inputs.length / numberOfInputPerPage; i++) {
@@ -22,8 +22,7 @@ function Signup({ status, inputs, error2, title, subtitle, isValid }) {
 			return { id: input.id, value: '' };
 		})
 	);
-	console.log(error2);
-	const [error, setError] = useState('test');
+	const [error, setError] = useState(errorStack);
 	const [pages, setPages] = useState(_pages);
 	const dispatch = useDispatch();
 	let navigate = useNavigate();
@@ -52,14 +51,10 @@ function Signup({ status, inputs, error2, title, subtitle, isValid }) {
 		});
 	};
 	const handleSubmit = () => {
-		if (isValid(state) === 'ok') {
+		if (isValid(state)) {
 			const f = status == 2000 ? signupAsStudent : signupAsRecruiter;
 			dispatch(f(state));
-			// state.erreur = FONCTION (texte)
-			// DISPATCH (ENVOI SERVEUR)
 			navigate('/');
-		} else if (isValid(state) === 'password') {
-			const test = state.erreurFonction('problème de mot de passe');
 		}
 	};
 	return (
@@ -75,7 +70,7 @@ function Signup({ status, inputs, error2, title, subtitle, isValid }) {
 		>
 			<h1 className="title">{title}</h1>
 			<h2 className="subtitle">{subtitle}</h2>
-			<p>Test d'erreur : {error}</p>
+			<p className="errorStack">{error}</p>
 			<form
 				onSubmit={(e) => {
 					e.preventDefault();
