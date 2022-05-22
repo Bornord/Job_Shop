@@ -44,3 +44,5 @@ Pour le frontend
     > yarn add sass
 -   ajouter le package fa-icone
     > yarn add react-icons
+-   ajouter le package de perisitance des données de redux-persist
+    > npm install --save redux-persist

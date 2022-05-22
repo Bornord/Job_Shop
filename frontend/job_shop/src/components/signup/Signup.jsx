@@ -4,6 +4,7 @@ import { BsCircle, BsCircleFill } from 'react-icons/bs';
 import SelectButton2 from '../../components/buttons/selectButton2/SelectButton2';
 import { useNavigate } from 'react-router-dom';
 import { signupAsRecruiter, signupAsStudent } from '../../logic/features/user';
+import { acquireToken } from '../../logic/features/token';
 import './Signup.scss';
 
 function Signup({ status, inputs, errorStack, title, subtitle, isValid }) {
@@ -30,6 +31,14 @@ function Signup({ status, inputs, errorStack, title, subtitle, isValid }) {
 	state.erreurFonction = (reason) => {
 		setError(reason);
 	};
+	state.handleTokens = (token1, token2) => {
+		dispatch(acquireToken);
+	};
+
+	// {
+	// dispatch(acquireToken(argument donnée par le backend))
+	// à mettre dans le state, pour le passer aux composants reducers token
+	// }
 
 	const handleInputs = (id, value) => {
 		setState((prevState) => {
@@ -57,6 +66,7 @@ function Signup({ status, inputs, errorStack, title, subtitle, isValid }) {
 			navigate('/');
 		}
 	};
+
 	return (
 		<div
 			className="signup"

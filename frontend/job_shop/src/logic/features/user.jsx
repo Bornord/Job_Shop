@@ -26,6 +26,9 @@ export const userSlice = createSlice({
 				action.payload,
 				(res) => {
 					state.value.status = 2002;
+					const token1 = 'abc1';
+					const token2 = 'def2';
+					action.payload.handleTokens(token1, token2);
 				},
 				(e) => action.payload.erreurFonction(e)
 			);

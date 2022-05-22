@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { post } from './../api/api';
 
 const initialValue = {
 	accessToken: 'defaultAccessToken',
@@ -12,6 +11,7 @@ export const userSlice = createSlice({
 	},
 	reducers: {
 		acquireToken: (state, action) => {
+			console.log(action.payload);
 			state.value = action.payload;
 		},
 		deleteToken: (state) => {
