@@ -16,9 +16,9 @@ function Home() {
 			<div style={{ color: themeColor }}>
 				<p>Color : {themeColor}</p>
 				<h1>Voici le home</h1>
-				<p>Name: {user.name}</p>
-				<p>Age:{user.age}</p>
-				<p>Email:{user.email}</p>
+				<p>token1: {user.accessToken}</p>
+				<p>token2: {user.refreshToken}</p>
+				<p>Email:{user.mail}</p>
 			</div>
 			<p> ----- </p>
 			<button

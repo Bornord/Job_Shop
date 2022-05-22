@@ -12,6 +12,7 @@ import reportWebVitals from './config/reportWebVitals';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import userReducer from './logic/features/user';
+import tokenReducer from './logic/features/token';
 import themeReducer from './logic/features/theme';
 import Welcome from './pages/welcome/Welcome';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -25,6 +26,7 @@ import storage from 'redux-persist/lib/storage';
 const reducers = combineReducers({
 	user: userReducer,
 	theme: themeReducer,
+	token: tokenReducer,
 });
 const persistConfig = {
 	key: 'root',

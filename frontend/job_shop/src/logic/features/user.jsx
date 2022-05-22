@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { post } from './../api/api';
-import { useDispatch, useSelector } from 'react-redux';
 
 const initialValue = {
 	name: '',
@@ -11,6 +10,8 @@ const initialValue = {
 	company: '',
 	status: 1999, //1999 -> non identifié ,2000 -> student , 2001 -> recruteur , 2002 -> admin
 	id: '0',
+	accessToken: 'defaultAccessToken',
+	refreshToken: 'defaultRefreshToken',
 };
 
 export const userSlice = createSlice({
@@ -20,43 +21,53 @@ export const userSlice = createSlice({
 	},
 	reducers: {
 		login: (state, action) => {
-			console.log(action.payload);
 			post(
 				'login',
 				action.payload,
-				(res) => {
-					state.value.status = 2002;
-					const token1 = 'abc1';
-					const token2 = 'def2';
-					action.payload.handleTokens(token1, token2);
-				},
+				(res) => {},
 				(e) => action.payload.erreurFonction(e)
 			);
+			state.value.status = 2001;
+			const token1 = 'abc1';
+			const token2 = 'def2';
+			state.value.accessToken = token1;
+			state.value.refreshToken = token2;
+			state.value.mail = action.payload[2].value;
 		},
 		signupAsStudent: (state, action) => {
 			post(
 				'signupAsStudent',
 				action.payload,
-				(res) => {
-					state.value.first_name = action.payload[0].value;
-					state.value.name = action.payload[0].value;
-					state.value.status = 2000;
-				},
+				(res) => {},
 				(e) => action.payload.erreurFonction(e)
 			);
+			state.value.first_name = action.payload[0].value;
+			state.value.name = action.payload[0].value;
+			state.value.status = 2000;
+			const token1 = 'abc1';
+			const token2 = 'def2';
+			state.value.accessToken = token1;
+			state.value.refreshToken = token2;
+			console.log(action.payload);
+
+			state.value.mail = action.payload[2].value;
 		},
 		signupAsRecruiter: (state, action) => {
 			post(
 				'signupAsRecruiter',
 				action.payload,
-				(res) => {
-					console.log(res);
-					state.value.first_name = action.payload[0].value;
-					state.value.name = action.payload[0].value;
-					state.value.status = 2001;
-				},
+				(res) => {},
 				(e) => action.payload.erreurFonction(e)
 			);
+			state.value.first_name = action.payload[0].value;
+			state.value.name = action.payload[0].value;
+			state.value.status = 2001;
+			const token1 = 'abc1';
+			const token2 = 'def2';
+			state.value.accessToken = token1;
+			state.value.refreshToken = token2;
+			console.log(action.payload);
+			state.value.mail = action.payload[2].value;
 		},
 		logout: (state) => {
 			state.value = initialValue;

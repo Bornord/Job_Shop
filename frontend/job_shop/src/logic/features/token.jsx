@@ -4,7 +4,8 @@ const initialValue = {
 	accessToken: 'defaultAccessToken',
 	refreshToken: 'defaultRefreshToken',
 };
-export const userSlice = createSlice({
+
+export const tokenSlice = createSlice({
 	name: 'token',
 	initialState: {
 		value: initialValue,
@@ -20,6 +21,6 @@ export const userSlice = createSlice({
 	},
 });
 
-export const { acquireToken, deleteToken } = userSlice.actions;
+export const { acquireToken, deleteToken } = tokenSlice.actions;
 
-export default userSlice.reducer;
+export default tokenSlice.reducer;

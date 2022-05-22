@@ -28,17 +28,15 @@ function Signup({ status, inputs, errorStack, title, subtitle, isValid }) {
 	const dispatch = useDispatch();
 	let navigate = useNavigate();
 
+	// définition de callbacks
 	state.erreurFonction = (reason) => {
 		setError(reason);
 	};
-	state.handleTokens = (token1, token2) => {
-		dispatch(acquireToken);
-	};
 
-	// {
-	// dispatch(acquireToken(argument donnée par le backend))
-	// à mettre dans le state, pour le passer aux composants reducers token
-	// }
+	// ça marche pas
+	// state.handleTokens = (token1, token2) => {
+	// 	dispatch(acquireToken(token1));
+	// };
 
 	const handleInputs = (id, value) => {
 		setState((prevState) => {
