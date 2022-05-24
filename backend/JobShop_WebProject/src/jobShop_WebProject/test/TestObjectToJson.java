@@ -3,6 +3,7 @@ package jobShop_WebProject.test;
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -37,9 +38,30 @@ public class TestObjectToJson {
 		//System.out.println("Json to Object Student : " + JsonConverter.toObject(JsonConverter.toJson(s)));
 		
 	}
+	/*
+	 * pas utilisée
+	 */
+	public static String toListJson(Collection<Object> objects) {
+		String j = "{";
+		int i = 0;
+		for (Object object : objects) {
+			j+="\"e"+ i+"\":"+JsonConverter.toJson(object)+",";
+			i++;
+		}
+		return j+"}";		
+	}
+	
+	private static void testListSurvey() {
+		Collection<Object> allSurveys = new ArrayList<>();
+		allSurveys.add(new FirstQuestion(1,  "yo"));
+		allSurveys.add(new FirstQuestion(3, "survey3"));
+		String j = toListJson((Collection<Object>)allSurveys);
+		System.out.println(j);
+	}
 	
 	public static void main(String args[]) {
-		testToObject();
+		//testToObject();
+		testListSurvey();
 	}
 
 }

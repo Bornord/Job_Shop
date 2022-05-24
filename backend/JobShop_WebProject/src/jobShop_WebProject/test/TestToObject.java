@@ -9,6 +9,7 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonClassDescription;
 
+import jobShop_WebProject.Admin;
 import jobShop_WebProject.Profile;
 import jobShop_WebProject.Question;
 import jobShop_WebProject.Response;
@@ -36,7 +37,7 @@ public class TestToObject {
 		System.out.println("to Json : "+ toJson);
 		Map<String, Object> map = JsonConverter.toObject(toJson);
 		System.out.println("to map : " + map);
-		//System.out.println("to Profile : " +ObjectConverter.toProfile(map).toString() );
+		System.out.println("to Profile : " +ObjectConverter.toProfile(map, true).toString() );
 	}
 	
 	private static void testStudent() {
@@ -49,8 +50,31 @@ public class TestToObject {
 		System.out.println("to Student : " + student.getName() + " " + student.getPassword());
 	}
 	
+	public static void testQuestion() {
+		//pour addQuestionToQuestion
+		String questionJson = "{\"id\":93,\"question\":{\"id\":0,\"title\":\"Votre domain ?\",\"responses\":[{\"id\":0,\"placeholder\":\"IT\",\"isSelected\":false,\"nextQuestion\":{\"id\":0,\"title\":\"Les languages ?\",\"responses\":[{\"id\":0,\"placeholder\":\"C\",\"isSelected\":false,},{\"id\":0,\"placeholder\":\"Python\",\"isSelected\":false,},]}},{\"id\":0,\"placeholder\":\"Prof\",\"isSelected\":false,},{\"id\":0,\"placeholder\":\"artist\",\"isSelected\":false,},]}}";
+		Map<String, Object> mapQ = JsonConverter.toObject(questionJson);
+		int idPrevious = (int)((Map<String, Object>)mapQ.get("id")).get("Integer");
+		Question q = ObjectConverter.toQuestion((Map<String, Object>)mapQ.get("question"));
+		System.out.println("question : " + q.toString() + ", previous question id : " + idPrevious);
+	}
+	
+	private static void testAddSurvey() {
+		String questionJson = "{\"name\":\"nameSurvey\",\"question\":{\"id\":0,\"title\":\"Votre domain ?\",\"responses\":[{\"id\":0,\"placeholder\":\"IT\",\"isSelected\":false,\"nextQuestion\":{\"id\":0,\"title\":\"Les languages ?\",\"responses\":[{\"id\":0,\"placeholder\":\"C\",\"isSelected\":false,},{\"id\":0,\"placeholder\":\"Python\",\"isSelected\":false,},]}},{\"id\":0,\"placeholder\":\"Prof\",\"isSelected\":false,},{\"id\":0,\"placeholder\":\"artist\",\"isSelected\":false,},]}}";
+		Map<String, Object> mapQ = JsonConverter.toObject(questionJson);
+		String name = (String)((Map<String, Object>)mapQ.get("name")).get("String");
+		Question q = ObjectConverter.toQuestion((Map<String, Object>)mapQ.get("question"));
+		System.out.println("first question : " + q.toString() + ", survey name : " + name);
+	
+	}
+	
 	public static void main(String[] args) {
 		//testProfile();
+		Admin a = new Admin("Akina", "Renard","akinaLaBoss", "pwdadmin", 0, new Date());
+		System.out.println(JsonConverter.toJson(a));
 		testStudent();
+		//testQuestion();
+		//testAddSurvey();
+		
 	}
 }

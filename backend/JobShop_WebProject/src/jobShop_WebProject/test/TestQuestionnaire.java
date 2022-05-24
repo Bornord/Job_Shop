@@ -91,7 +91,7 @@ public class TestQuestionnaire {
 	public static void main(String[] args) {
 		//testMatch();
 		//testMatch2();
-		//testQuestion();
-		ServerPostCases.addQuestionToEnd(null, null, new DataBase());
+		testQuestion();
+		//ServerPostCases.addQuestionToEnd(null, null, new DataBase());
 	}
 }

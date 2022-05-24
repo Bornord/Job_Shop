@@ -11,7 +11,11 @@ public class Response {
 	private String user_response;
 	private boolean isSelected;
 	
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.EAGER, optional = true)
+	//@Cascade(CascadeType.SAVE_UPDATE)
+	private Question previousQuestion;
+	
+	@ManyToOne
 	private Question nextQuestion;
 	
 	public Response(String placeholder) {
@@ -33,6 +37,13 @@ public class Response {
 
 	public String getPlaceholder() {
 		return placeholder;
+	}
+	public Question getPreviousQuestion() {
+		return previousQuestion;
+	}
+	
+	public void setPreviousQuestion(Question previousQuestion) {
+		this.previousQuestion = previousQuestion;
 	}
 
 	public void setPlaceholder(String placeholder) {

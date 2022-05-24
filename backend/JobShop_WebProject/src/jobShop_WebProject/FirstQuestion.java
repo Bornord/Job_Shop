@@ -13,6 +13,12 @@ public class FirstQuestion {
 	private int idFirstQuestion;
 	private String nameSurvey;
 	
+	public FirstQuestion() {}
+	public FirstQuestion(int id, String name){
+		idFirstQuestion = id;
+		nameSurvey = name;
+	}
+	
 	public int getId() {
 		return id;
 	}

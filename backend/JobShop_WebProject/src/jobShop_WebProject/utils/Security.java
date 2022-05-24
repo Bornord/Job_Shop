@@ -14,7 +14,7 @@ import jobShop_WebProject.*;
 
 public class Security {
 	
-	public static User login(String json, DataBase database) {
+	public static User login(String json, DataBase database, boolean bcrypt) {
 		User u = null;
 		//System.out.println("*****debug******* " + json);
 		Map<String, Object> map = JsonConverter.toObject(json);
@@ -23,6 +23,23 @@ public class Security {
 		if(pwd != null && mail != null) {
 			u = database.findWithLogin((String)mail.get("String"));
 			if(BCrypt.checkpw((String) pwd.get("String"), u.getPassword())) {
+				u.setAccessToken(createAccessToken(u));
+				u.setRefreshToken(createRefreshToken(u));
+				return u;
+			}
+		}
+		return null;
+	}
+	
+	public static User login(String json, DataBase database) {
+		User u = null;
+		//System.out.println("*****debug******* " + json);
+		Map<String, Object> map = JsonConverter.toObject(json);
+		Map<String, Object> pwd = (Map<String, Object>)map.get("password") ;
+		Map<String, Object> mail = (Map<String, Object>)map.get("login") ;
+		if(pwd != null && mail != null) {
+			u = database.findWithLogin((String)mail.get("String"));
+			if(u.getPassword().equals((String) pwd.get("String"))) {
 				u.setAccessToken(createAccessToken(u));
 				u.setRefreshToken(createRefreshToken(u));
 				return u;
@@ -56,14 +73,14 @@ public class Security {
 		return token;
 	}
 	
-	public static Request logout(String json) {
+	public static Request logout(String json, DataBase main) {
 		//detruire l'accestoken et refreshtoken
 		Map<String, Object> map = JsonConverter.toObject(json);
-		/*if(((Map<String, Object>)map.containsKey("role")).get("String").equals("))
-		User u =*/ 
+		int id = (int)((Map<String, Object>)map.get("id")).get("Integer");
+		User u = main.findUser(id);
+		u.destroyTokens();
 		return new Request(json, 200);
 	}
-	
 	public static User signIn(String json, DataBase database) {
 		User user = null;
 		Map<String, Object> map = JsonConverter.toObject(json);
@@ -74,14 +91,15 @@ public class Security {
 			Date date = new Date();
 			Map<String, Object> role = (Map<String, Object>)map.get("role") ;
 			String pwd = (String)((Map<String, Object>)map.get("password")).get("String") ;
-			String hashed_pwd = BCrypt.hashpw(pwd, BCrypt.gensalt());
+			//String hashed_pwd = BCrypt.hashpw(pwd, BCrypt.gensalt());
 			//!!!!role > int
 			if(role.get("Integer").equals(2002)) {
-				user = new Admin(name,surname, mail, hashed_pwd, 0, date);
+				user = new Admin(name,surname, mail, pwd, 0, date);
 			} else if(role.get("Integer").equals(2001)) {
-				user = new Recruiter(name,surname, mail, hashed_pwd, 0, date, "capgemini");
+				String entreprise = (String)((Map<String, Object>)map.get("entreprise")).get("String") ;
+				user = new Recruiter(name,surname, mail, pwd, 0, date, entreprise);
 			} else if(role.get("Integer").equals(2000)) {
-				user = new Student(name,surname, mail, hashed_pwd, 0, date);
+				user = new Student(name,surname, mail, pwd, 0, date);
 			} else {//1999
 				return null;
 				//user = new User(name,surname, mail, pwd, 0, LabelRole.UNLOGGED, date);
@@ -93,6 +111,13 @@ public class Security {
 			return user;	
 		}	
 		return null;
+	}
+	public static User signIn(String json, DataBase database,boolean bcrypt) {
+		User u = signIn(json, database);
+		if(bcrypt) {
+			u.setPassword(BCrypt.hashpw(u.getPassword(), BCrypt.gensalt()));
+		}
+		return u;
 	}
 
 	

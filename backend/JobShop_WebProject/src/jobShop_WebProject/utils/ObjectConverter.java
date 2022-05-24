@@ -11,12 +11,15 @@ import java.util.Locale;
 import java.util.Map;
 
 import jobShop_WebProject.Admin;
+import jobShop_WebProject.Blog;
+import jobShop_WebProject.LabelRole;
 import jobShop_WebProject.Profile;
 import jobShop_WebProject.Question;
 import jobShop_WebProject.Recruiter;
 import jobShop_WebProject.Response;
 import jobShop_WebProject.Student;
 import jobShop_WebProject.SurveyAnswer;
+import jobShop_WebProject.User;
 
 public class ObjectConverter {
 
@@ -96,6 +99,16 @@ public class ObjectConverter {
 		return ret;
 	}
 
+	public static User toUser(Map<String, Object> map) {
+		Map<String, String> infos = getInfoUser(map);
+		/*(LabelRole)((Map<String, Object>) map.get("role")).get("String")
+		//User s = new User(infos.get("name"), infos.get("surname"),
+				infos.get("login"), infos.get("password"),
+				0, , new Date());*/
+				User s = null;
+		return s;
+	}
+	
 	public static Student toStudent(Map<String, Object> map) {
 		Map<String, String> infos = getInfoUser(map);
 		Student s = new Student(infos.get("name"), infos.get("surname"),
@@ -116,5 +129,13 @@ public class ObjectConverter {
 		Admin a = new Admin(infos.get("name"), infos.get("surname"),
 				infos.get("login"), infos.get("password"), 0, new Date());
 		return a;
+	}
+
+	public static Blog toBlog(Map<String, Object> map) {
+		String title = (String)((Map<String, Object>) map.get("title")).get("String");
+		String subtitle = (String)((Map<String, Object>) map.get("subtitle")).get("String");
+		String content = (String)((Map<String, Object>) map.get("content")).get("String");
+		int idAuthor = (int)((Map<String, Object>) map.get("idAuthor")).get("Integer");
+		return new Blog(title, subtitle, content, new Date(), idAuthor);
 	}
 }

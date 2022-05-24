@@ -2,6 +2,7 @@ package jobShop_WebProject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,14 +16,12 @@ import jobShop_WebProject.utils.Security;
 public class ServerPostCases {
 
 	public static void addQuestionToQuestion(HttpServletRequest request,HttpServletResponse response, DataBase main) {
-		
-		String questionJson = readJson(request); 
-		//String questionJson = "{\"id\":0\"question\":{\"id\":0,\"title\":\"Votre domain ?\",\"responses\":[{\"id\":0,\"placeholder\":\"IT\",\"isSelected\":false,\"nextQuestion\":{\"id\":0,\"title\":\"Les languages ?\",\"responses\":[{\"id\":0,\"placeholder\":\"C\",\"isSelected\":false,},{\"id\":0,\"placeholder\":\"Python\",\"isSelected\":false,},]}},{\"id\":0,\"placeholder\":\"Prof\",\"isSelected\":false,},{\"id\":0,\"placeholder\":\"artist\",\"isSelected\":false,},]}}";
-		int previous = 0;//-> récupérer l'id
-		//TODO separer les 2 élements dans le json
-		Map<String, Object> question =  JsonConverter.toObject(questionJson); 
-		
-		main.addQuestionToQuestion(ObjectConverter.toQuestion(question), previous);
+		String questionJson = readJson(request);	//{idP:..., question :{...}} 
+		Map<String, Object> questionMap =  JsonConverter.toObject(questionJson); 
+		//appeler idP dans le json pour différencier de id question
+		int previous = (int)((Map<String, Object>)questionMap.get("idP")).get("Integer");
+		Question question = ObjectConverter.toQuestion((Map<String, Object>)questionMap.get("question"));
+		main.addQuestionToQuestion(question, previous);
 		
 	}
 	
@@ -37,23 +36,23 @@ public class ServerPostCases {
 		return jb.toString();
 	}
 
-	public static void addSurvey(HttpServletRequest request, HttpServletResponse response, DataBase main) {
+	public static void addSurvey(HttpServletRequest request, HttpServletResponse response, DataBase main) throws IOException {
 		String j = readJson(request);//nom survey et 1ère question
  		Map<String, Object> nameAndQuestion = JsonConverter.toObject(j);
- 		//TODO
- 		String name = "";//recuperer le nom!!
- 		Question question1 = ObjectConverter.toQuestion(nameAndQuestion);//sans le name!!
- 		
- 		FirstQuestion firstQuestion = new FirstQuestion();
- 		firstQuestion.setIdFirstQuestion(question1.getId());
- 		firstQuestion.setNameSurvey(name);
- 		main.addFirstQuestion(firstQuestion, question1);
-		
+ 		//on recupère le nom
+ 		String name = (String)((Map<String, Object>)nameAndQuestion.get("name")).get("String");
+ 		Question question1 = ObjectConverter.toQuestion((Map<String, Object>)nameAndQuestion.get("question"));
+ 		//TransactionRolledBackException
+ 		Question qWithId = main.addQuestion(question1);
+ 		//main.addResponse(qWithId.getId(), question1.getResponses().get(0));
+ 		FirstQuestion firstQuestion = new FirstQuestion(qWithId.getId(), name);
+ 		main.addFirstQuestion(firstQuestion);
+		printResp(response, "{id:"+qWithId.getId()+",name:\""+name+"\"}");
 	}
 
 	public static void addQuestionToEnd(HttpServletRequest request, HttpServletResponse response, DataBase main) {
-		//String questionJson = readJson(request); 
-		String questionJson = "{\"id\":0,\"title\":\"Votre domain ?\",\"responses\":[{\"id\":0,\"placeholder\":\"IT\",\"isSelected\":false,\"nextQuestion\":{\"id\":0,\"title\":\"Les languages ?\",\"responses\":[{\"id\":0,\"placeholder\":\"C\",\"isSelected\":false,},{\"id\":0,\"placeholder\":\"Python\",\"isSelected\":false,},]}},{\"id\":0,\"placeholder\":\"Prof\",\"isSelected\":false,},{\"id\":0,\"placeholder\":\"artist\",\"isSelected\":false,},]}";
+		String questionJson = readJson(request); 
+		//String questionJson = "{\"id\":0,\"title\":\"Votre domain ?\",\"responses\":[{\"id\":0,\"placeholder\":\"IT\",\"isSelected\":false,\"nextQuestion\":{\"id\":0,\"title\":\"Les languages ?\",\"responses\":[{\"id\":0,\"placeholder\":\"C\",\"isSelected\":false,},{\"id\":0,\"placeholder\":\"Python\",\"isSelected\":false,},]}},{\"id\":0,\"placeholder\":\"Prof\",\"isSelected\":false,},{\"id\":0,\"placeholder\":\"artist\",\"isSelected\":false,},]}";
 		Map<String, Object> questionO =  JsonConverter.toObject(questionJson); 
 		main.addQuestionToEnd(questionO);
 	}
@@ -68,11 +67,14 @@ public class ServerPostCases {
 
 	public static void test(HttpServletRequest request, HttpServletResponse response, DataBase main) throws IOException {
 		String j = readJson(request);
-		printResp(response, j);
+		System.out.println("***************\n" + j + "\n\n_\n******************");
+		Map<String, Object> map = JsonConverter.toObject(j);
+		String ouioui = (String)((Map<String, Object>)map.get("test")).get("String");
+		
+		printResp(response, "{ \"retour\":\"" + ouioui +" beaucoup\"}");
 	}
 
 	public static void addProfileStudent(HttpServletRequest request, HttpServletResponse response, DataBase main) throws IOException {
-		// TODO réception json de Profile?
 		String j = readJson(request);
 		Map<String, Object> map = JsonConverter.toObject(j);
 		Profile profile = ObjectConverter.toProfile(map, false);
@@ -83,7 +85,6 @@ public class ServerPostCases {
 	}
 
 	public static void addProfileRecruiter(HttpServletRequest request, HttpServletResponse response, DataBase main) throws IOException {
-		// TODO toProfile
 		String j = readJson(request);
 		Map<String, Object> map = JsonConverter.toObject(j);
 		Profile profile = ObjectConverter.toProfile(map, true);
@@ -95,8 +96,9 @@ public class ServerPostCases {
 	}
 	
 	private static void printResp(HttpServletResponse response, String toPrint) throws IOException {
-		response.setContentType("text/html");
-		response.getWriter().println("<html><body>" + toPrint + "</body></html>");
+		response.setContentType("application/json");
+		response.reset();
+		response.getWriter().println(toPrint);
 	}
 
 	public static void login(HttpServletRequest request, HttpServletResponse response, DataBase main) throws IOException {
@@ -105,7 +107,7 @@ public class ServerPostCases {
 		printResp(response, JsonConverter.toJson(u));
 	}
 	
-	public static void signIn(HttpServletRequest request, HttpServletResponse response, DataBase main) throws IOException {
+	public static void signin(HttpServletRequest request, HttpServletResponse response, DataBase main) throws IOException {
 		String j = readJson(request);
 		User u = Security.signIn(j, main);
 		printResp(response, JsonConverter.toJson(u));
@@ -113,8 +115,24 @@ public class ServerPostCases {
 
 	public static void logout(HttpServletRequest request, HttpServletResponse response, DataBase main) throws IOException {
 		String j = readJson(request);
-		Request u = Security.logout(j);
+		Request u = Security.logout(j, main);
 		printResp(response, JsonConverter.toJson(u));
+	}
+	
+	public static void signout(HttpServletRequest request, HttpServletResponse response, DataBase main) throws IOException {
+		String j = readJson(request);
+		String u = Security.signOut(j, main);
+		//quoi mettre dans response? TODO
+		//printResp(response, JsonConverter.toJson(u));
+	}
+
+	public static void addBlog(HttpServletRequest request, HttpServletResponse response, DataBase main) throws IOException {
+		String j = readJson(request);
+		Map<String, Object> map = JsonConverter.toObject(j);
+		Blog blog = ObjectConverter.toBlog(map);
+		main.addBlog(blog);
+		String idBlog = ""+blog.getId();
+		printResp(response, idBlog);
 	}
 
 }

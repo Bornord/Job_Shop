@@ -29,7 +29,6 @@ public class Server extends HttpServlet{
 	
 	public Server() {
 		super();
-		//main = new DataBase();
 	}
 	
 	@Override
@@ -40,7 +39,7 @@ public class Server extends HttpServlet{
 		//response.getWriter().println("<html><body>Helloooooo</body></html>");
 		switch(op) {
 		case "getAllQuestion" :
-			ServerGetCases.getAllQuestion(request, response, main);
+			ServerGetCases.getAllQuestions(request, response, main);
 	 		break;
 		case "addStudent" :
 			String nom = request.getParameter("nom");
@@ -82,6 +81,9 @@ public class Server extends HttpServlet{
 			request.getRequestDispatcher("viewAdmin.jsp").forward(request, response);
 			
 			break;
+		case "test":
+			ServerGetCases.test(request, response, main);
+			break;
 		case "getAllSurveys" :
 			ServerGetCases.getAllSurveys(request,response,main);
 			break;
@@ -103,8 +105,11 @@ public class Server extends HttpServlet{
 		case "test":
 			ServerPostCases.test(request, response, main);
 			break;
-		case "signIn":
-			ServerPostCases.signIn(request, response, main);
+		case "signin":
+			ServerPostCases.signin(request, response, main);
+			break;
+		case "signout":
+			ServerPostCases.signout(request, response, main);
 			break;
 		case "addQuestionToEnd" :
 			ServerPostCases.addQuestionToEnd(request, response, main);
@@ -117,6 +122,9 @@ public class Server extends HttpServlet{
 	 		break;
 	 	case "setCurrentSurvey":
 	 		ServerPostCases.setCurrentSurvey(request, response, main);
+	 		break;
+	 	case "addBlog":
+	 		ServerPostCases.addBlog(request, response, main);
 	 		break;
 	 	case "addProfileStudent" :
 	 		//faire le match
@@ -134,7 +142,7 @@ public class Server extends HttpServlet{
 	 		break;
 		 	
 		}
-		doGet(request, response);
+		//doGet(request, response);
 	}
 	
 	

@@ -103,6 +103,9 @@ public class JsonConverter {
 	
 	
 	public static String toJson(Object o) {
+		if(o == null) {
+			return "{}";
+		}
 		String res = "{";
 		try {
 			res+= withoutAccolade(o);

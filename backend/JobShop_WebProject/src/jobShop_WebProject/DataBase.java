@@ -21,13 +21,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.security.crypto.bcrypt.BCrypt;
+
+import jobShop_WebProject.utils.JsonConverter;
 import jobShop_WebProject.utils.ObjectConverter;
+import jobShop_WebProject.utils.Security;
 
 import java.util.Date;
 /**
  * classe principale contenant l'entity manager
  * @author arenard2
- *
+ * http://localhost:8080/JobShop_WebProject/
+ * http://localhost:8080/h2console
  */
 @NamedQueries({
 	@NamedQuery(name = "DataBase.findUserByLogin",
@@ -48,18 +53,29 @@ public class DataBase{
 	
 	public DataBase() {}
 	
-	//@PostConstruct	//-> ne marche pas
+	@PostConstruct
 	public void initialisation() {
-			em.persist(new Admin("Akina", "Renard","akinaLaBoss", "pwdadmin", 0, new Date()));
-			em.persist(new Admin("Paula", "Valentina","PaulaLaBoss", "aaaaaaa", 0, new Date()));
-		}
-		
+		/*String hashed_pwd = BCrypt.hashpw("test", BCrypt.gensalt());
+		System.out.println("**********\n\n\n pwd : "+hashed_pwd);*/
+		addAdmin(new Admin("Akina", "Renard","akina@yes.fr", "test", 0, new Date()));
+		/*Response  it = new Response("IT");
+		Question domain = new Question("Votre domain ?",it,new Response("Prof"),new Response("artist"));
+		Question language = new Question("Les languages ?", new Response("C"), new Response("Python"));
+		domain.appendToResponse(language, it);*/
+		//addQuestion(new Question("Votre domain ?",new Response("IT"),new Response("Prof"),new Response("artist")));
+		addAdmin(new Admin("Paula", "Valentina","PaulaL@Boss.com","testPaula", 0, new Date()));
+	}
+	
 	public void addUser(User s) {
 		em.persist(s);
 	}
 
 	public void deleteUser(User s) {
 		em.remove(s);
+	}
+	
+	public void addBlog(Blog b) {
+		em.persist(b);
 	}
 	
 	public void addOffer(Offer o) {
@@ -77,6 +93,11 @@ public class DataBase{
 	
 	public Offer findOffer(int id) {
 		return em.find(Offer.class, id);
+	}
+	
+
+	public Question findQuestion(int id) {
+		return em.find(Question.class, id);
 	}
 	
 	public Profile match(Offer o) {
@@ -193,8 +214,8 @@ public class DataBase{
 		}
 	}
 
-	public Collection<SurveyAnswer> getSurveys() {
-		return em.createQuery("from SurveyAnswer", SurveyAnswer.class).getResultList();
+	public Collection<FirstQuestion> getSurveys() {
+		return em.createQuery("from FirstQuestion", FirstQuestion.class).getResultList();
 		
 	}
 	
@@ -251,9 +272,8 @@ public class DataBase{
 		return match(profile, profiles);
 	}
 
-	public void addFirstQuestion(FirstQuestion firstQuestion, Question question) {
+	public void addFirstQuestion(FirstQuestion firstQuestion) {
 		em.persist(firstQuestion);
-		em.persist(question);
 		
 	}
 
@@ -294,5 +314,22 @@ public class DataBase{
 
 	public Collection<Blog> getBlogs() {
 		return em.createQuery("from Blog", Blog.class).getResultList();
+	}
+
+	public Question addQuestion(Question q) {
+		List<Response> resp = q.getResponses();
+		/*for (Response r : resp) {
+			addResponse(r);
+			/*if(r.getNextQuestion() != null) {
+				addQuestion(r.getNextQuestion());
+			}
+		}*/
+ 		em.persist(q);
+		return q;	//with id
+	}
+
+	public void addResponse(int id_Q, Response r) {
+		em.persist(r);
+		r.setPreviousQuestion(em.find(Question.class, id_Q));
 	}
 }

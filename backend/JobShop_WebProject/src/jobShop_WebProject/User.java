@@ -30,11 +30,11 @@ public abstract class User {
 	public User(String name, String surname, String login, String password, int id, LabelRole role, Date creationDate) {
 		super();
 		this.accessToken = null;
+		this.refreshToken = null;
 		this.name = name;
 		this.surname = surname;
 		this.login = login;
 		this.password = password;
-		//this.id = id;
 		this.role = role;
 		this.creationDate = creationDate;
 	}
@@ -60,6 +60,12 @@ public abstract class User {
 	public String getRefreshToken() {
 		return refreshToken;
 	}
+	
+	public void destroyTokens() {
+		this.accessToken = null;
+		this.refreshToken = null;
+	}
+		
 	public void setRefreshToken(String refreshToken) {
 		this.refreshToken = refreshToken;
 	}

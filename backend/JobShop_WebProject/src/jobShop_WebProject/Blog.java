@@ -20,9 +20,7 @@ public class Blog {
 	
 	public Blog() {}
 
-	public Blog(int id, String title, String subTitle, String content, Date date, int idAuthor) {
-		super();
-		this.id = id;
+	public Blog(String title, String subTitle, String content, Date date, int idAuthor) {
 		this.title = title;
 		this.subtitle = subTitle;
 		this.content = content;

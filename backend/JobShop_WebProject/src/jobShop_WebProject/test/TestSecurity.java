@@ -25,8 +25,9 @@ public class TestSecurity {
 	public static void testPwd() {
 		String hashed_pwd = BCrypt.hashpw("akina", BCrypt.gensalt());
 		System.out.println(hashed_pwd);
-		System.out.println(BCrypt.checkpw("akkygina",hashed_pwd));
-		
+		System.out.println("akkygina : " +BCrypt.checkpw("akkygina",hashed_pwd));
+		System.out.println("akina : " +BCrypt.checkpw("akina",hashed_pwd));
+	
 		//User u = Security.signIn(sJson, main);
 		//System.out.println(u);
 	}
@@ -45,9 +46,7 @@ public class TestSecurity {
 		s = new Student("Willem", "Nicolas", "wnicolas", "azezaeze", 1, new Date());
 		s2 = new Student("name", "urname", "login", "password", 0, new Date());
 		main = new DataBase();
-		User u = Security.signIn("{\"id\":0,\"name\":\"Willem\",\"surname\":\"Nicolas\",\"login\":\"wnicolas\",\"password\":\"azezaeze\","
-				+ "\"role\":\"STUDENT\",\"creationDate\":\"Tue May 17 17:43:09 CEST 2022\", }", main);
-		//testPwd();
+		testPwd();
 		/*String json = JsonConverter.toJson(s);
 		System.out.println("Json : " + json);
 		testToken(json);*/
