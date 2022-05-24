@@ -24,7 +24,10 @@ export const userSlice = createSlice({
 			post(
 				'login',
 				action.payload,
-				(res) => console.log(res),
+				(res) => {
+					console.log('test de réception');
+					console.log(res);
+				},
 				// json
 				// id, name, surname, login, password, accesToken, refreshToken, role (STUDENT | RECRUITER | ADMIN), creationDate
 				(e) => action.payload.erreurFonction(e)
@@ -40,7 +43,10 @@ export const userSlice = createSlice({
 			post(
 				'signupAsStudent',
 				action.payload,
-				(res) => console.log(res),
+				(res) => {
+					console.log('test de réception');
+					console.log(res);
+				},
 				(e) => action.payload.erreurFonction(e)
 			);
 			state.value.first_name = action.payload[0].value;
@@ -58,7 +64,10 @@ export const userSlice = createSlice({
 			post(
 				'signupAsRecruiter',
 				action.payload,
-				(res) => console.log(res),
+				(res) => {
+					console.log('test de réception');
+					console.log(res);
+				},
 				(e) => action.payload.erreurFonction(e)
 			);
 			state.value.first_name = action.payload[0].value;
