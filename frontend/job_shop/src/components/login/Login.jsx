@@ -12,7 +12,7 @@ function Login() {
 	const dispatch = useDispatch();
 	const user = useSelector((state) => state.user.value);
 	const [state, setState] = useState([
-		{ id: 'mail', value: '' },
+		{ id: 'login', value: '' },
 		{ id: 'password', value: '' },
 	]);
 	const [error, setError] = useState('');
@@ -20,7 +20,7 @@ function Login() {
 		setError(reason);
 	};
 	const handleSubmit = () => {
-		const mail = state.find((input) => input.id == 'mail');
+		const mail = state.find((input) => input.id == 'login');
 		const password2 = state.find((input) => input.id == 'password');
 		// recopie (email & password) dans la variable state.
 		// La recopie vaut "" si les champs ne sont pas remplis

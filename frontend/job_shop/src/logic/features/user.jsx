@@ -25,6 +25,8 @@ export const userSlice = createSlice({
 				'login',
 				action.payload,
 				(res) => {},
+				// json
+				// id, name, surname, login, password, accesToken, refreshToken, role (STUDENT | RECRUITER | ADMIN), creationDate
 				(e) => action.payload.erreurFonction(e)
 			);
 			state.value.status = 2001;
