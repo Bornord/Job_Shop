@@ -88,7 +88,8 @@ public class ServerPostCases {
 	 */
 	public static void setCurrentSurvey(HttpServletRequest request, HttpServletResponse response, DataBase main) throws IOException {
 		String j = readJson(request);
-		int id = (int)((Map<String, Object>)JsonConverter.toObject(j)).get("Integer");
+		Map<String, Object> map = JsonConverter.toObject(j);
+		int id = (int)((Map<String, Object>)map.get("id")).get("Integer");
 		main.updateCurrentSurvey(id);
 		printResp(response, JsonConverter.toJson(main.getCurrentSurvey()));
 	}
@@ -187,11 +188,29 @@ public class ServerPostCases {
 
 	public static void addBlog(HttpServletRequest request, HttpServletResponse response, DataBase main) throws IOException {
 		String j = readJson(request);
+		String res = "";
 		Map<String, Object> map = JsonConverter.toObject(j);
-		Blog blog = ObjectConverter.toBlog(map);
-		main.addBlog(blog);
-		String idBlog = "{id:"+blog.getId()+",idAuthor:"+blog.getIdAuthor()+"}";
-		printResp(response, idBlog);
+		
+		Blog blog = main.addBlog(ObjectConverter.toBlog(map));
+		if(blog != null) {
+			res = "{id:"+blog.getId()+",idAuthor:"+blog.getIdAuthor()+"}";
+		} else {
+			res = "{error:\"author does't exist\"}";
+		}
+		printResp(response, res);
+	}
+	/**
+	 * @param request id:... id de l'auteur du blog
+	 * @param response
+	 * @param main
+	 * @throws IOException
+	 */
+	public static void getBlogAuthor(HttpServletRequest request, HttpServletResponse response, DataBase main) throws IOException {
+		String j = readJson(request);
+		Map<String, Object> map = JsonConverter.toObject(j);
+		int id = (int)((Map<String, Object>) map.get("id")).get("Integer");
+		Blog blog = main.getBlogAuthor(id);
+		printResp(response, JsonConverter.toJson(blog));
 	}
 
 }

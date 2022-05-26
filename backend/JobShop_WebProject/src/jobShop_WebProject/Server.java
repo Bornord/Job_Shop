@@ -140,7 +140,9 @@ public class Server extends HttpServlet{
 	 	case "logout":
 	 		ServerPostCases.logout(request, response, main);
 	 		break;
-		 	
+	 	case "getBlogAuthor":
+	 		ServerPostCases.getBlogAuthor(request, response, main);
+	 		break;
 		}
 		//doGet(request, response);
 	}

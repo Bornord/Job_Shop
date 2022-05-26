@@ -27,18 +27,16 @@ public class ServerGetCases {
 		int id = (int)((Map<String, Object>)map.get("id")).get("Integer");
 		Question q = main.getFirstQuestion(id);
 		String firstQuestion = JsonConverter.toJson(q);
-		response.getWriter().println("<html><body>" + firstQuestion + "</body></html>");
+		printResp(response, firstQuestion);
 	}
 
 	public static void getAllSurveys(HttpServletRequest request, HttpServletResponse response, DataBase main) throws IOException {
 		Collection<FirstQuestion> allSurveys = main.getSurveys();
-		String j = "{";
-		int i = 0;
+		String j = "{[";
 		for (FirstQuestion object : allSurveys) {
-			j+="\"e"+ i+"\":"+JsonConverter.toJson(object)+",";
-			i++;
+			j+=JsonConverter.toJson(object)+",";
 		}
-		j+="}";
+		j+="]}";
 		printResp(response, JsonConverter.toJson(allSurveys));
 	}
 
@@ -60,13 +58,11 @@ public class ServerGetCases {
 
 	public static void getBlogs(HttpServletRequest request, HttpServletResponse response, DataBase main) throws IOException {
 		Collection<Blog> blogs = main.getBlogs();
-		String j = "{";
-		int i = 0;
+		String j = "{[";
 		for (Blog object : blogs) {
-			j+="\"e"+ i+"\":"+JsonConverter.toJson(object)+",";
-			i++;
+			j+=JsonConverter.toJson(object)+",";
 		}
-		j+="}";
+		j+="]}";
 		printResp(response, j);
 	}
 	

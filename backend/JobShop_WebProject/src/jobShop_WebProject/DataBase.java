@@ -56,8 +56,11 @@ public class DataBase{
 	@PostConstruct
 	public void initialisation() {
 		addAdmin(new Admin("Akina", "Renard","akina@yes.fr", BCrypt.hashpw("test", BCrypt.gensalt()), 0, new Date()));
-		addFirstQuestion(new FirstQuestion(0, ""));
+		addFirstQuestion(new FirstQuestion(0, "survey de test vide"));
 		addAdmin(new Admin("Paula", "Valentina","PaulaL@Boss.com", BCrypt.hashpw("testP", BCrypt.gensalt()), 0, new Date()));
+		addBlog(new Blog("Super blog", "how to find a job", "blablabla content", new Date(), 2));
+		addBlog(new Blog("Le blog de Akina", "job shop la meilleure plateforme", "blablabla content", new Date(), 1));
+		addRecruiter(new Recruiter("jose", "lerecruteur", "joser@recrutement.com",BCrypt.hashpw("mdp", BCrypt.gensalt()), 0, new Date(), "nasa"));
 	}
 	
 	public void addUser(User s) {
@@ -70,8 +73,13 @@ public class DataBase{
 		em.remove(del);
 	}
 	
-	public void addBlog(Blog b) {
-		em.persist(b);
+	public Blog addBlog(Blog b) {
+		if(em.find(User.class, b.getIdAuthor()) != null) {
+			em.persist(b);
+			return b;
+		} else {
+			return null;
+		}
 	}
 	
 	public void addOffer(Offer o) {
@@ -79,7 +87,9 @@ public class DataBase{
 	}
 	
 	public void deleteOffer(Offer o) {
-		em.remove(o);
+		em.clear();
+		Offer del = em.find(Offer.class, o.getId());
+		em.remove(del);
 	}
 	
 	
@@ -297,6 +307,10 @@ public class DataBase{
 	}
 
 	public void addProfile(Profile profile) {
+		if (!profile.getIsRecruiter()) {
+			Student s = em.find(Student.class, profile.getIdUser());
+			s.setProfile(profile);
+		}
 		em.persist(profile);
 	}
 
@@ -342,5 +356,21 @@ public class DataBase{
 		return em.find(Question.class, nextQuestion);
 	}
 	
+	/**
+	 * get the blog created by a user given the user's id
+	 * @param id user's id
+	 * @return user's blog or null if the user doesn't have a blog
+	 */
+	public Blog getBlogAuthor(int id) {
+		List list= em.createQuery("select c from Blog c where c.idAuthor like:id")
+				.setParameter("id", id)
+				.setMaxResults(1)
+				.getResultList();	
+		if(list.size() != 0) {
+			return (Blog) list.get(0);
+		} else {
+			return null;
+		}
+	}
 	//public setNextQuestion(Response r, )
 }

@@ -220,7 +220,11 @@ public class JsonConverter {
 				word += c;
 			}
 		}
-		if(!word.isEmpty()) list.add(word);
+		if(!word.isEmpty()) {
+			list.add(word);
+		}else if(list.size() == 0){
+			return list;
+		}
 		if(list.get(list.size()-1).equals(" ")) {
 			list.remove(list.size()-1);
 		}
