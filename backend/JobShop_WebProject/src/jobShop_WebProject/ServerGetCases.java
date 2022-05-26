@@ -1,7 +1,9 @@
 package jobShop_WebProject;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -55,14 +57,18 @@ public class ServerGetCases {
 		printResp(response, json);
 		//printResp(response, JsonConverter.toJson(current));
 	}
+	
+	
 
 	public static void getBlogs(HttpServletRequest request, HttpServletResponse response, DataBase main) throws IOException {
-		Collection<Blog> blogs = main.getBlogs();
-		String j = "{[";
+		List<Blog> blogs = (List<Blog>) main.getBlogs();
+		String j = "[";
 		for (Blog object : blogs) {
-			j+=JsonConverter.toJson(object)+",";
+			j+=JsonConverter.toJson(object);
+			if(blogs.indexOf(object) != blogs.size()-1)
+					j+=",";
 		}
-		j+="]}";
+		j+="]";
 		printResp(response, j);
 	}
 	
@@ -71,6 +77,86 @@ public class ServerGetCases {
 		//response.getWriter().println("<html><body>" + toPrint + "</body></html>");
 		response.reset();
 		response.getWriter().println(toPrint);
+	}
+
+	public static void getStudentFields(HttpServletRequest request, HttpServletResponse response, DataBase main) throws IOException {
+		String json = "[";
+		List<Map<String,String>> fields = Student.getFields();
+		for (Map<String, String> map : fields) {
+			String fieldKey = map.keySet().toArray(new String[0])[0];
+			String fieldType = map.get(fieldKey);
+			String label = "";
+			if(fieldKey.equalsIgnoreCase("id")
+					|| fieldKey.equalsIgnoreCase("creationDate")
+					|| fieldKey.equalsIgnoreCase("role")
+					|| fieldKey.equalsIgnoreCase("status")) {
+				continue;
+			}
+			
+			try {
+				Field f = Student.class.getField(fieldKey+"Placeholder");
+				label += f.get(new String());
+			} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+				e.printStackTrace();
+			}
+			
+			
+			json+="{"
+					+"\"id\":"
+					+"\""+fieldKey+"\""
+					+","
+					+"\"type\":"
+					+"\""+fieldType+"\""
+					+","
+					+"\"label\":"
+					+"\""+label +"\""
+					+"}";
+
+			json+=",";
+			
+		}
+		if(json.endsWith(",")) {
+			json = json.substring(0, json.length()-1);
+		}
+		json += "]";
+		printResp(response, json);
+	}
+
+	public static void getRecruiterFields(HttpServletRequest request, HttpServletResponse response, DataBase main) throws IOException {
+		String json = "[";
+		List<Map<String,String>> fields = Recruiter.getFields();
+		for (Map<String, String> map : fields) {
+			String fieldKey = map.keySet().toArray(new String[0])[0];
+			String fieldType = map.get(fieldKey);
+			String label = "";
+			if(fieldKey.equalsIgnoreCase("id")
+					|| fieldKey.equalsIgnoreCase("creationDate")
+					|| fieldKey.equalsIgnoreCase("role")) {
+				continue;
+			}
+			try {
+				Field f = Recruiter.class.getField(fieldKey+"Placeholder");
+				label += f.get(new String());
+			} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+				//e.printStackTrace();
+			}
+			
+			json+="{"
+					+"\"id\":"
+					+"\""+fieldKey+"\""
+					+","
+					+"\"type\":"
+					+"\""+fieldType+"\""
+					+","
+					+"\"label\":"
+					+"\""+label +"\""
+					+"}";
+			if(fields.indexOf(map) != fields.size()-1)
+				json+=",";
+			
+		}
+		json += "]";
+		printResp(response, json);
 	}
 
 }

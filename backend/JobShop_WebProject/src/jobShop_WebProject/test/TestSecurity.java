@@ -8,7 +8,9 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
+import jobShop_WebProject.Admin;
 import jobShop_WebProject.DataBase;
+import jobShop_WebProject.Recruiter;
 import jobShop_WebProject.Student;
 import jobShop_WebProject.User;
 import jobShop_WebProject.utils.JsonConverter;
@@ -46,7 +48,9 @@ public class TestSecurity {
 		s = new Student("Willem", "Nicolas", "wnicolas", "azezaeze", 1, new Date());
 		s2 = new Student("name", "urname", "login", "password", 0, new Date());
 		main = new DataBase();
-		testPwd();
+		//testPwd();
+		
+		System.out.println(Student.getFields());
 		/*String json = JsonConverter.toJson(s);
 		System.out.println("Json : " + json);
 		testToken(json);*/

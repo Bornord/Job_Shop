@@ -1,11 +1,18 @@
 package jobShop_WebProject;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 /**
  * classe abstraite pour les différents types d'utilisateur
@@ -18,9 +25,17 @@ public abstract class User {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	private String name;
+	@Transient
+	public static String namePlaceholder = "Prenom :";
 	private String surname;
+	@Transient
+	public static String surnamePlaceholder = "Nom :";
 	private String login;
+	@Transient
+	public static String loginPlaceholder = "Email :";
 	private String password;
+	@Transient
+	public static String passwordPlaceholder = "Mot de passe :";
 	private String accessToken;
 	private String refreshToken;
 	private LabelRole role;
@@ -52,6 +67,28 @@ public abstract class User {
 		this.creationDate = creationDate;
 	}
 	
+	public static List<Map<String,String>> getFields(){
+		Field[] fields = User.class.getDeclaredFields();
+		
+		List<Map<String,String>> res = new ArrayList<>();
+		for (Field field : fields) {
+			if(!Modifier.isStatic(field.getModifiers())) {				
+				Map<String,String> f = new HashMap<>();
+				f.put(field.getName(), field.getType().getSimpleName());
+				res.add(f);
+			}
+		}
+		return res;
+	}
+	
+	
+	
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", name=" + name + ", surname=" + surname + ", login=" + login + ", password="
+				+ password + ", accessToken=" + accessToken + ", refreshToken=" + refreshToken + ", role=" + role
+				+ ", status=" + status + ", creationDate=" + creationDate + "]";
+	}
 	public int getStatus() {
 		return status;
 	}

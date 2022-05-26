@@ -1,6 +1,12 @@
 package jobShop_WebProject;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.persistence.*;
 /**
@@ -17,6 +23,10 @@ public class Student extends User{
 	@OneToOne(fetch=FetchType.EAGER)
 	private Profile profile;
 
+	private String school;
+	@Transient
+	public static String schoolPlaceholder = "Ecole :";
+	
 	public Student() {
 		super();
 	}
@@ -35,4 +45,24 @@ public class Student extends User{
 	}
 	
 	
+	public String getSchool() {
+		return school;
+	}
+	public void setSchool(String school) {
+		this.school = school;
+	}
+	public static List<Map<String,String>> getFields(){
+		Field[] fields = Student.class.getDeclaredFields();
+		
+		List<Map<String,String>> res = new ArrayList<>();
+		res.addAll(User.getFields());
+		for (Field field : fields) {
+			if(!Modifier.isStatic(field.getModifiers())) {	
+				Map<String,String> f = new HashMap<>();
+				f.put(field.getName(), field.getType().getSimpleName());
+				res.add(f);
+			}
+		}
+		return res;
+	}
 }

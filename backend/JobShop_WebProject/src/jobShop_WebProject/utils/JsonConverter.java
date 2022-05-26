@@ -52,6 +52,9 @@ public class JsonConverter {
 		Object value;
 		for (int j = 0; j<fields.length; j++) {
 			f = fields[j];
+			if(Modifier.isStatic(fields[j].getModifiers())) {	
+				continue;
+			}
 			method = c.getMethod("get" +capitalize(f.getName()), null);
 			value = method.invoke(o, null);
 			if(value != null) {
@@ -116,6 +119,9 @@ public class JsonConverter {
 		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException e) {
 			e.printStackTrace();
+		}
+		if(res.endsWith(",")) {
+			res=res.substring(0, res.length()-1);
 		}
 		res+="}";
 		return res;

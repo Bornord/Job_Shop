@@ -93,6 +93,12 @@ public class Server extends HttpServlet{
 		case "getBlogs":
 			ServerGetCases.getBlogs(request,response,main);
 			break;
+		case "getStudentFields" :
+			ServerGetCases.getStudentFields(request,response,main);
+			break;
+		case "getRecruiterFields" :
+			ServerGetCases.getRecruiterFields(request,response,main);
+			break;
 		}
 	}
 	
@@ -105,8 +111,11 @@ public class Server extends HttpServlet{
 		case "test":
 			ServerPostCases.test(request, response, main);
 			break;
-		case "signin":
-			ServerPostCases.signin(request, response, main);
+		case "signInAsStudent":
+			ServerPostCases.signInStudent(request, response, main);
+			break;
+		case "signInAsRecruiter":
+			ServerPostCases.signInRecruiter(request, response, main);
 			break;
 		case "signout":
 			ServerPostCases.signout(request, response, main);

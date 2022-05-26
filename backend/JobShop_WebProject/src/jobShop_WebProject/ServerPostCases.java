@@ -149,12 +149,18 @@ public class ServerPostCases {
 		printResp(response, JsonConverter.toJson(u));
 	}
 	
-	public static void signin(HttpServletRequest request, HttpServletResponse response, DataBase main) throws IOException {
+	public static void signInStudent(HttpServletRequest request, HttpServletResponse response, DataBase main) throws IOException {
 		String j = readJson(request);
-		User u = Security.signIn(j, main);
+		Student u = Security.signInStudent(j, main);
+		System.out.println("*****************************");
+		System.out.println(JsonConverter.toJson(u));
 		printResp(response, JsonConverter.toJson(u));
 	}
-
+	public static void signInRecruiter(HttpServletRequest request, HttpServletResponse response, DataBase main) throws IOException {
+		String j = readJson(request);
+		Recruiter u = Security.signInRecruiter(j, main);
+		printResp(response, JsonConverter.toJson(u));
+	}
 	/**
 	 * @param request id:... (id de la personne qui se déconnecte)
 	 * @param response request

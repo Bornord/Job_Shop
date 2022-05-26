@@ -1,8 +1,12 @@
 package jobShop_WebProject;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.*;
 /**
@@ -16,7 +20,10 @@ public class Recruiter extends User{
 	private List<Offer> offers;
 	//ou liste recruteurs
 	
-	private String entreprise;
+	private String company;
+	@Transient
+	public static String companyPlaceholder = "Entreprise :";
+	
 	
 	public Recruiter() {
 		super();
@@ -25,7 +32,7 @@ public class Recruiter extends User{
 			Date creationDate, String e) {
 		super(name, surname, login, password, id, LabelRole.RECRUITER, creationDate);
 		offers = new ArrayList<>();
-		entreprise = e;
+		company = e;
 		super.setStatus(2001);
 	}
 	
@@ -38,6 +45,20 @@ public class Recruiter extends User{
 		return null;
 	}
 	
+	public static List<Map<String,String>> getFields(){
+		Field[] fields = Recruiter.class.getDeclaredFields();
+		
+		List<Map<String,String>> res = new ArrayList<>();
+		res.addAll(User.getFields());
+		for (Field field : fields) {
+			if(!Modifier.isStatic(field.getModifiers())) {	
+				Map<String,String> f = new HashMap<>();
+				f.put(field.getName(), field.getType().getSimpleName());
+				res.add(f);
+			}
+		}
+		return res;
+	}
 	public void addOffer(Offer o) {
 		offers.add(o);
 	}
@@ -46,12 +67,12 @@ public class Recruiter extends User{
 		return this.offers;
 	}
 	
-	public String getEntreprise() {
-		return entreprise;
+	public String getCompany() {
+		return company;
 	}
 	
-	public void setEntreprise(String entreprise) {
-		this.entreprise = entreprise;
+	public void setCompany(String company) {
+		this.company = company;
 	}
 	
 	public void deleteOffer(int id) {
