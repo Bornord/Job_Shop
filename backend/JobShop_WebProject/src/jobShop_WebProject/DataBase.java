@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.security.crypto.bcrypt.BCrypt;
+//import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import jobShop_WebProject.utils.JsonConverter;
 import jobShop_WebProject.utils.ObjectConverter;
@@ -55,15 +55,9 @@ public class DataBase{
 	
 	@PostConstruct
 	public void initialisation() {
-		/*String hashed_pwd = BCrypt.hashpw("test", BCrypt.gensalt());
-		System.out.println("**********\n\n\n pwd : "+hashed_pwd);*/
-		addAdmin(new Admin("Akina", "Renard","akina@yes.fr", "test", 0, new Date()));
-		/*Response  it = new Response("IT");
-		Question domain = new Question("Votre domain ?",it,new Response("Prof"),new Response("artist"));
-		Question language = new Question("Les languages ?", new Response("C"), new Response("Python"));
-		domain.appendToResponse(language, it);*/
-		//addQuestion(new Question("Votre domain ?",new Response("IT"),new Response("Prof"),new Response("artist")));
-		addAdmin(new Admin("Paula", "Valentina","PaulaL@Boss.com","testPaula", 0, new Date()));
+		addAdmin(new Admin("Akina", "Renard","akina@yes.fr", BCrypt.hashpw("test", BCrypt.gensalt()), 0, new Date()));
+		addFirstQuestion(new FirstQuestion(0, ""));
+		addAdmin(new Admin("Paula", "Valentina","PaulaL@Boss.com", BCrypt.hashpw("testP", BCrypt.gensalt()), 0, new Date()));
 	}
 	
 	public void addUser(User s) {
@@ -71,7 +65,9 @@ public class DataBase{
 	}
 
 	public void deleteUser(User s) {
-		em.remove(s);
+		em.clear();
+		User del = em.find(User.class, s.getId());
+		em.remove(del);
 	}
 	
 	public void addBlog(Blog b) {
@@ -166,12 +162,18 @@ public class DataBase{
 	 * @param newQuestion
 	 * @param idPrevious
 	 */
-	public void addQuestionToQuestion(Question newQuestion, int idPrevious) {
+	public Question addQuestionToQuestion(Question newQuestion, int idPrevious) {
 		Question previousQuestion = em.find(Question.class, idPrevious);
 		if(newQuestion != null){
-			previousQuestion.appendToResponse(newQuestion,(Response[]) previousQuestion.getResponses().toArray());
 			em.persist(newQuestion);
+			Response[] responses = new Response[previousQuestion.getResponses().size()];
+			for (int i = 0;i<previousQuestion.getResponses().size();i++) {
+				responses[i] = previousQuestion.getResponses().get(i);
+			}
+			previousQuestion.appendToResponse(newQuestion.getId(),responses);
+			return previousQuestion;
 		}
+		return null;
 	}
 	
 	/**
@@ -181,10 +183,10 @@ public class DataBase{
 	 */
 	public void addQuestionToResponse(Map<String, Object> newQuestion, Response response ) {
 		Response previousResp = em.find(Response.class, response.getId());
-		Question q = ObjectConverter.toQuestion(newQuestion);
+		Question q = ObjectConverter.toQuestion(newQuestion, this);
 		if(q != null) {
-			previousResp.setNextQuestion(q);
 			em.persist(q);
+			previousResp.setNextQuestion(q.getId());
 		}
 	}
 
@@ -202,16 +204,16 @@ public class DataBase{
 	 * add a question at the end (after responses that have no next question)
 	 * @param questionO
 	 */
-	public void addQuestionToEnd(Map<String, Object> questionO) {
-		
-		Question q = ObjectConverter.toQuestion(questionO);
+	public Question addQuestionToEnd(Map<String, Object> questionO) {
+		Question q = ObjectConverter.toQuestion(questionO, this);
 		if(q != null){
+			em.persist(q);
 			Collection<Response> responses = getFinalResponses();
 			for (Response response : responses) {
-				response.setNextQuestion(q);
+				response.setNextQuestion(q.getId());
 			}
-			em.persist(q);
-		}
+		}//TODO : retourner autre chose que le survey courant?
+		return em.find(Question.class, getCurrentSurvey().getIdFirstQuestion());
 	}
 
 	public Collection<FirstQuestion> getSurveys() {
@@ -274,7 +276,6 @@ public class DataBase{
 
 	public void addFirstQuestion(FirstQuestion firstQuestion) {
 		em.persist(firstQuestion);
-		
 	}
 
 	public FirstQuestion getCurrentSurvey() {
@@ -317,19 +318,29 @@ public class DataBase{
 	}
 
 	public Question addQuestion(Question q) {
+		em.persist(q);
 		List<Response> resp = q.getResponses();
-		/*for (Response r : resp) {
-			addResponse(r);
-			/*if(r.getNextQuestion() != null) {
-				addQuestion(r.getNextQuestion());
-			}
-		}*/
- 		em.persist(q);
+		for (Response r : resp) {
+			r.setPreviousQuestion(q);
+		}
 		return q;	//with id
 	}
 
-	public void addResponse(int id_Q, Response r) {
+	/*public void addResponse(int id_Q, Response r) {
 		em.persist(r);
 		r.setPreviousQuestion(em.find(Question.class, id_Q));
+	}*/
+
+	public Question addQuestionToResponse(Question question, int previous) {
+		em.persist(question);
+		Response previousResponse = em.find(Response.class, previous);
+		previousResponse.setNextQuestion(question.getId());
+		return previousResponse.getPreviousQuestion();
 	}
+
+	public Question getQuestion(int nextQuestion) {
+		return em.find(Question.class, nextQuestion);
+	}
+	
+	//public setNextQuestion(Response r, )
 }

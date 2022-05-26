@@ -15,14 +15,19 @@ public class Response {
 	//@Cascade(CascadeType.SAVE_UPDATE)
 	private Question previousQuestion;
 	
-	@ManyToOne
-	private Question nextQuestion;
+	/*@ManyToOne
+	private Question nextQuestion;*/
+	
+	private int nextQuestion;
+	
+	public Response() {
+	}
 	
 	public Response(String placeholder) {
 		this.placeholder = placeholder;
 	}
 	
-	public Response(String placeholder,Question nextQuestion) {
+	public Response(String placeholder,int nextQuestion) {
 		this.placeholder = placeholder;
 		this.nextQuestion= nextQuestion;
 	}
@@ -66,11 +71,11 @@ public class Response {
 		this.isSelected = isSelelected;
 	}
 
-	public Question getNextQuestion() {
+	public int getNextQuestion() {
 		return nextQuestion;
 	}
 
-	public void setNextQuestion(Question nextQuestion) {
+	public void setNextQuestion(int nextQuestion) {
 		this.nextQuestion = nextQuestion;
 	}
 

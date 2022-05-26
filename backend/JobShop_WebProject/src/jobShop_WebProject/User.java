@@ -24,11 +24,11 @@ public abstract class User {
 	private String accessToken;
 	private String refreshToken;
 	private LabelRole role;
+	private int status;		//2000 -> Student, 2001 -> Recruiter, 2002 -> Admin
 	private Date creationDate;
 	
 	public User() {}
 	public User(String name, String surname, String login, String password, int id, LabelRole role, Date creationDate) {
-		super();
 		this.accessToken = null;
 		this.refreshToken = null;
 		this.name = name;
@@ -37,6 +37,27 @@ public abstract class User {
 		this.password = password;
 		this.role = role;
 		this.creationDate = creationDate;
+	}
+	
+
+	public User(String name, String surname, String login, String password, int id, LabelRole role, int status, Date creationDate) {
+		this.accessToken = null;
+		this.refreshToken = null;
+		this.name = name;
+		this.surname = surname;
+		this.login = login;
+		this.password = password;
+		this.role = role;
+		this.status = status;
+		this.creationDate = creationDate;
+	}
+	
+	public int getStatus() {
+		return status;
+	}
+	
+	public void setStatus(int status) {
+		this.status = status;
 	}
 	
 	public String getName() {

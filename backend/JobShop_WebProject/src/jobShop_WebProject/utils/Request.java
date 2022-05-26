@@ -8,4 +8,12 @@ public class Request {
 		this.json = json;
 		this.code = co;
 	}
+	
+	public int getCode() {
+		return code;
+	}
+	
+	public String getJson() {
+		return json;
+	}
 }

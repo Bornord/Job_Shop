@@ -11,6 +11,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import jobShop_WebProject.DataBase;
+import jobShop_WebProject.Question;
+import jobShop_WebProject.Response;
+
 
 public class JsonConverter {
 	//private Object object;
@@ -221,5 +225,30 @@ public class JsonConverter {
 			list.remove(list.size()-1);
 		}
 		return list;
+	}
+	
+	/**
+	 * TO JSON POUR LES QUESTIONS -> on a besoin de la database
+	 * @param question
+	 * @param main
+	 * @return
+	 */
+	public static String questionToJson(Question question, DataBase main) {
+		String res = "{\"id\":\""+question.getId() + "\", \"title\":\""+question.getTitle()+"\",\"responses\":[";
+		for (Response r : question.getResponses()) {
+			res+= responseToJson(r, main) + ",";
+		}
+		res+="]}";
+		return res;
+	}
+
+	public static String responseToJson(Response response, DataBase main) {
+		String res = "{\"id\":\"" + response.getId()+ "\",\"placeholder\":\""+response.getPlaceholder()+
+				",\"isSelected\":"+response.getIsSelected() + "," ;
+		if(response.getNextQuestion() != 0) {
+			res+= "\"nextQuestion\":";
+			res+= questionToJson(main.getQuestion(response.getNextQuestion()), main) + "}";
+		}
+		return res;
 	}
 }

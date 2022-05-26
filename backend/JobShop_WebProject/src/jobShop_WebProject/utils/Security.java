@@ -8,7 +8,7 @@ import java.util.Map;
 import com.auth0.jwt.*;
 import com.auth0.jwt.algorithms.Algorithm;
 
-import org.springframework.security.crypto.bcrypt.BCrypt;
+import jobShop_WebProject.BCrypt;
 
 import jobShop_WebProject.*;
 
@@ -23,8 +23,9 @@ public class Security {
 		if(pwd != null && mail != null) {
 			u = database.findWithLogin((String)mail.get("String"));
 			if(BCrypt.checkpw((String) pwd.get("String"), u.getPassword())) {
-				u.setAccessToken(createAccessToken(u));
-				u.setRefreshToken(createRefreshToken(u));
+				//TODO
+				//u.setAccessToken(createAccessToken(u));
+				//u.setRefreshToken(createRefreshToken(u));
 				return u;
 			}
 		}
@@ -40,8 +41,9 @@ public class Security {
 		if(pwd != null && mail != null) {
 			u = database.findWithLogin((String)mail.get("String"));
 			if(u.getPassword().equals((String) pwd.get("String"))) {
-				u.setAccessToken(createAccessToken(u));
-				u.setRefreshToken(createRefreshToken(u));
+				//TODO
+				//u.setAccessToken(createAccessToken(u));
+				//u.setRefreshToken(createRefreshToken(u));
 				return u;
 			}
 		}
@@ -78,8 +80,12 @@ public class Security {
 		Map<String, Object> map = JsonConverter.toObject(json);
 		int id = (int)((Map<String, Object>)map.get("id")).get("Integer");
 		User u = main.findUser(id);
-		u.destroyTokens();
-		return new Request(json, 200);
+		if(u!=null) {
+			u.destroyTokens();
+			return new Request(JsonConverter.toJson(u), 200);
+		} else {
+			return new Request(json, 404);
+		}
 	}
 	public static User signIn(String json, DataBase database) {
 		User user = null;
@@ -89,51 +95,54 @@ public class Security {
 			String name = (String)((Map<String, Object>)map.get("name")).get("String") ;
 			String surname = (String)((Map<String, Object>)map.get("surname")).get("String") ;
 			Date date = new Date();
-			Map<String, Object> role = (Map<String, Object>)map.get("role") ;
+			Map<String, Object> role = (Map<String, Object>)map.get("status") ;
 			String pwd = (String)((Map<String, Object>)map.get("password")).get("String") ;
-			//String hashed_pwd = BCrypt.hashpw(pwd, BCrypt.gensalt());
+			String hashed_pwd = BCrypt.hashpw(pwd, BCrypt.gensalt());
 			//!!!!role > int
 			if(role.get("Integer").equals(2002)) {
-				user = new Admin(name,surname, mail, pwd, 0, date);
-			} else if(role.get("Integer").equals(2001)) {
+				user = new Admin(name,surname, mail, hashed_pwd, 0, date);
+			} else if(role.get("Integer").equals(2001) && map.get("entreprise") != null) {
 				String entreprise = (String)((Map<String, Object>)map.get("entreprise")).get("String") ;
-				user = new Recruiter(name,surname, mail, pwd, 0, date, entreprise);
+				user = new Recruiter(name,surname, mail, hashed_pwd, 0, date, entreprise);
 			} else if(role.get("Integer").equals(2000)) {
-				user = new Student(name,surname, mail, pwd, 0, date);
+				user = new Student(name,surname, mail, hashed_pwd, 0, date);
 			} else {//1999
 				return null;
 				//user = new User(name,surname, mail, pwd, 0, LabelRole.UNLOGGED, date);
 			}
-
-			user.setAccessToken(createAccessToken(user));
-			user.setRefreshToken(createRefreshToken(user));
+			//TODO
+			//user.setAccessToken(createAccessToken(user));
+			//user.setRefreshToken(createRefreshToken(user));
 			database.addUser(user);
 			return user;	
 		}	
 		return null;
 	}
-	public static User signIn(String json, DataBase database,boolean bcrypt) {
+	
+	/*public static User signIn(String json, DataBase database,boolean bcrypt) {
 		User u = signIn(json, database);
 		if(bcrypt) {
 			u.setPassword(BCrypt.hashpw(u.getPassword(), BCrypt.gensalt()));
 		}
 		return u;
-	}
+	}*/
 
 	
-	public static String signOut(String json, DataBase database) {
+	public static Request signOut(String json, DataBase database) {
 		User u = null;
 		JsonConverter jc = new JsonConverter();
 		Map<String, Object> map = jc.toObject(json);
 		Map<String, Object> mail = (Map<String, Object>)map.get("login") ;
 		if(mail != null) {
 			u = database.findWithLogin((String)mail.get("String"));
-			database.deleteUser(u);
-			//return new Request(json, 200);
-			return json;
+			if (u!=null) {
+				database.deleteUser(u);
+				return new Request(JsonConverter.toJson(u), 200);
+			}
+			//return json;
 		}
-		//return new Request(json, 404);
-		return json;
+		return new Request(json, 404);
+		//return json;
 	}
 	
 }

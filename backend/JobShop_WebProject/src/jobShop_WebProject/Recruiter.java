@@ -26,6 +26,7 @@ public class Recruiter extends User{
 		super(name, surname, login, password, id, LabelRole.RECRUITER, creationDate);
 		offers = new ArrayList<>();
 		entreprise = e;
+		super.setStatus(2001);
 	}
 	
 	public Offer getOffer(int id) {

@@ -33,13 +33,13 @@ public class Question {
 		return "titre : "+ this.title + ", id : " + this.id + ", reponses : " + s;
 	}
 	
-	public void appendToAllResponses(Question question) {
+	public void appendToAllResponses(int question) {
 		for (Response r : responses) {
 			r.setNextQuestion(question);
 		}
 	}
 	
-	public void appendToResponse(Question question, String... placeholders ) {
+	public void appendToResponse(int question, String... placeholders ) {
 		List<String> addedResponses = Arrays.asList(placeholders);
 		for (Response r : this.responses) {
 			if(addedResponses.contains(r.getPlaceholder())) {
@@ -48,7 +48,7 @@ public class Question {
 		}
 	}
 	
-	public void appendToResponse(Question question, Response... responses ) {
+	public void appendToResponse(int question, Response... responses ) {
 		List<Response> addedResponses = Arrays.asList(responses);
 		for (Response r : this.responses) {
 			if(addedResponses.contains(r)) {

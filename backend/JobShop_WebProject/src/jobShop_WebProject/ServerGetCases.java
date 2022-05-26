@@ -50,7 +50,9 @@ public class ServerGetCases {
 	public static void getCurrentSurvey(HttpServletRequest request, HttpServletResponse response, DataBase main) throws IOException {
 		FirstQuestion current = main.getCurrentSurvey();
 		Question q = main.findQuestion(current.getIdFirstQuestion());
-		String jq = JsonConverter.toJson(q);
+		String jq = JsonConverter.questionToJson(q, main);
+		System.out.println("*****************" +jq);
+		
 		String json = "{question:"+jq+", firstQuestion:"+JsonConverter.toJson(current)+"}";
 		printResp(response, json);
 		//printResp(response, JsonConverter.toJson(current));

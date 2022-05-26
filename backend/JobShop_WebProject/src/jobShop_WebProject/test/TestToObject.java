@@ -55,16 +55,16 @@ public class TestToObject {
 		String questionJson = "{\"id\":93,\"question\":{\"id\":0,\"title\":\"Votre domain ?\",\"responses\":[{\"id\":0,\"placeholder\":\"IT\",\"isSelected\":false,\"nextQuestion\":{\"id\":0,\"title\":\"Les languages ?\",\"responses\":[{\"id\":0,\"placeholder\":\"C\",\"isSelected\":false,},{\"id\":0,\"placeholder\":\"Python\",\"isSelected\":false,},]}},{\"id\":0,\"placeholder\":\"Prof\",\"isSelected\":false,},{\"id\":0,\"placeholder\":\"artist\",\"isSelected\":false,},]}}";
 		Map<String, Object> mapQ = JsonConverter.toObject(questionJson);
 		int idPrevious = (int)((Map<String, Object>)mapQ.get("id")).get("Integer");
-		Question q = ObjectConverter.toQuestion((Map<String, Object>)mapQ.get("question"));
-		System.out.println("question : " + q.toString() + ", previous question id : " + idPrevious);
+		/*Question q = ObjectConverter.toQuestion((Map<String, Object>)mapQ.get("question"));
+		System.out.println("question : " + q.toString() + ", previous question id : " + idPrevious);*/
 	}
 	
 	private static void testAddSurvey() {
 		String questionJson = "{\"name\":\"nameSurvey\",\"question\":{\"id\":0,\"title\":\"Votre domain ?\",\"responses\":[{\"id\":0,\"placeholder\":\"IT\",\"isSelected\":false,\"nextQuestion\":{\"id\":0,\"title\":\"Les languages ?\",\"responses\":[{\"id\":0,\"placeholder\":\"C\",\"isSelected\":false,},{\"id\":0,\"placeholder\":\"Python\",\"isSelected\":false,},]}},{\"id\":0,\"placeholder\":\"Prof\",\"isSelected\":false,},{\"id\":0,\"placeholder\":\"artist\",\"isSelected\":false,},]}}";
 		Map<String, Object> mapQ = JsonConverter.toObject(questionJson);
 		String name = (String)((Map<String, Object>)mapQ.get("name")).get("String");
-		Question q = ObjectConverter.toQuestion((Map<String, Object>)mapQ.get("question"));
-		System.out.println("first question : " + q.toString() + ", survey name : " + name);
+		/*Question q = ObjectConverter.toQuestion((Map<String, Object>)mapQ.get("question"));
+		System.out.println("first question : " + q.toString() + ", survey name : " + name);*/
 	
 	}
 	

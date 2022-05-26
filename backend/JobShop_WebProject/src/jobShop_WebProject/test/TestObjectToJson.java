@@ -61,7 +61,9 @@ public class TestObjectToJson {
 	
 	public static void main(String args[]) {
 		//testToObject();
-		testListSurvey();
+		//testListSurvey();
+		Blog b = new Blog("Super blog", "how to find a job", "blablabla content", new Date(), 2);
+		System.out.println(JsonConverter.toJson(b));
 	}
 
 }

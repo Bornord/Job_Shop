@@ -12,6 +12,7 @@ import java.util.Map;
 
 import jobShop_WebProject.Admin;
 import jobShop_WebProject.Blog;
+import jobShop_WebProject.DataBase;
 import jobShop_WebProject.LabelRole;
 import jobShop_WebProject.Profile;
 import jobShop_WebProject.Question;
@@ -23,39 +24,56 @@ import jobShop_WebProject.User;
 
 public class ObjectConverter {
 
-	public static Question toQuestion(Map<String, Object> questionMap) {
+	/**
+	 * QUESTION / RESPONSE
+	 * @param questionMap
+	 * @param main
+	 * @return
+	 */
+	public static Question toQuestion(Map<String, Object> questionMap, DataBase main) {
 		String title = (String) ((Map<String, Object>)(questionMap.get("title"))).get("String");
 		Map<String, Object> valResp = (Map<String, Object>)(questionMap.get("responses"));
 		List<Map<String, Object>> l = (List<Map<String, Object>>)valResp.get("List");
-		List<Response> responses = (List<Response>)toListResponse(l);
+		List<Response> responses = (List<Response>)toListResponse(l, main);
 		Question q = new Question(title);
 		q.setResponses(responses);
 		return q;
 		
 	}
 
-	private static List<Response> toListResponse(List<Map<String, Object>> valResp) {
+	private static List<Response> toListResponse(List<Map<String, Object>> valResp, DataBase main) {
 		List<Response> resp = new ArrayList();
 		for (Map<String, Object> r : valResp) {
-			resp.add(toResponse(r));
+			resp.add(toResponse(r, main));
 		}
 		return resp;
 	}
 	
-	private static Response toResponse(Map<String, Object> mapR) {
+	private static Response toResponse(Map<String, Object> mapR, DataBase main) {
 		//System.out.println(mapR);
 		String placeholder = (String) ((Map<String, Object>)(mapR.get("placeholder"))).get("String");
 		
 		boolean isSelected = (boolean) ((Map<String, Object>)(mapR.get("isSelected"))).get("Boolean");
 		
 		Map<String, Object> nextQuestion = (Map<String, Object>)(mapR.get("nextQuestion"));
+		Response ret;
 		if(nextQuestion != null && !nextQuestion.containsKey("Error")){
-			return new Response(placeholder, toQuestion(nextQuestion));
+			Question next = main.addQuestion(toQuestion(nextQuestion, main));
+			ret = new Response(placeholder, next.getId());
 		} else {
-			return new Response(placeholder);
+			ret =  new Response(placeholder);
 		}
+
+		return ret;
 	}
 	
+	
+	/**
+	 * PROFILE
+	 * @param profile
+	 * @param isRecruiter
+	 * @return
+	 */
 	public static Profile toProfile(Map<String, Object> profile, boolean isRecruiter) {
 		int idUser =(int)((Map<String, Object>) profile.get("idUser")).get("Integer");
 		int term =(int)((Map<String, Object>) profile.get("term")).get("Integer");
@@ -90,6 +108,12 @@ public class ObjectConverter {
 		
 	}
 	
+	
+	/**
+	 * USER
+	 * @param map
+	 * @return
+	 */
 	public static Map<String, String> getInfoUser(Map<String, Object> map){
 		Map<String, String> ret = new HashMap<String, String>();
 		ret.put("name", (String)((Map<String, Object>) map.get("name")).get("String"));
@@ -131,6 +155,12 @@ public class ObjectConverter {
 		return a;
 	}
 
+	
+	/**
+	 * BLOG
+	 * @param map
+	 * @return
+	 */
 	public static Blog toBlog(Map<String, Object> map) {
 		String title = (String)((Map<String, Object>) map.get("title")).get("String");
 		String subtitle = (String)((Map<String, Object>) map.get("subtitle")).get("String");

@@ -23,6 +23,7 @@ public class Student extends User{
 	public Student(String name, String surname, String login, String password, int id, 
 			Date creationDate) {
 		super(name, surname, login, password, id, LabelRole.STUDENT, creationDate);
+		super.setStatus(2000);
 	}
 
 	public Profile getProfile() {
