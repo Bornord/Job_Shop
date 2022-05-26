@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import { login } from '../../logic/features/user';
+import { login,LOGIN } from '../../logic/features/user';
 import { useDispatch, useSelector } from 'react-redux';
 import SelectButton2 from '../../components/buttons/selectButton2/SelectButton2';
 import './Login.scss';
@@ -11,28 +11,36 @@ function Login() {
 	const [password, setPassword] = useState('');
 	const dispatch = useDispatch();
 	const user = useSelector((state) => state.user.value);
-	const [state, setState] = useState([
-		{ id: 'login', value: '' },
-		{ id: 'password', value: '' },
-	]);
-	const [error, setError] = useState('');
-	state.erreurFonction = (reason) => {
-		setError(reason);
-	};
+
+	const handleError = () =>{
+
+	} 
+
+	const validate = (password,email)=> {
+		return password !== "" && email !== ""
+	} 
 	const handleSubmit = () => {
-		const mail = state.find((input) => input.id == 'login');
-		const password2 = state.find((input) => input.id == 'password');
 		// recopie (email & password) dans la variable state.
 		// La recopie vaut "" si les champs ne sont pas remplis
-		mail.value = email;
-		password2.value = password;
-		if (mail.value != '' && password2.value != '') {
-			dispatch(login(state));
-			navigate('/');
+		if (validate(password,email)) {
+
+			const data ={
+				login:email,
+				password:password,
+				error: handleError
+			} 
+
+			LOGIN(data,(input)=>{
+				dispatch(login(input));
+				navigate('/');
+			} )
+			//dispatch(login(data));
+			//
 		} else {
-			state.erreurFonction('Vous devez remplir les champs.');
+			handleError('Vous devez remplir les champs.');
 		}
 	};
+
 	return (
 		<div className="login">
 			<form
@@ -44,7 +52,7 @@ function Login() {
 				<div className="form">
 					<h1 className="title">Bienvenue</h1>
 					<h2 className="subtitle">bla bla bla</h2>
-					<p className="errorStack">{error}</p>
+					
 					<div className="input-container ic1">
 						<input
 							id="email"

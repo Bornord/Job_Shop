@@ -8,7 +8,7 @@ import Results from './results/Results';
 import Error from './error/Error';
 import DashBoard from './dashboard/DashBoard';
 import EditSurvey from './editSurvey/EditSurvey';
-
+import Blog from './blog/Blog';
 import RequireAuth from '../logic/Auth/RequireAuth';
 
 function App() {
@@ -21,6 +21,7 @@ function App() {
 				<Route path="/Results" element={<Results />}></Route>
 				<Route path="/Dashboard" element={<DashBoard />}></Route>
 				<Route path="/EditSurvey" element={<EditSurvey />}></Route>
+				<Route path="/Blog" element={<Blog />}></Route>
 				<Route
 					path="/"
 					element={<Navigate to={`/Home`} replace />}

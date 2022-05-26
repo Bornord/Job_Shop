@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import './Blog.scss';
 
 
-function Blog(title,subtitle,author,date,content) {
-
+function Blog({title,subtitle,author,date,content} ) {
 
 	return <div className='blog'>
         <h1>{title}</h1>

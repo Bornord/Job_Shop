@@ -1,62 +1,86 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { post,get } from '../../../logic/api/api';
 import Signup from '../../../components/signup/Signup';
 import './SignupAsStudent.scss';
+import{ translateType} from '../signUpUtils'; 
 
+/*const inputs = [
+	{
+		id: 'name',
+		type: 'text',
+		label: 'Prénom :',
+	},
+	{
+		id: 'surname',
+		type: 'text',
+		label: 'Nom :',
+	},
+	{
+		id: 'email',
+		type: 'email',
+		label: 'Email :',
+	},
+	{
+		id: 'password',
+		type: 'password',
+		label: 'Mot de passe :',
+	},
+	{
+		id: 'confirmedPassword',
+		type: 'password',
+		label: 'Confirmer le mot de passe :',
+	},
+];*/
 function SignupAsStudent() {
-	const inputs = [
-		{
-			id: 'firstname',
-			type: 'text',
-			label: 'Prénom :',
-		},
-		{
-			id: 'name',
-			type: 'text',
-			label: 'Nom :',
-		},
-		{
-			id: 'email',
-			type: 'email',
-			label: 'Email :',
-		},
-		{
-			id: 'password',
-			type: 'password',
-			label: 'Mot de passe :',
-		},
-		{
-			id: 'confirmed-password',
-			type: 'password',
-			label: 'Confirmer le mot de passe :',
-		},
-	];
+	const [inputs,setInputs] = useState([])
+	useEffect(()=>{
+		get("getStudentFields",(res)=> {
+			const data = res.data
+			const _inputs = data.filter((input)=> input.label !== "").map(
+				(input)=>{
+					let {id,type,label} = input 
+					type = translateType(id,type)
+					return {
+						id:id,
+						type : type,
+						label : label == "" ? "..." : label,
+					} 
+				} 
+			)
+			_inputs.push(	{
+				id: 'confirmedPassword',
+				type: 'password',
+				label: 'Confirmer le mot de passe :',
+			})
+			console.log(_inputs);
+			setInputs(_inputs)
+		} ,(e)=> {
+			console.log(e);
+		} )
+	} 
+	,[] )  
 
 	const isValid = (state) => {
-		const password = state.find((input) => input.id == 'password');
-		const confirmedPassword = state.find(
-			(input) => input.id == 'confirmed-password'
-		);
-		const name = state.find((input) => input.id == 'name');
-		const firstname = state.find((input) => input.id == 'firstname');
-		const email = state.find((input) => input.id == 'email');
-		const emptyFieldName = name.value == '' && firstname.value == '';
-		const emptyFieldMail = email.value == '';
-		const emptyFieldMDP =
-			password.value == '' && confirmedPassword.value == '';
-		if (password.value != confirmedPassword.value) {
-			state.erreurFonction('Les mots de passe ne correspondent pas');
+		console.log(state);
+		const {password,confirmedPassword} = state
+		console.log(password);
+		const emptyFieldName = state.name === ''||  state.surname === '';
+		const emptyFieldMail = state.email === '';
+		const emptyFieldPassword = password === ''||  confirmedPassword === '';
+		if (password.value !== confirmedPassword.value) {
+			state.error('Les mots de passe ne correspondent pas');
 			return false;
 		} else if (emptyFieldName) {
-			state.erreurFonction(
+			state.error(
 				'Vous devez remplir les champs Nom et Prénom.'
 			);
 			return false;
 		} else if (emptyFieldMail) {
-			state.erreurFonction('Vous devez remplir le champ Email.');
+			state.error('Vous devez remplir le champ Email.');
 			return false;
-		} else if (emptyFieldMDP) {
-			state.erreurFonction('Vous devez remplir les champs Mot de passe.');
+		} else if (emptyFieldPassword) {
+			state.error('Vous devez remplir les champs Mot de passe.');
 			return false;
 		} else {
 			return true;
@@ -66,6 +90,8 @@ function SignupAsStudent() {
 	return (
 		<div className="signup-student">
 			<div className="left-panel">
+			{
+				inputs.length > 0 &&
 				<Signup
 					title="Bienvenue"
 					subtitle="Inscrivez vous ici !"
@@ -74,6 +100,8 @@ function SignupAsStudent() {
 					status={2000}
 					isValid={isValid}
 				/>
+			}	
+				
 			</div>
 			<div className="right-panel">
 				<h1>Student</h1>

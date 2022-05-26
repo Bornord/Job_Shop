@@ -4,20 +4,25 @@ const app = express();
 
 app.use(express.json());
 api = axios.create({
-	baseURL: 'http://localhost:3500',
+	baseURL: 'http://localhost:8080/JobShop_WebProject/',
 });
 const Post = async (path, data, success, error) => {
+	console.log("POST "+path);
+	console.log("data ");
+	console.log(data);
 	try {
 		const res = await api.post('/Server?op=' + path, data);
-		success(res);
+		console.log(res);
+		if (success != null) success(res.data);
 	} catch (e) {
-		error(e);
+		if (error != null) error(e);
 	}
 };
 const Get = async (path, success, error) => {
+	console.log("GET "+path);
 	try {
 		const res = await api.get('/Server?op=' + path);
-		if (success != null) success(res);
+		if (success != null) success(res.data);
 	} catch (e) {
 		if (error != null) error(e);
 	}
@@ -45,39 +50,43 @@ Fonction principale qui conditionne les appels et leur traitement dans l'environ
 */
 app.route('/Proxy')
 	.get((req, res, next) => {
-		console.log(req.query);
-		// if (req.query.op != null) {
-		// 	console.log(req.query.op);
-		// 	Get(
-		// 		req.query.op,
-		// 		(data) => {
-		// 			res.status(201).json(data);
-		// 		},
-		// 		() => {
-		// 			res.status(404).json({ msg: 'error on server' });
-		// 		}
-		// 	);
-		// } else {
-		// 	res.status(404).json({ msg: 'error on proxy' });
-		// }
-		next();
+		 if (req.query.op != null) {
+		 	console.log(req.query.op);
+		 	Get(
+		 		req.query.op,
+		 		(data) => {
+					 console.log(data);
+		 			res.status(201).json(data);
+		 		},
+		 		(e) => {
+					console.log("error on server " + e);
+		 			res.status(404).json({ msg: 'error on server' + e});
+		 		}
+		 	);
+		 } else {
+			 console.log("error on proxy");
+		 	res.status(404).json({ msg: 'error on proxy' });
+		 }
+		//next();
 	})
 	.post((req, res, next) => {
 		console.log(req.query);
-		// if (req.query.op != null) {
-		// 	Post(
-		// 		req.query.op,
-		// 		(data) => {
-		// 			res.status(201).json(data);
-		// 		},
-		// 		() => {
-		// 			res.status(404).json({ msg: 'error' });
-		// 		}
-		// 	);
-		// } else {
-		// 	res.status(404).json({ msg: 'error' });
-		// }
-		next();
+		 if (req.query.op != null) {
+			 console.log(req.body);
+		 	Post(
+		 		req.query.op,
+				 req.body,
+		 		(data) => {
+		 			res.status(201).json(data);
+		 		},
+		 		() => {
+		 			res.status(404).json({ msg: 'error' });
+				}
+		 	);
+		 } else {
+		 	res.status(404).json({ msg: 'error' });
+		 }
+		//next();
 	});
 
 app.use('/', (req, res, next) => {
