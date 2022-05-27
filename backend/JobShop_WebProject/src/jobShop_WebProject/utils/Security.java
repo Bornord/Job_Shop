@@ -23,6 +23,9 @@ public class Security {
 		Map<String, Object> mail = (Map<String, Object>)map.get("login") ;
 		if(pwd != null && mail != null) {
 			u = database.findWithLogin((String)mail.get("String"));
+			if(u == null) {
+				return null;
+			}
 			if(BCrypt.checkpw((String) pwd.get("String"), u.getPassword())) {
 				//TODO
 				//u.setAccessToken(createAccessToken(u));

@@ -25,8 +25,10 @@ public class Offer {
 	
 	private String Contract; //changer en enum
 	
-	private LocalDate dateStart;
-
+	private LocalDate startDate;
+	private LocalDate endDate;
+	private int term;
+	
 	@OneToOne(fetch=FetchType.EAGER)
 	private Profile idealProfile;
 	
@@ -37,7 +39,7 @@ public class Offer {
 	private Recruiter recruiter;
 	
 	public Offer(int id, String title, String subTitle, String description, int salary, String contract,
-			LocalDate dateStart) {
+			LocalDate startDate,LocalDate endDate,int term) {
 		super();
 		//this.id = id;
 		this.title = title;
@@ -45,7 +47,9 @@ public class Offer {
 		this.description = description;
 		this.salary = salary;
 		Contract = contract;
-		this.dateStart = dateStart;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.term = term;
 	}
 
 	public int getId() {
@@ -96,19 +100,52 @@ public class Offer {
 		Contract = contract;
 	}
 
-	public LocalDate getDateStart() {
-		return dateStart;
+	
+	public LocalDate getStartDate() {
+		return startDate;
 	}
 
-	public void setDateStart(LocalDate dateStart) {
-		this.dateStart = dateStart;
+	public void setStartDate(LocalDate startDate) {
+		this.startDate = startDate;
 	}
-	
+
+	public LocalDate getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(LocalDate endDate) {
+		this.endDate = endDate;
+	}
+
+	public int getTerm() {
+		return term;
+	}
+
+	public void setTerm(int term) {
+		this.term = term;
+	}
+
+	public Recruiter getRecruiter() {
+		return recruiter;
+	}
+
+	public void setRecruiter(Recruiter recruiter) {
+		this.recruiter = recruiter;
+	}
+
 	/**
 	 * méthode qui crée le profil idéal correspondant à cette offre
 	 */
 	public void createIdealProfile() {
 		//this.idealProfile = new Profile(...);
+	}
+
+	@Override
+	public String toString() {
+		return "Offer [id=" + id + ", title=" + title + ", subTitle=" + subTitle + ", description=" + description
+				+ ", salary=" + salary + ", Contract=" + Contract + ", startDate=" + startDate + ", endDate=" + endDate
+				+ ", term=" + term + ", idealProfile=" + idealProfile + ", status=" + status + ", recruiter="
+				+ recruiter + "]";
 	}
 
 	public Profile getIdealProfile() {

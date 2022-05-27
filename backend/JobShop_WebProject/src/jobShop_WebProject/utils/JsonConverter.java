@@ -6,6 +6,7 @@ import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -103,7 +104,10 @@ public class JsonConverter {
 				}
 			}
 		}
-			
+		ret = ret.trim();
+		if(ret.endsWith(",")) {
+			ret=ret.substring(0, ret.length()-1);
+		}	
 		ret+="]";
 		return ret;
 	}
@@ -120,6 +124,7 @@ public class JsonConverter {
 				| InvocationTargetException e) {
 			e.printStackTrace();
 		}
+		res = res.trim();
 		if(res.endsWith(",")) {
 			res=res.substring(0, res.length()-1);
 		}
@@ -244,21 +249,53 @@ public class JsonConverter {
 	 * @return
 	 */
 	public static String questionToJson(Question question, DataBase main) {
-		String res = "{\"id\":\""+question.getId() + "\", \"title\":\""+question.getTitle()+"\",\"responses\":[";
+		String res = "{\"id\":"+question.getId() + ", \"title\":\""+question.getTitle()+"\",\"responses\":[";
 		for (Response r : question.getResponses()) {
 			res+= responseToJson(r, main) + ",";
+		}
+		res = res.trim();
+		if(res.endsWith(",")) {
+			res = res.substring(0, res.length()-1);
 		}
 		res+="]}";
 		return res;
 	}
 
 	public static String responseToJson(Response response, DataBase main) {
-		String res = "{\"id\":\"" + response.getId()+ "\",\"placeholder\":\""+response.getPlaceholder()+
+		String res = "{\"id\":" + response.getId()+ ",\"placeholder\":\""+response.getPlaceholder()+"\""+
+				 ",\"isAText\":"+response.getIsAText()+
 				",\"isSelected\":"+response.getIsSelected() + "," ;
 		if(response.getNextQuestion() != 0) {
 			res+= "\"nextQuestion\":";
-			res+= questionToJson(main.getQuestion(response.getNextQuestion()), main) + "}";
+			res+= questionToJson(main.getQuestion(response.getNextQuestion()), main) ;
+			res = res.trim();
+			if(res.endsWith(",")) {
+				res = res.substring(0, res.length()-1);
+			}
+			res+= "}";
+		}else {
+			res = res.trim();
+			if(res.endsWith(",")) {
+				res = res.substring(0, res.length()-1);
+			}
+			res += "}";
 		}
+		return res;
+	}
+
+	public static String toQuestions(Collection<Question> questions,DataBase db) {
+		String res = "[";
+		
+		for (Question question : questions) {
+			res += questionToJson(question, db);
+			res += ",";
+		}
+		
+		res = res.trim();
+		if(res.endsWith(",")) {
+			res=res.substring(0, res.length()-1);
+		}
+		res+="]";
 		return res;
 	}
 }

@@ -24,12 +24,17 @@ public class ServerGetCases {
 	 */
 	public static void getAllQuestions(HttpServletRequest request, HttpServletResponse response, DataBase main)
 			throws ServletException, IOException {
-		String json = ServerPostCases.readJson(request);
-		Map<String, Object> map =  JsonConverter.toObject(json); 
-		int id = (int)((Map<String, Object>)map.get("id")).get("Integer");
-		Question q = main.getFirstQuestion(id);
-		String firstQuestion = JsonConverter.toJson(q);
-		printResp(response, firstQuestion);
+		try {			
+			System.out.println("****************************");
+			System.out.println();
+			System.out.println("        GET ALL QUESTIONS         ");
+			System.out.println();
+			String questions = JsonConverter.toQuestions(main.getQuestions(),main);
+			System.out.println(questions);
+			printResp(response, questions);
+		} catch (Exception e) {
+			printResp(response, "{\"error\":\"error\"}");
+		}
 	}
 
 	public static void getAllSurveys(HttpServletRequest request, HttpServletResponse response, DataBase main) throws IOException {
@@ -49,12 +54,26 @@ public class ServerGetCases {
 	
 	public static void getCurrentSurvey(HttpServletRequest request, HttpServletResponse response, DataBase main) throws IOException {
 		FirstQuestion current = main.getCurrentSurvey();
-		Question q = main.findQuestion(current.getIdFirstQuestion());
-		String jq = JsonConverter.questionToJson(q, main);
-		System.out.println("*****************" +jq);
-		
-		String json = "{question:"+jq+", firstQuestion:"+JsonConverter.toJson(current)+"}";
-		printResp(response, json);
+		if(current != null) {			
+			Question q = main.findQuestion(current.getIdFirstQuestion());
+			if(q != null) {			
+				System.out.println(q);
+				String jq = JsonConverter.questionToJson(q, main);			
+				System.out.println("*****************" +jq);
+				String json = "{\"question\":"+jq+", \"firstQuestion\":"+JsonConverter.toJson(current)+"}";
+				printResp(response, json);
+			}else {
+				System.out.println("*****************************");
+				System.out.println("invalide question in getCurrentSurvey");
+				String json = "{\"error\":\"aucune question disponible pour le moment\"}";
+				printResp(response, json);
+			}
+		}else {
+			System.out.println("*****************************");
+			System.out.println("invalide first question in getCurrentSurvey");
+			String json = "{\"error\":\"aucun questionnaire disponible pour le moment \"}";
+			printResp(response, json);
+		}
 		//printResp(response, JsonConverter.toJson(current));
 	}
 	

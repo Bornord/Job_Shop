@@ -3,21 +3,24 @@ package jobShop_WebProject;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 
 @Entity
 public class SurveyAnswer{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	private int idUser;
+	private int idProfile;
 	private int idQuestion;
 	private int idResponse;
 	private String extra;
 	
 	public SurveyAnswer() {}
-	public SurveyAnswer(int idUser, int idQ, int idR,String extra) {
-		this.idUser = idUser;
+	public SurveyAnswer(int idProfile, int idQ, int idR,String extra) {
+		this.idProfile = idProfile;
 		this.idQuestion = idQ;
 		this.idResponse = idR;
 		this.extra = extra;
@@ -28,11 +31,11 @@ public class SurveyAnswer{
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getIdUser() {
-		return idUser;
+	public int getIdProfile() {
+		return idProfile;
 	}
-	public void setIdUser(int idUser) {
-		this.idUser = idUser;
+	public void setIdProfile(int idProfile) {
+		this.idProfile = idProfile;
 	}
 	public int getIdQuestion() {
 		return idQuestion;
@@ -51,6 +54,11 @@ public class SurveyAnswer{
 	}
 	public void setExtra(String extra) {
 		this.extra = extra;
+	}
+	@Override
+	public String toString() {
+		return "SurveyAnswer [id=" + id + ", idProfile=" + idProfile + ", idQuestion=" + idQuestion + ", idResponse="
+				+ idResponse + ", extra=" + extra + "]";
 	}
 	
 	

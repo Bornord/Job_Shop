@@ -22,7 +22,7 @@ public class TestObjectToJson {
 
 		Recruiter r = new Recruiter("willemlerecruteur", "boui", "aze", "assWorld", 9, new Date(), "airbus");
 		//Status status = new Status();
-		Offer o = new Offer(3, "titre", "sousTitre", "lalaalalalalalalal", 8000, "CDI", LocalDate.of(2025, 6, 1));
+		//Offer o = new Offer(3, "titre", "sousTitre", "lalaalalalalalalal", 8000, "CDI", LocalDate.of(2025, 6, 1));
 		
 		Profile p = new ProfileComputerScientist(new Date(), new Date(), 3, 2);
 		s.setProfile(p);

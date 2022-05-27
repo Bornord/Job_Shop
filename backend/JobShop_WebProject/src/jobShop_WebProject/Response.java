@@ -8,8 +8,9 @@ public class Response {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	private String placeholder;
-	private String user_response;
+	private boolean isAText;
 	private boolean isSelected;
+	
 	
 	@ManyToOne(fetch=FetchType.EAGER, optional = true)
 	//@Cascade(CascadeType.SAVE_UPDATE)
@@ -27,9 +28,10 @@ public class Response {
 		this.placeholder = placeholder;
 	}
 	
-	public Response(String placeholder,int nextQuestion) {
+	public Response(String placeholder,int nextQuestion,boolean isAText) {
 		this.placeholder = placeholder;
 		this.nextQuestion= nextQuestion;
+		this.isAText = isAText;
 	}
 	
 	public int getId() {
@@ -55,14 +57,6 @@ public class Response {
 		this.placeholder = placeholder;
 	}
 
-	public String getUser_response() {
-		return user_response;
-	}
-
-	public void setUser_response(String user_response) {
-		this.user_response = user_response;
-	}
-
 	public boolean getIsSelected() {
 		return isSelected;
 	}
@@ -78,17 +72,31 @@ public class Response {
 	public void setNextQuestion(int nextQuestion) {
 		this.nextQuestion = nextQuestion;
 	}
+	
+	public boolean getIsAText() {
+		return isAText;
+	}
+
+	public void setIsAText(boolean isAText) {
+		this.isAText = isAText;
+	}
+
+	@Override
+	public String toString() {
+		return "Response [id=" + id + ", placeholder=" + placeholder + ", isAText=" + isAText + ", isSelected="
+				+ isSelected + ", previousQuestion=" + previousQuestion + ", nextQuestion=" + nextQuestion + "]";
+	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof Response) {
+			if(isAText) {
+				return ((Response) obj).getIsAText();
+			}
 			return ((Response) obj).placeholder.equalsIgnoreCase(placeholder);
 		}
 		return super.equals(obj);
 	}
-	@Override
-	public String toString() {
-		return "placeholder : "+placeholder +" , next question : " + nextQuestion  ;
-	}
+
 	
 }

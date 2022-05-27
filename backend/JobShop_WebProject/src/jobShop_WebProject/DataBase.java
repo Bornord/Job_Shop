@@ -172,15 +172,32 @@ public class DataBase{
 	 * @param newQuestion
 	 * @param idPrevious
 	 */
-	public Question addQuestionToQuestion(Question newQuestion, int idPrevious) {
+	public Question addQuestionToQuestion(Question newQuestion, int idPrevious,List<Integer> idResponses) {
 		Question previousQuestion = em.find(Question.class, idPrevious);
+		System.out.println(previousQuestion);
 		if(newQuestion != null){
-			em.persist(newQuestion);
-			Response[] responses = new Response[previousQuestion.getResponses().size()];
+			addQuestion(newQuestion);
+			System.out.println(newQuestion);
+			/*Response[] responses = new Response[previousQuestion.getResponses().size()];
 			for (int i = 0;i<previousQuestion.getResponses().size();i++) {
 				responses[i] = previousQuestion.getResponses().get(i);
 			}
-			previousQuestion.appendToResponse(newQuestion.getId(),responses);
+			previousQuestion.appendToResponse(newQuestion.getId(),responses);*/
+			if(idResponses.size() == 0) {
+				
+				previousQuestion.getResponses().get(0).setNextQuestion(newQuestion.getId());
+				return previousQuestion;
+			}
+			
+			List<Response> previousResponses = previousQuestion.getResponses();
+			List<Response> selectedResponses = new ArrayList<>();
+			for (Response response : previousResponses) {
+				for (int id : idResponses) {					
+					if(response.getId() == id) {
+						response.setNextQuestion(newQuestion.getId());
+					}
+				}
+			}
 			return previousQuestion;
 		}
 		return null;
@@ -205,8 +222,7 @@ public class DataBase{
 	 * @return a collection of responses
 	 */
 	public Collection<Response> getFinalResponses(){
-		return em.createQuery("select r from Response r where r.nextQuestion like:next")
-				.setParameter("next", null)
+		return em.createQuery("select r from Response r where r.nextQuestion = 0")
 				.getResultList();
 	}
 	
@@ -215,10 +231,32 @@ public class DataBase{
 	 * @param questionO
 	 */
 	public Question addQuestionToEnd(Map<String, Object> questionO) {
+		System.out.println("************************");
+		System.out.println(questionO);
 		Question q = ObjectConverter.toQuestion(questionO, this);
+		
+		System.out.println("**************");
+		
 		if(q != null){
-			em.persist(q);
 			Collection<Response> responses = getFinalResponses();
+			System.out.println(q.getTitle());
+			for(Response response : q.getResponses()) {
+				response.setPreviousQuestion(q);
+				em.persist(response);
+			}
+			
+			em.persist(q);
+			System.out.println("**************");
+			System.out.println(responses);
+			if(responses == null || responses.size() == 0) {
+				FirstQuestion firstQuestion = new FirstQuestion();
+				firstQuestion.setNameSurvey("current");
+				firstQuestion.setIdFirstQuestion(q.getId());
+				System.out.println("**************");
+				System.out.println(firstQuestion.getNameSurvey());
+				em.persist(firstQuestion);
+				return q;
+			}
 			for (Response response : responses) {
 				response.setNextQuestion(q.getId());
 			}
@@ -237,6 +275,9 @@ public class DataBase{
 	public Profile matchToOffer(Profile profileCandidate) {
 		List<Profile> profiles = em.createQuery("select p from Profile p where p.isRecruiter=true")
 		.getResultList();
+		if(profiles.size() == 0) {
+			return null;
+		}
 		return match(profileCandidate, profiles);
 		
 	}
@@ -248,6 +289,9 @@ public class DataBase{
 		}
 		List<Double> listKeySet = new ArrayList<Double>(list.keySet());
 		Collections.sort(listKeySet);
+		if(listKeySet.size() == 0){
+			return null;
+		}
 		return list.get(listKeySet.get(listKeySet.size()-1));
 	}
 	
@@ -309,9 +353,28 @@ public class DataBase{
 	public void addProfile(Profile profile) {
 		if (!profile.getIsRecruiter()) {
 			Student s = em.find(Student.class, profile.getIdUser());
+			System.out.println("Student -> ");
+			System.out.println();
+			System.out.println(s);
 			s.setProfile(profile);
 		}
 		em.persist(profile);
+		for(SurveyAnswer sa : profile.getSurveyAnswer()) {
+			sa.setIdProfile(profile.getId());
+			System.out.println(sa);
+			em.persist(sa);
+		}
+	}
+	
+	public void addOffer(Offer offer,int idRecruiter) {
+		User recruiter = em.find(User.class, idRecruiter);
+		try {			
+			offer.setRecruiter((Recruiter) recruiter);
+			addProfile(offer.getIdealProfile());
+			em.persist(offer);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void addAdmin(Admin a) {

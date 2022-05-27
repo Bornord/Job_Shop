@@ -38,7 +38,7 @@ public class Server extends HttpServlet{
 		String op = request.getParameter("op");
 		//response.getWriter().println("<html><body>Helloooooo</body></html>");
 		switch(op) {
-		case "getAllQuestion" :
+		case "getAllQuestions" :
 			ServerGetCases.getAllQuestions(request, response, main);
 	 		break;
 		case "addStudent" :
@@ -120,7 +120,7 @@ public class Server extends HttpServlet{
 		case "signout":
 			ServerPostCases.signout(request, response, main);
 			break;
-		case "addQuestionToEnd" :
+		case "addQuestionToEndOfCurrent" :
 			ServerPostCases.addQuestionToEnd(request, response, main);
 			break;
 		case "addQuestionToQuestion":
@@ -139,9 +139,9 @@ public class Server extends HttpServlet{
 	 		//faire le match
 	 		ServerPostCases.addProfileStudent(request, response, main);
 	 		break;
-	 	case "addProfileRecruiter":
+	 	case "addOffer":
 	 		//faire le match
-	 		ServerPostCases.addProfileRecruiter(request, response, main);
+	 		ServerPostCases.addOffer(request, response, main);
 	 		break;
 	 	case "login":
 	 		ServerPostCases.login(request, response, main);

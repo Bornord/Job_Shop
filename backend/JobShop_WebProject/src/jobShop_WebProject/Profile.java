@@ -24,7 +24,7 @@ public class Profile {
 	private int term;
 	private int idUser;
 	private boolean isRecruiter;
-	@OneToMany(mappedBy="idUser", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="idProfile", fetch=FetchType.EAGER)
 	private List<SurveyAnswer> surveyAnswer;
 	
 	public Profile() {}
