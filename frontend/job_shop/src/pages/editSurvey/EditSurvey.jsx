@@ -72,15 +72,17 @@ export default function EditSurvey() {
 	}, []);
 
 	const validate = () => {
-		return question != '' && (responses.lenght > 0 || isAText);
+		return question !== '' && (responses.length > 0 || isAText);
 	};
 
 	const handleAddToEnd = () => {
-		if (validate())
-			post('addQuestionToEnd', {
-				title: question,
-				responses: isAText ? '' : responses,
-			});
+		if (validate()){
+				console.log("submit");
+				post('addQuestionToEndOfCurrent', {
+					title: question,
+					responses: isAText ? '' : responses,
+				});
+		} 
 	};
 	const handleAddToQuestion = () => {
 		const data = {
@@ -213,7 +215,7 @@ export default function EditSurvey() {
 							handleAddToEnd();
 						}}
 					>
-						Ajouter à la fin du questionnaire
+						Ajouter à la fin du questionnaire courant
 					</SelectButton2>
 
 					<div
@@ -324,9 +326,3 @@ export default function EditSurvey() {
 								</>
 							)}
 						</>
-					)}
-				</form>
-			</div>
-		</div>
-	);
-}

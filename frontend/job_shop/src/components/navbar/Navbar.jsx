@@ -100,8 +100,6 @@ const initLinks = (status) => {
 const Navbar = () => {
 	const user = useSelector((state) => state.user.value);
 
-	//console.log(user);
-
 	const [links, setLinks] = useState(initLinks(user.status));
 	//console.log(links);
 	useEffect(() => {
@@ -150,7 +148,7 @@ const Navbar = () => {
 						);
 					})}
 			</ul>
-			{user.status != 1999 && (
+			{(user.status != 1999 && user.status != null)  && (
 				<div className="user">
 					<Link to="/">
 						<p>{user.name != '' ? user.name : 'User'}</p>

@@ -9,11 +9,12 @@ function Login() {
 	let navigate = useNavigate();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const [error, setError] = useState('');
 	const dispatch = useDispatch();
 	const user = useSelector((state) => state.user.value);
 
-	const handleError = () =>{
-
+	const handleError = (e) =>{
+		setError(e)
 	} 
 
 	const validate = (password,email)=> {
@@ -52,7 +53,7 @@ function Login() {
 				<div className="form">
 					<h1 className="title">Bienvenue</h1>
 					<h2 className="subtitle">bla bla bla</h2>
-					
+					{error !== '' && <div className='error'>{error}</div>}	
 					<div className="input-container ic1">
 						<input
 							id="email"

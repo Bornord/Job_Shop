@@ -11,8 +11,12 @@ function Survey() {
 
 	const isRecruiter = user.status == 2001
 	const handleSubmit = (profile)=>{
-		const path = isRecruiter ? "addProfileRecruiter" : "addProfileStudent"
-		post(path,profile,(data)=>{})
+		if(user.status != 1999) {
+			const path = isRecruiter ? "addProfileRecruiter" : "addProfileStudent"
+			post(path,profile,(data)=>{
+				console.log(data);
+			})
+		} 
 	}
 
 	return <div className='survey'>

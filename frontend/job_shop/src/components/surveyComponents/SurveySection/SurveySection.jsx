@@ -57,24 +57,22 @@ const testSurvey = {
 }
 
 const SurveySection = ({onSubmit})=>{
-    const [survey,setSurvey] = useState(testSurvey);
+    const [survey,setSurvey] = useState( [] );
     const [currentQuestion,setCurrentQuestion] = useState(survey)
     const [previousQuestion,setPreviousQuestion] = useState([])
+    const [error, setError] = useState('');
     const [profile,setProfile] = useState([])
     const user = useSelector((state) => state.user.value);
 
     useEffect(()=>{
-        /*const fecthQuestion = async ()=>{
-            try{
-                const res = await api.get("/getSurvey")
-                setSurvey(res.data)
-            }catch(e){
-                
-            }
-        }*/
-        get("/getSurvey",(res)=>setSurvey(res.data))
-        //fecthQuestion()
-        //setCurrentQuestion(survey)
+
+        get("getCurrentSurvey",(res)=>{
+            console.log(res);
+            setSurvey(res.data)
+            setCurrentQuestion(survey)
+        },(e) =>{
+            setError(e)
+        } ) 
     },[])
 
     const handleNext = (response)=>{
@@ -107,7 +105,11 @@ const SurveySection = ({onSubmit})=>{
     }
 
     return <>
-        <Question question={currentQuestion.title} multiple={currentQuestion.multiple} answers={currentQuestion.responses} previous={handlePrevious} next={handleNext} submit={handleSubmit}/>
+            {error !== '' && <div className='error'>{error}</div>}
+           {
+               survey.length > 0 &&
+                <Question question={currentQuestion.title} multiple={currentQuestion.multiple} answers={currentQuestion.responses} previous={handlePrevious} next={handleNext} submit={handleSubmit}/>
+           } 
     </>
 }
 
