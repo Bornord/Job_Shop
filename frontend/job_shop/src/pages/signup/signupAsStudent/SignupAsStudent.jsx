@@ -62,9 +62,7 @@ function SignupAsStudent() {
 	,[] )  
 
 	const isValid = (state) => {
-		console.log(state);
 		const {password,confirmedPassword} = state
-		console.log(password);
 		const emptyFieldName = state.name === ''||  state.surname === '';
 		const emptyFieldMail = state.email === '';
 		const emptyFieldPassword = password === ''||  confirmedPassword === '';

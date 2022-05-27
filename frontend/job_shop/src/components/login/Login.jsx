@@ -14,7 +14,12 @@ function Login() {
 	const user = useSelector((state) => state.user.value);
 
 	const handleError = (e) =>{
-		setError(e)
+		console.log(e);
+		if(e.message != null){
+			setError(e.message)
+		} else{
+			setError(e)
+		} 
 	} 
 
 	const validate = (password,email)=> {

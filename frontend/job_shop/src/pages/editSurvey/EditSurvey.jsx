@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './EditSurvey.scss';
 import SelectButton2 from '../../components/buttons/selectButton2/SelectButton2';
 import { TiTimes } from 'react-icons/ti';
 import LineText from '../../components/lineText/LineText';
 import { api, get, post } from '../../logic/api/api';
 
-const testQuestion = {
+/*const testQuestion = {
 	title: 'test question ?',
 	responses: [
 		{
@@ -24,22 +25,27 @@ const testQuestion = {
 			isSelected: false,
 		},
 	],
-};
+};*/
 
 export default function EditSurvey() {
 	const [allQuestion, setAllQuestion] = useState({});
+	let navigate = useNavigate();
 	const [question, setQuestion] = useState('');
 	const [isAText, setOnText] = useState(true);
 	const [responses, setResponses] = useState([]);
 	const [currentResponse, setCurrentResponse] = useState('');
 	const [isSearchBarVisible, setSearchBarVisible] = useState('');
-	const [searchedQuestion, setSearchQuestion] = useState('');
 	const [foundQuestion, setFoundQuestion] = useState({
 		question: {},
 		hasBeenFound: false,
 	});
 	const searchQuestion = (question) => {
-		setFoundQuestion({ question: testQuestion, hasBeenFound: true });
+		const found = allQuestion.filter((q)=>{
+			return q.title === question;
+		} )
+		if(found.length > 0) {
+			setFoundQuestion({ question: found[0] , hasBeenFound: true });
+		} 
 	};
 
 	const getFoundQuestionText = () => {
@@ -65,8 +71,10 @@ export default function EditSurvey() {
 
 	useEffect(() => {
 		get(
-			'getAllQuestion',
-			(res) => setAllQuestion(res.data),
+			'getAllQuestions',
+			(res) => {
+				setAllQuestion(res.data)
+			} ,
 			(e) => console.log(e)
 		);
 	}, []);
@@ -81,22 +89,26 @@ export default function EditSurvey() {
 				post('addQuestionToEndOfCurrent', {
 					title: question,
 					responses: isAText ? '' : responses,
-				});
+				},(data)=>{
+					navigate('/Dashboard');
+				} );
 		} 
 	};
 	const handleAddToQuestion = () => {
 		const data = {
-			addedToQuestion: foundQuestion.question?.title,
+			idQuestion: foundQuestion.question?.id,
 
-			addedToResponses:
-				foundQuestion.question?.responses != ''
-					? foundQuestion.question?.responses.filter(
+			idResponses:
+					foundQuestion.question?.responses.filter(
 							(response) => response.isSelected
-					  )
-					: '',
+					  ).map((response) => response.id )
+					,
 
-			title: question,
-			responses: isAText ? '' : responses,
+			question :
+				{ 
+					title: question,
+					responses: isAText ? '' : responses,
+				}	
 		};
 
 		if (validate()) post('addQuestionToQuestion', data);
@@ -116,7 +128,12 @@ export default function EditSurvey() {
 							className={'question-input'}
 							type="text"
 							value={question}
-							onChange={(e) => setQuestion(e.target.value)}
+							onChange={(e) =>  setQuestion(e.target.value)}
+							onKeyDown={(e) => {
+								if (e.key === 'Enter') {
+									e.preventDefault();
+								}
+							}}
 							placeholder=" "
 						/>
 						<div className="cut-question"></div>
@@ -154,8 +171,8 @@ export default function EditSurvey() {
 						<>
 							{responses.map((response) => {
 								return (
-									<div key={response} className="response">
-										{response}
+									<div key={response.placeholder} className="response">
+										{response.placeholder}
 										<div
 											onClick={(e) =>
 												setResponses((prev) =>
@@ -183,17 +200,23 @@ export default function EditSurvey() {
 									placeholder=" "
 									onKeyDown={(e) => {
 										if (e.key === 'Enter') {
+											e.preventDefault()
 											setResponses((prev) => {
+												const newResponse ={
+													placeholder:currentResponse
+												} 
+												console.log(newResponse);
+												console.log(prev.includes(newResponse));
 												if (
 													prev.includes(
-														currentResponse
+														newResponse
 													)
-												)
+												){
 													return prev;
-												return [
-													...prev,
-													currentResponse,
-												];
+												} 
+												let next = [...prev,newResponse]
+												console.log(next); 
+												return next
 											});
 											setCurrentResponse('');
 										}
@@ -228,31 +251,18 @@ export default function EditSurvey() {
 					</div>
 					{isSearchBarVisible && (
 						<>
-							<div className="input-container ic1">
-								<input
-									id="search-question"
-									className={'question-input'}
-									type="text"
-									value={searchedQuestion}
-									onChange={(e) => {
-										setSearchQuestion(e.target.value);
-									}}
-									placeholder=" "
-									onKeyDown={(e) => {
-										if (e.key === 'Enter') {
-											searchQuestion(searchedQuestion);
-											setCurrentResponse('');
-										}
-									}}
-								/>
-								<div className="cut-question"></div>
-								<label
-									htmlFor="search-question"
-									className="placeholder"
-								>
-									Question désirée :
-								</label>
-							</div>
+							<select onChange={(e)=>{
+								e.preventDefault();
+								searchQuestion(e.target.value);
+							} }>
+									<option value="">Question désirée :</option>
+									{
+										allQuestion.map((question)=>{
+											return <option key={question.id} value= {question.title} >{question.title} </option>
+										} )
+									} 
+							</select>
+							<br/>
 							{foundQuestion.hasBeenFound && (
 								<>
 									{foundQuestion.question?.title}
@@ -264,6 +274,9 @@ export default function EditSurvey() {
 														response.isSelected
 															? 'active-response'
 															: '';
+													if(response.isAText){
+														return <div key={response} ></div>
+													} 
 													return (
 														<div
 															key={
@@ -326,3 +339,9 @@ export default function EditSurvey() {
 								</>
 							)}
 						</>
+					)
+					}
+				</form>
+			</div>
+		</div>)
+}	

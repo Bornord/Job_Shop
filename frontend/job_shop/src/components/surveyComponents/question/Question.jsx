@@ -8,6 +8,26 @@ const Question = ({question,answers,next,previous,submit,multiple}) =>{
 
     const isAText = answers.length == 1 && answers[0].placeholder ===  ""
     const [_answers,setAnswers] = useState(answers)
+
+    useEffect(()=>{
+        if(_answers.nextQuestion){
+            //console.log(_answers);
+            setAnswers((p)=>{
+                const tmp = answers.nextQuestion.map((a)=>{return  {...a,isSelected:false} } )
+                console.log(tmp);
+                return tmp
+            } ) 
+        }else{
+            //console.log(_answers);
+            setAnswers((p)=>{
+                const tmp = answers.map((a)=>{return  {...a,isSelected:false} } )
+                console.log(tmp);
+                return tmp
+            } ) 
+        } 
+    },[answers] )
+
+    const [extra,setExtra] = useState("")  
     const isLast = answers.filter((a)=>{return a.nextQuestion !=  null}).length == 0
     return (
         <div className='question'>
@@ -20,7 +40,13 @@ const Question = ({question,answers,next,previous,submit,multiple}) =>{
             <h2>{question}</h2>
 
             {isAText ?
-                <input type="text" className="question-input" />
+                <input type="text" className="question-input" value={extra}
+                    onChange={
+                        (e)=>{
+                            setExtra(e.target.value)
+                        } 
+                    } 
+                />
                 :
                 _answers.map((answer)=>{
                     const active = answer.isSelected ? "active-answer":""
@@ -51,13 +77,18 @@ const Question = ({question,answers,next,previous,submit,multiple}) =>{
                     onClick={
                         ()=>{
                             const res = _answers.filter((a)=> a.isSelected)
-                            if((isAText && _answers[0].user_response != "") || res.length > 0){
-                                submit(res[0])
+                            if((isAText && _answers[0].user_response != "") ){
+                                const _res = {..._answers[0],extra:extra } 
+                                submit(_res)
+                            } 
+                            if(res.length > 0){
+                                const _res = {...res[0],extra:"" } 
+                                submit(_res)
                             }
                         }
                     }
                 >
-                    Submit
+                    Valider
                 </NextButton>
             :
                 <>
@@ -66,20 +97,30 @@ const Question = ({question,answers,next,previous,submit,multiple}) =>{
                         onClick={
                             ()=>{
                                 const res = _answers.filter((a)=> a.isSelected)
-                                if((isAText && _answers[0].user_response != "") || res.length > 0){
-                                    next(res[0])
+                                if((isAText && _answers[0].user_response != "") ){
+                                    const _res = {..._answers[0],extra:extra } 
+                                    next(_res)
+                                } 
+                                if(res.length > 0){
+                                    const _res = {...res[0],extra:"" } 
+                                    next(_res)
                                 }
                             }
                         }
                     >
-                        Next
+                        Suivant
                     </NextButton>
                     <div className='linetext'
                     onClick={
                         ()=>{
                             const res = _answers.filter((a)=> a.isSelected)
-                            if((isAText && _answers[0].user_response != "") || res.length > 0){
-                                submit(res[0])
+                            if((isAText && _answers[0].user_response != "") ){
+                                const _res = {..._answers[0],extra:extra } 
+                                submit(_res)
+                            } 
+                            if(res.length > 0){
+                                const _res = {...res[0],extra:"" } 
+                                submit(_res)
                             }
                         }
                     }>
