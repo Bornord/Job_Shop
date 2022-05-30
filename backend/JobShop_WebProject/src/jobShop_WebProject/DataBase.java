@@ -56,7 +56,6 @@ public class DataBase{
 	@PostConstruct
 	public void initialisation() {
 		addAdmin(new Admin("Akina", "Renard","akina@yes.fr", BCrypt.hashpw("test", BCrypt.gensalt()), 0, new Date()));
-		addFirstQuestion(new FirstQuestion(0, "survey de test vide"));
 		addAdmin(new Admin("Paula", "Valentina","PaulaL@Boss.com", BCrypt.hashpw("testP", BCrypt.gensalt()), 0, new Date()));
 		addBlog(new Blog("Super blog", "how to find a job", "blablabla content", new Date(), 2));
 		addBlog(new Blog("Le blog de Akina", "job shop la meilleure plateforme", "blablabla content", new Date(), 1));
@@ -272,13 +271,12 @@ public class DataBase{
 	/**
 	 * method match
 	 */
-	public Profile matchToOffer(Profile profileCandidate) {
-		List<Profile> profiles = em.createQuery("select p from Profile p where p.isRecruiter=true")
-		.getResultList();
-		if(profiles.size() == 0) {
+	public Offer matchToOffer(Profile profileCandidate) {
+		List<Offer> offers = em.createQuery("select o from Offer o").getResultList();
+		if(offers.size() == 0) {
 			return null;
 		}
-		return match(profileCandidate, profiles);
+		return match(offers,profileCandidate);
 		
 	}
 	
@@ -286,6 +284,18 @@ public class DataBase{
 		Map<Double, Profile> list = new HashMap();
 		for (Profile p : profiles) {
 			list.put(match(p,profile), p);
+		}
+		List<Double> listKeySet = new ArrayList<Double>(list.keySet());
+		Collections.sort(listKeySet);
+		if(listKeySet.size() == 0){
+			return null;
+		}
+		return list.get(listKeySet.get(listKeySet.size()-1));
+	}
+	public static Offer  match(List<Offer> offers,Profile profile) {
+		Map<Double, Offer> list = new HashMap();
+		for (Offer o : offers) {
+			list.put(match(o.getIdealProfile(),profile), o);
 		}
 		List<Double> listKeySet = new ArrayList<Double>(list.keySet());
 		Collections.sort(listKeySet);
@@ -424,16 +434,35 @@ public class DataBase{
 	 * @param id user's id
 	 * @return user's blog or null if the user doesn't have a blog
 	 */
-	public Blog getBlogAuthor(int id) {
-		List list= em.createQuery("select c from Blog c where c.idAuthor like:id")
+	public List<Blog> getBlogAuthor(int id) {
+		List<Blog> list= em.createQuery("select c from Blog c where c.idAuthor like:id")
 				.setParameter("id", id)
-				.setMaxResults(1)
 				.getResultList();	
 		if(list.size() != 0) {
-			return (Blog) list.get(0);
+			return list;
 		} else {
 			return null;
 		}
 	}
 	//public setNextQuestion(Response r, )
+
+	public Status addStatus(Profile profile, Offer offer, LabelStep step) {
+		Status status = new Status();
+		status.setIdStudent(profile.getIdUser());
+		status.setOffer(offer);
+		status.setStep(step);
+		em.persist(status);
+		return status;
+	}
+
+	public List<Offer> getOffersFromRecruiter(int id) {
+		return ((Recruiter) findUser(id)).getOffers();
+	}
+
+	public List<Status> getStatusFromUserId(int id) {
+		List<Status> list= em.createQuery("select s from Status s where s.idStudent like:id")
+				.setParameter("id", id)
+				.getResultList();	
+		return list;
+	}
 }

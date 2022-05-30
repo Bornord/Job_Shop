@@ -1,16 +1,5 @@
 
-.active-response{
-    background-color: var(--highlight-color);
-}
-.linetext{
-    width: fit-content;
-    color: var(--highlight-color);
-}
-.add-to-end{
-
-}
-
-.add-to-end > form {
+.addSurvey {
     background-color: var(--main-color);
     border-radius: var(--small-corner);
     box-sizing: border-box;

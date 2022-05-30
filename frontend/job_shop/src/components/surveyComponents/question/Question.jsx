@@ -28,7 +28,8 @@ const Question = ({question,answers,next,previous,submit,multiple}) =>{
     },[answers] )
 
     const [extra,setExtra] = useState("")  
-    const isLast = answers.filter((a)=>{return a.nextQuestion !=  null}).length == 0
+    const [isLast,setIsLast] = useState(answers.filter((a)=>{return a.nextQuestion !=  null}).length == 0) 
+
     return (
         <div className='question'>
             <div className="previous" onClick={()=>{
@@ -53,6 +54,12 @@ const Question = ({question,answers,next,previous,submit,multiple}) =>{
                     return <div key={answer.placeholder} className={'answer '+active} 
                     onClick={
                         (e)=>{
+                            const index = _answers.indexOf(answer)
+                            const nextSelection = !answer.isSelected 
+                            if(nextSelection) {
+                                setIsLast(answer.nextQuestion == null)
+                            }
+
                             setAnswers((prev)=>{
                                 return prev.map((a) => {
                                     let res = a.isSelected
@@ -124,7 +131,7 @@ const Question = ({question,answers,next,previous,submit,multiple}) =>{
                             }
                         }
                     }>
-                        <LineText>or submit now..</LineText>                        
+                        <LineText>ou valider maintenant..</LineText>                        
                     </div>
                 </>
             }

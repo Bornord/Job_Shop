@@ -12,10 +12,11 @@ const Post = async (path, data, success, error) => {
 	console.log(data);
 	try {
 		const res = await api.post('/Server?op=' + path, data);
+		console.log(res);
 		console.log(res.data);
 		if (success != null) success(res.data);
 	} catch (e) {
-		//console.log(e);
+		console.log(e);
 		if (error != null) error(e);
 	}
 };

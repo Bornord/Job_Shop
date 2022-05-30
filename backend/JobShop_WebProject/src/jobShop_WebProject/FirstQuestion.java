@@ -37,6 +37,5 @@ public class FirstQuestion {
 	public void setNameSurvey(String nameSurvey) {
 		this.nameSurvey = nameSurvey;
 	}
-	
 }
 

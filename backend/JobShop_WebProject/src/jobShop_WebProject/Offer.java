@@ -38,6 +38,10 @@ public class Offer {
 	@ManyToOne(fetch=FetchType.EAGER)
 	private Recruiter recruiter;
 	
+	public Offer() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	public Offer(int id, String title, String subTitle, String description, int salary, String contract,
 			LocalDate startDate,LocalDate endDate,int term) {
 		super();

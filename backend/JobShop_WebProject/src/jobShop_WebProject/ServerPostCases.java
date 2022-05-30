@@ -66,16 +66,17 @@ public class ServerPostCases {
 
 	public static void addSurvey(HttpServletRequest request, HttpServletResponse response, DataBase main) throws IOException {
 		String j = readJson(request);//nom survey et 1ère question
- 		Map<String, Object> nameAndQuestion = JsonConverter.toObject(j);
+ 		Map<String, Object> map = JsonConverter.toObject(j);
  		//on recupère le nom
- 		String name = (String)((Map<String, Object>)nameAndQuestion.get("name")).get("String");
- 		Question question1 = ObjectConverter.toQuestion((Map<String, Object>)nameAndQuestion.get("question"), main);
- 		
- 		Question qWithId = main.addQuestion(question1);
+ 		//String name = (String)((Map<String, Object>)nameAndQuestion.get("name")).get("String");
+ 		//Question question1 = ObjectConverter.toQuestion((Map<String, Object>)nameAndQuestion.get("question"), main);
+ 		Question question = ObjectConverter.toQuestion(map,main);
+ 		Question qWithId = main.addQuestion(question);
  		//main.addResponse(qWithId.getId(), question1.getResponses().get(0));
- 		FirstQuestion firstQuestion = new FirstQuestion(qWithId.getId(), name);
+ 		FirstQuestion firstQuestion = new FirstQuestion(qWithId.getId(), "current");
  		main.addFirstQuestion(firstQuestion);
-		printResp(response, "{id:"+ qWithId.getId() + ",name:\""+name+"\"}");
+ 		main.updateCurrentSurvey(firstQuestion.getId());
+		printResp(response, "{id:"+ qWithId.getId() + ",name:\"current\",title:"+"\""+qWithId.getTitle()+"\""+"}");
 	}
 
 	public static void addQuestionToEnd(HttpServletRequest request, HttpServletResponse response, DataBase main) throws IOException {
@@ -133,8 +134,13 @@ public class ServerPostCases {
 			main.addProfile(profile);
 			System.out.println(profile);
 			//faire le match
-			main.matchToOffer(profile);
-			printResp(response, JsonConverter.toJson(profile));
+			Offer offer = main.matchToOffer(profile);
+			if(offer != null) {
+				Status status = main.addStatus(profile,offer,LabelStep.IN_PROGRESS);
+				printResp(response, JsonConverter.toStatus(status,main));
+			}else {				
+				printResp(response, JsonConverter.toJson(profile));
+			}
 		} catch (Exception e) {
 			printResp(response, "{\"error\":\"error\"}");
 		}
@@ -171,7 +177,8 @@ public class ServerPostCases {
 			System.out.println("closest profile");
 			System.out.println(closest);
 			if(closest != null) {				
-				printResp(response, JsonConverter.toJson(closest));
+				Status status = main.addStatus(closest,offer,LabelStep.IN_PROGRESS);
+				printResp(response, JsonConverter.toStatus(status,main));
 			}else {
 				printResp(response, "{\"notfound\":true}");
 			}
@@ -272,8 +279,76 @@ public class ServerPostCases {
 		String j = readJson(request);
 		Map<String, Object> map = JsonConverter.toObject(j);
 		int id = (int)((Map<String, Object>) map.get("id")).get("Integer");
-		Blog blog = main.getBlogAuthor(id);
-		printResp(response, JsonConverter.toJson(blog));
+		List<Blog> blogs = main.getBlogAuthor(id);
+		if(blogs.size() > 0) {
+			String json = "[";
+			for (Blog blog : blogs) {
+				json += JsonConverter.toJson(blog)+",";
+			}
+			json = json.trim();
+			if(json.endsWith(",")) {
+				json=json.substring(0, json.length()-1);
+			}
+			json+="]";
+			printResp(response, json);
+		}else {
+			printResp(response, "[]");
+		}
+	}
+
+	public static void getOffersFromRecruiter(HttpServletRequest request, HttpServletResponse response, DataBase main) throws IOException {
+		String j = readJson(request);
+		Map<String, Object> map = JsonConverter.toObject(j);
+		int id = (int)((Map<String, Object>) map.get("id")).get("Integer");
+		List<Offer> offers = main.getOffersFromRecruiter(id);
+		System.out.println("****************************************");
+		System.out.println("                   GET OFFERS                   ");
+		System.out.println(offers);
+		if(offers !=  null) {
+			if(offers.size() > 0) {
+				String json = "[";
+				for (Offer offer : offers) {
+					json += JsonConverter.toOffer(offer,main)+",";
+				}
+				json = json.trim();
+				if(json.endsWith(",")) {
+					json=json.substring(0, json.length()-1);
+				}
+				json+="]";
+				System.out.println(json);
+				printResp(response, json);
+			}else {
+				System.out.println("[]");
+				printResp(response, "[]");
+			}
+		}else {
+			printResp(response, "{\"error\":\"error\"}");
+		}
+	}
+
+	public static void getStatusFromUserId(HttpServletRequest request, HttpServletResponse response, DataBase main) throws IOException {
+		String j = readJson(request);
+		Map<String, Object> map = JsonConverter.toObject(j);
+		int id = (int)((Map<String, Object>) map.get("id")).get("Integer");
+		List<Status> status = main.getStatusFromUserId(id);
+		if(status !=  null) {
+			if(status.size() > 0) {
+				String json = "[";
+				for (Status s : status) {
+					json += JsonConverter.toStatus(s,main)+",";
+				}
+				json = json.trim();
+				if(json.endsWith(",")) {
+					json=json.substring(0, json.length()-1);
+				}
+				json+="]";
+				printResp(response, json);
+			}else {
+				printResp(response, "[]");
+			}
+		}else {
+			printResp(response, "{\"error\":\"error\"}");
+		}
 	}
 
 }

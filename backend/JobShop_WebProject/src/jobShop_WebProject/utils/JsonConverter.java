@@ -13,8 +13,12 @@ import java.util.List;
 import java.util.Map;
 
 import jobShop_WebProject.DataBase;
+import jobShop_WebProject.FirstQuestion;
+import jobShop_WebProject.Offer;
 import jobShop_WebProject.Question;
 import jobShop_WebProject.Response;
+import jobShop_WebProject.Status;
+import jobShop_WebProject.User;
 
 
 public class JsonConverter {
@@ -54,6 +58,10 @@ public class JsonConverter {
 		for (int j = 0; j<fields.length; j++) {
 			f = fields[j];
 			if(Modifier.isStatic(fields[j].getModifiers())) {	
+				continue;
+			}
+			/** Recruiter exclusion cases **/
+			if(f.getName().equals("offers")) {
 				continue;
 			}
 			method = c.getMethod("get" +capitalize(f.getName()), null);
@@ -291,6 +299,80 @@ public class JsonConverter {
 			res += ",";
 		}
 		
+		res = res.trim();
+		if(res.endsWith(",")) {
+			res=res.substring(0, res.length()-1);
+		}
+		res+="]";
+		return res;
+	}
+
+	public static String toFirstQuestion(FirstQuestion object, DataBase main) {
+		int id = object.getId();
+		int idFirsQuestion = object.getIdFirstQuestion();
+		String nameSurvey = object.getNameSurvey();
+		Question question = main.findQuestion(idFirsQuestion);
+		String title = "";
+		if(question != null) {
+			title = question.getTitle();
+		}
+		String json = "{";
+		json += "\"id\":" + id+",";
+		json += "\"idFirsQuestion\":" + idFirsQuestion+",";
+		json += "\"nameSurvey\":" + "\""+ nameSurvey+"\""+",";
+		json += "\"title\":" + "\""+title+"\"";
+		json += "}";
+		return json;
+	}
+
+	public static String toStatus(Status status, DataBase main) {
+		User user = main.findUser(status.getIdStudent());
+		if(user != null) {
+			String json_user = toJson(user);
+			String json = "{";
+			json += "\"student\":"+json_user+",";
+			json += "\"offer\":"+toOffer(status.getOffer(),main)+",";
+			json += "\"step\":"+"\""+status.getStep().name()+"\"";
+			json += "}";
+			return json;
+		}
+			
+		return "{error:\"student not found\"}";
+	}
+	public static String toStatusWithoutOffer(Status status, DataBase main) {
+		User user = main.findUser(status.getIdStudent());
+		if(user != null) {
+			String json_user = toJson(user);
+			String json = "{";
+			json += "\"student\":"+json_user+",";
+			json += "\"step\":"+"\""+status.getStep().name()+"\"";
+			json += "}";
+			return json;
+		}
+			
+		return "{error:\"student not found\"}";
+	}
+	public static String toOffer(Offer offer, DataBase main) {
+		String res = "{";
+		res += "\"id\":"+offer.getId()+",";
+		res += "\"title\":\""+offer.getTitle()+"\",";
+		res += "\"subTitle\":\""+offer.getSubTitle()+"\",";
+		res += "\"description\":\""+offer.getDescription()+"\",";
+		res += "\"salary\":"+offer.getSalary()+",";
+		res += "\"Contract\":\""+offer.getContract()+"\",";
+		res += "\"startDate\":\""+offer.getStartDate()+"\",";
+		res += "\"endDate\":\""+offer.getEndDate()+"\",";
+		res += "\"term\":"+offer.getTerm()+",";
+		res += "\"status\":"+toStatusWithoutOffer(offer.getStatus(), main);
+		res += "}";
+		return res;
+	}
+
+	private static String toStatusWithoutOffer(List<Status> status, DataBase main) {
+		String res = "[";
+		for (Status s : status) {
+			res += toStatusWithoutOffer(s, main) + ",";
+		}
 		res = res.trim();
 		if(res.endsWith(",")) {
 			res=res.substring(0, res.length()-1);

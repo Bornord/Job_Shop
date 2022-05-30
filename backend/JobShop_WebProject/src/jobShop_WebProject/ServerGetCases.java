@@ -39,12 +39,17 @@ public class ServerGetCases {
 
 	public static void getAllSurveys(HttpServletRequest request, HttpServletResponse response, DataBase main) throws IOException {
 		Collection<FirstQuestion> allSurveys = main.getSurveys();
-		String j = "{[";
+		String j = "[";
 		for (FirstQuestion object : allSurveys) {
-			j+=JsonConverter.toJson(object)+",";
+			j+=JsonConverter.toFirstQuestion(object,main)+",";
 		}
-		j+="]}";
-		printResp(response, JsonConverter.toJson(allSurveys));
+		
+		j = j.trim();
+		if(j.endsWith(",")) {
+			j=j.substring(0, j.length()-1);
+		}
+		j+="]";
+		printResp(response, j);
 	}
 
 	public static void test(HttpServletRequest request, HttpServletResponse response, DataBase main) throws IOException {

@@ -90,6 +90,7 @@ function Offers() {
 					setTerm(e.target.value)
 				} } 
 			/>
+			<p>Remplissez ce questionnaire pour choisir votre profile ideal</p>
 			<SurveySection onSubmit={handleProfile}/>
 			<div className="offer-form">
 					<div className="input-container ic1">

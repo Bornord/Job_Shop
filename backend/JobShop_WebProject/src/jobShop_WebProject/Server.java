@@ -143,6 +143,14 @@ public class Server extends HttpServlet{
 	 		//faire le match
 	 		ServerPostCases.addOffer(request, response, main);
 	 		break;
+	 	case "getOffersFromRecruiter":
+	 		//faire le match
+	 		ServerPostCases.getOffersFromRecruiter(request, response, main);
+	 		break;
+	 	case "getStatusFromUserId":
+	 		//faire le match
+	 		ServerPostCases.getStatusFromUserId(request, response, main);
+	 		break;
 	 	case "login":
 	 		ServerPostCases.login(request, response, main);
 	 		break;

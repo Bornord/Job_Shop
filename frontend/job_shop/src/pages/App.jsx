@@ -9,6 +9,7 @@ import Error from './error/Error';
 import DashBoard from './dashboard/DashBoard';
 import EditSurvey from './editSurvey/EditSurvey';
 import NewOffers from './newoffers/NewOffers';
+import NewBlog from './newblog/NewBlog';
 import Blog from './blog/Blog';
 import RequireAuth from '../logic/Auth/RequireAuth';
 
@@ -23,6 +24,7 @@ function App() {
 				<Route path="/Dashboard" element={<DashBoard />}></Route>
 				<Route path="/EditSurvey" element={<EditSurvey />}></Route>
 				<Route path="/NewOffers" element={<NewOffers />}></Route>
+				<Route path="/NewBlog" element={<NewBlog />}></Route>
 				<Route path="/Blog" element={<Blog />}></Route>
 				<Route
 					path="/"
